@@ -1,0 +1,165 @@
+﻿@page "/sendsupplierorder/{id:int}"
+
+@using NatuurlikBase.Components
+@using NatuurlikBase.Repository.IRepository
+@using System.Net.Mail
+
+@* Inject JS Interop to call.NET Method using JavaScript @inject Microsoft.JSInterop.IJSRuntime JS*@
+
+@inject IJSRuntime JSRuntime;
+@inject NavigationManager NavigationManager
+@inject IViewSupplierById ViewSupplierById
+@inject ISendSupplierOrderRepository CaptureOrderInventories
+
+
+
+    <SuccessMessageComponent SuccessMessage="@supplierOrderSent"></SuccessMessageComponent>
+<h1 style="text-align: center;"> Supplier Order Details:</h1>
+<br/>
+@if (this.supplier != null)
+{
+    <EditForm Model="supplier" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <label class="pl-4">Supplier:</label>
+     
+            <InputText class="pl-4 form-control" disabled id="name"  @bind-Value="supplier.CompanyName"></InputText>
+         <br>
+        <label class="pl-4">Email Address:</label>
+      
+            <InputText class="pl-4 form-control" disabled id="name"  @bind-Value="supplier.EmailAddress"></InputText>
+        <br>
+        <label class="pl-4">Contact Number:</label>
+        <InputText class="pl-4 form-control" disabled id="name"  @bind-Value="supplier.PhoneNumber"></InputText>
+        <br>
+        @*<label class="pl-4">Email Subject:</label>
+
+           <InputText class="pl-4 form-control" @bind-Value="supplier.Subject"></InputText>
+        <br>
+        <label class="pl-4">Email Message:</label>
+        <br>
+            <InputText class="pl-4 form-control" style="width:400; height:150px" @bind-Value="supplier.Message"></InputText>
+        <br>*@
+            
+        <div>
+            <SupplierOrderInventoriesComponent 
+            SupplierOrderInventories = "supplier.SupplierInventory"
+            OnInventorySelected="OnInventorySelected">
+            </SupplierOrderInventoriesComponent>
+        </div>
+        
+
+        <br/>
+        <button type="button"  @onclick="@(()=> OnBack())" class="btn btn-primary">Cancel</button>
+        <button type="submit" class="btn btn-primary" style="border-color: white;color: white;
+                                                                       background-color: blue;
+                                                                       text-decoration: none;">Send Email</button>
+
+    </EditForm>
+
+    @code {
+    //Code Behind
+
+
+
+    private string supplierOrderSent;
+
+    //ALT Step: Cancel operation
+    private void OnBack()
+    {
+        NavigationManager.NavigateTo($"/supplierslist", true);
+    }
+
+
+    private Supplier supplier;
+
+    //private SupplierOrderVM supplierOrderVM;
+
+    public List<ProductInventory> ProductInventories;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        this.supplier = await ViewSupplierById.ExecuteAsync(this.Id);
+    }
+
+    private void OnInventorySelected(List<SupplierInventory> supplierOrderInventories)
+    {
+        this.supplier.SupplierInventory = supplierOrderInventories;
+    }
+
+    private void OnValidSubmit()
+    {
+        CaptureOrderInventories.ExecuteAsync(this.supplier);
+        //NavigationManager.NavigateTo($"/supplierslist", true);
+        this.supplierOrderSent =  $"Supplier order details sent to supplier successfully";
+
+
+    }
+
+   
+
+
+    private void SendSupplierOrderEmail(List<SupplierInventory> supplierOrderInventories)
+    {
+        //MailMessage supplierOrderEmail = new MailMessage();
+        //supplierOrderEmail.From = new MailAddress("Natuurlik@gmail.co.za", "Natuurlik");
+        //supplierOrderEmail.To.Add(new MailAddress(supplier.EmailAddress, supplier.CompanyName));
+        //supplierOrderEmail.Subject = supplier.CompanyName;
+        //supplierOrderEmail.IsBodyHtml = true;
+        //supplierOrderEmail.Body = supplierOrderInventories.ToString();
+
+        //SmtpClient smtpClient = new SmtpClient("smtp.sendgrid.net", 587);
+        //System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("Natuurlik", "SecurePassword");
+        //smtpClient.Credentials = credentials;
+        //supplierOrderEmail.BodyEncoding = System.Text.Encoding.GetEncoding("utf-8");
+
+        //supplierOrderEmail.Headers.Add("Message-Id", String.Concat("<", DateTime.Now.ToString("yyMMdd"), ".", DateTime.Now.ToString("HHmmss"), "natuurlik.co.za"));
+        //smtpClient.Send(supplierOrderEmail);
+
+
+        //FYI
+        //await _emailSender.SendEmailAsync(
+        //              Input.Email,
+        //              "Confirm your Natuurlik Account",
+        //              message);
+
+
+
+    }
+
+
+
+    //  List<string> InventoryList = new List<string>();
+    //protected override void OnAfterRender(bool firstRender)
+    //{
+    //  base.OnAfterRender(firstRender);
+    //  if (firstRender)
+    //  {
+    //    // See warning about memory above in the article
+    //    var dotNetReference = DotNetObjectReference.Create(this);
+    //    await JSRuntime.InvokeAsync("BlazorUniversity.startRandomGenerator", dotNetReference);
+    //  }
+    //}
+    //[JSInvokable("AddText")]
+    //public void AddInventoryItemToList(string text)
+    //{
+    //  InventoryList.Add(text.ToString());
+    //  while (InventoryList.Count > 10)
+    //    InventoryList.RemoveAt(0);
+    //  StateHasChanged();
+    //  System.Diagnostics.Debug.WriteLine("DotNet: Received " + text);
+    //}
+
+
+    //private async Task RetrieveInventory()
+    //{
+    //   await JSRuntime.InvokeVoidAsync("DisplayName");
+    //}
+}
+
+    
+}

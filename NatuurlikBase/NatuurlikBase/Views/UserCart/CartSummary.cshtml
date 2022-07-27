@@ -169,7 +169,7 @@
                             <div>
                                 <button type="submit" value="Place Order" class="btn form-control" id="paybtn">Proceed to Payment <i class="bi bi-lock"></i></button>
                                 <p class="back">
-                                    <a asp-controller="ProductCatalogue" asp-action="Index" class="color">Back</a>
+                                    <a asp-controller="UserCart" asp-action="Index" class="color">Back</a>
                                 </p>
                             </div>
 
@@ -315,4 +315,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/notifications.js"></script>
 }

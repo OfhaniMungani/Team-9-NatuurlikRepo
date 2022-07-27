@@ -1,0 +1,34 @@
+﻿@inject NavigationManager NavigationManager
+
+
+@if (Supplier != null)
+{
+    <tr>
+        <td>@Supplier.CompanyName</td>
+        <td>@Supplier.EmailAddress</td>
+        <td>@Supplier.PhoneNumber</td>
+       
+        <td>
+            <button type="submit" class="btn btn-light" @onclick="@(()=> SendSupplierOrder(Supplier.Id))"> Request Inventories</button>
+           
+            
+        </td>
+    </tr>    
+}
+
+
+@code {
+
+    [Parameter]
+    public Supplier? Supplier { get; set; }
+
+    [Parameter]
+    public EventCallback OnPageLoad { get; set; }
+
+    private void SendSupplierOrder(int supplierId)
+    {
+        NavigationManager.NavigateTo($"SendSupplierOrder/{supplierId}", true);
+    }
+
+
+}

@@ -1001,6 +1001,32 @@ namespace NatuurlikBase.Migrations
                     b.ToTable("Suppliers");
                 });
 
+            modelBuilder.Entity("NatuurlikBase.Models.SupplierInventory", b =>
+                {
+                    b.Property<int>("SupplierOrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SupplierOrderId"), 1L, 1);
+
+                    b.Property<int>("InventoryItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InventoryItemQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SupplierOrderId");
+
+                    b.HasIndex("InventoryItemId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("SupplierInventory");
+                });
+
             modelBuilder.Entity("NatuurlikBase.Models.VAT", b =>
                 {
                     b.Property<int>("Id")
@@ -1483,6 +1509,25 @@ namespace NatuurlikBase.Migrations
                     b.Navigation("Suburb");
                 });
 
+            modelBuilder.Entity("NatuurlikBase.Models.SupplierInventory", b =>
+                {
+                    b.HasOne("NatuurlikBase.Models.InventoryItem", "Inventory")
+                        .WithMany()
+                        .HasForeignKey("InventoryItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NatuurlikBase.Models.Supplier", "Supplier")
+                        .WithMany("SupplierInventory")
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Inventory");
+
+                    b.Navigation("Supplier");
+                });
+
             modelBuilder.Entity("NatuurlikBase.Models.WriteOffInventory", b =>
                 {
                     b.HasOne("NatuurlikBase.Models.InventoryItem", "InventoryItem")
@@ -1539,6 +1584,11 @@ namespace NatuurlikBase.Migrations
             modelBuilder.Entity("NatuurlikBase.Models.Province", b =>
                 {
                     b.Navigation("City");
+                });
+
+            modelBuilder.Entity("NatuurlikBase.Models.Supplier", b =>
+                {
+                    b.Navigation("SupplierInventory");
                 });
 #pragma warning restore 612, 618
         }

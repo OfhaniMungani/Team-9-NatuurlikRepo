@@ -1,0 +1,73 @@
+﻿@page "/supplierslist"
+@using NatuurlikBase.Components
+@using NatuurlikBase.Repository.IRepository
+
+
+
+@inject NavigationManager NavigationManager
+@inject IViewSuppliersByName ViewSuppliersByName
+
+
+@code {
+      private async Task LoadSuppliers()
+    {
+        var supps = await ViewSuppliersByName.SearchSupplierAsync();
+        this.suppliersList = supps.ToList();
+    }
+}
+
+<h3>Suppliers List:</h3>
+<br/>
+
+<ViewSuppliersComponent OnSearchSuppliers="OnSearchSupplier"></ViewSuppliersComponent>
+<br />
+
+@if (suppliersList != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Supplier Email</th>
+                <th>Contact Number</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var supplier in this.suppliersList)
+            {
+                <SupplierResultsComponent 
+                    Supplier="supplier"
+                    OnPageLoad="OnPageLoad"></SupplierResultsComponent>
+            }
+        </tbody>
+    </table>    
+}
+<br/>
+@*<button type="button" class="btn btn-primary" @onclick="OnBack">Back</button>
+*@
+
+@code {
+    private List<Supplier>? suppliersList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSuppliers();
+    }
+
+    private void OnSearchSupplier(List<Supplier> suppliers)
+    {
+        this.suppliersList = suppliers;
+    }
+
+    private void OnBack()
+    {
+        NavigationManager.NavigateTo("/Dashboard");
+    }
+
+    private async Task OnPageLoad()
+    {
+        await LoadSuppliers();
+    }
+
+}

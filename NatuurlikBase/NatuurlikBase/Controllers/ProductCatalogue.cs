@@ -48,21 +48,44 @@ namespace NatuurlikBase.Controllers
             userCart.ApplicationUserId = claim.Value;
 
             Cart cart = _unitOfWork.UserCart.GetFirstOrDefault(u=> u.ProductId == userCart.ProductId && u.ApplicationUserId == claim.Value );
+            var prods = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCart.ProductId);
 
-            //check for existing cart
-            if(cart == null)
+            if(User.IsInRole(SR.Role_Customer))
             {
-                _unitOfWork.UserCart.Add(userCart);
+                if (prods.QuantityOnHand >= userCart.Count)
+                {
+                    //check for existing cart
+                    if (cart == null)
+                    {
+                        _unitOfWork.UserCart.Add(userCart);
+                    }
+                    else
+                    {
+                        _unitOfWork.UserCart.increaseCount(cart, userCart.Count);
+                    }
+                }
+                else
+                {
+                    //DO Something
+                    TempData["success"] = "Requested quantity exceeds available stock on hand.";
+                }
             }
+
             else
             {
-                _unitOfWork.UserCart.increaseCount(cart, userCart.Count);
+                if (cart == null)
+                {
+                    _unitOfWork.UserCart.Add(userCart);
+                }
+                else
+                {
+                    _unitOfWork.UserCart.increaseCount(cart, userCart.Count);
+                }
             }
-            //save cart changes to database
+            //Save cart changes to database
             _unitOfWork.Save();
             //Redirect to Product Catalogue Index page if saved successfully.
-            return RedirectToAction("Index");
-
+            return RedirectToAction("Index", "UserCart");
         }
 
     }

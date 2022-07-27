@@ -1,0 +1,101 @@
+﻿@inject IJSRuntime JSRuntime;
+
+<div class="form-group">
+    <label>Inventories List:</label>            
+    <ViewInventoriesComponent 
+        DisplaySearchResult="true"
+        OnSelectInventory="OnSelectInventory"
+    ></ViewInventoriesComponent>
+</div>
+@if (SupplierOrderInventories != null && SupplierOrderInventories.Count > 0)
+{   
+     <table class="table" style="justify-content:center">   
+         <thead>
+             <tr>
+                 <th>Name</th>
+                 <th>Quantity</th>
+                 <th></th>
+             </tr>
+         </thead>
+         <tbody>
+            @foreach(var orderInv in this.SupplierOrderInventories)
+            {
+                 <tr>
+                     <td id="inventoryList">
+                         @orderInv.Inventory.InventoryItemName
+                     </td>
+                   @* <td>                         
+                        <input type="number" min="1" value="0" />
+                          
+                     </td>*@
+             
+                      <td>                         
+                        <input type="number" min="1" 
+                            @bind-value="orderInv.InventoryItemQuantity"
+                            @bind-value:event="oninput"
+                        >
+                     </td>
+                      
+                     <td>
+                         <a class="btn btn-link" type="button" @onclick="@(()=>RemoveInventory(orderInv))" style="border-color: white;color: white;
+                            background-color: red;
+                            text-decoration: none;">Remove <i class="bi bi-trash3-fill"></i></a>
+                     </td>
+                 </tr>   
+            }         
+            <div>
+                @foreach(var order in this.SupplierOrderInventories)
+            {
+                    var Test = @order.Inventory.InventoryItemName  + " X "  + @order.InventoryItemQuantity;
+          
+            
+            <label>@Test</label><br />
+            }
+            </div>
+        </tbody>
+    </table>   
+
+    
+
+}
+
+@*    <button @onclick="GetHtml">Get Html</button>
+    <div style="width=300px; height=250px">@((MarkupString) html)</div>*@
+
+@code {
+
+    ElementReference Ref {get;set;}
+    string HTML { get; set; } = "";
+
+    public async Task GetHTML()
+    {
+        HTML = new(await JSRuntime.InvokeAsync<string>("getDivContent", Ref));
+    }
+
+    [Parameter]
+    public EventCallback<List<SupplierInventory>> OnInventorySelected { get; set; }
+
+    [Parameter]
+    public List<SupplierInventory> SupplierOrderInventories { get; set; } = new List<SupplierInventory>(); 
+
+    private async Task OnInventoryItemQtyChanged()
+    {
+        await OnInventorySelected.InvokeAsync(this.SupplierOrderInventories);
+    }
+
+    private async Task OnSelectInventory(InventoryItem inventory)
+    {
+        if (!SupplierOrderInventories.Any(x => x.Inventory.InventoryItemName.Equals(inventory.InventoryItemName, StringComparison.OrdinalIgnoreCase)))
+        {
+            this.SupplierOrderInventories.Add(new SupplierInventory { InventoryItemId = inventory.Id, Inventory = inventory});
+        }
+
+        await OnInventorySelected.InvokeAsync(this.SupplierOrderInventories);
+    }
+
+    private void RemoveInventory(SupplierInventory supplierOrder)
+    {
+        this.SupplierOrderInventories.Remove(supplierOrder);
+    }
+
+}

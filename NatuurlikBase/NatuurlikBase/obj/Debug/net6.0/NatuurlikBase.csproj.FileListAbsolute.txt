@@ -3680,3 +3680,7 @@ D:\Users\vumis\Desktop\NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.
 D:\Users\vumis\Desktop\NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\PhoneNumbers.dll
 D:\Users\vumis\Desktop\NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
 D:\Users\vumis\Desktop\NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\Twilio.dll
+C:\KYLE\My UP\INF 370\Natuurlik Code\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\PhoneNumbers.dll
+C:\KYLE\My UP\INF 370\Natuurlik Code\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+C:\KYLE\My UP\INF 370\Natuurlik Code\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\Twilio.dll
+C:\KYLE\My UP\INF 370\Natuurlik Code\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\obj\Debug\net6.0\scopedcss\Pages\SendSupplierOrder.razor.rz.scp.css

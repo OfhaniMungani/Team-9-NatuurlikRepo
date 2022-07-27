@@ -240,8 +240,6 @@ namespace NatuurlikBase.Controllers
             var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
 
 
-
-
             UserCartVM.CartList = _unitOfWork.UserCart.GetAll(x => x.ApplicationUserId == claim.Value, includeProperties: "Product");
             UserCartVM.Order.OrderPaymentStatus = SR.ResellerDelayedPayment;
             UserCartVM.Order.OrderStatus = SR.OrderPending;
@@ -257,8 +255,6 @@ namespace NatuurlikBase.Controllers
 
 
 
-
-
             //Calculate Order Total
             if (User.IsInRole(SR.Role_Reseller))
             {
@@ -267,11 +263,10 @@ namespace NatuurlikBase.Controllers
                 UserCartVM.Order.OrderStatus = SR.OrderPending;
                 foreach (var userCartItem in UserCartVM.CartList)
                 {
-                    userCartItem.CartItemPrice = GetCartItemPrices(userCartItem.Count, userCartItem.Product.ResellerPrice);
-
-                    UserCartVM.Order.OrderTotal += (userCartItem.CartItemPrice * userCartItem.Count);
-                    UserCartVM.Order.OrderTotal += UserCartVM.Order.DeliveryFee;
-                    UserCartVM.Order.IsResellerOrder = true;
+                        userCartItem.CartItemPrice = GetCartItemPrices(userCartItem.Count, userCartItem.Product.ResellerPrice);
+                        UserCartVM.Order.OrderTotal += (userCartItem.CartItemPrice * userCartItem.Count);
+                        UserCartVM.Order.OrderTotal += UserCartVM.Order.DeliveryFee;
+                        UserCartVM.Order.IsResellerOrder = true;
                 }
             }
             //Display Customer prices where user role not "Reseller"
@@ -279,6 +274,12 @@ namespace NatuurlikBase.Controllers
             {
                 foreach (var userCartItem in UserCartVM.CartList)
                 {
+                    var prod = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCartItem.ProductId);
+                    if (prod.QuantityOnHand <= userCartItem.Count)
+                    {
+                        TempData["success"] = "The requested quantity is unfortunately no longer available.";
+                        return RedirectToAction("Index");
+                    }
                     UserCartVM.Order.OrderPaymentStatus = SR.OrderPaymentApproved;
                     UserCartVM.Order.OrderStatus = SR.ProcessingOrder;
                     userCartItem.CartItemPrice = GetCartItemPrices(userCartItem.Count, userCartItem.Product.CustomerPrice);
@@ -324,6 +325,8 @@ namespace NatuurlikBase.Controllers
                 };
                 _unitOfWork.OrderLine.Add(orderLine);
                 _unitOfWork.Save();
+
+                
             }
 
             //Is the Order being placed by a Reseller? Let's check.
@@ -336,6 +339,7 @@ namespace NatuurlikBase.Controllers
 
             else
             {
+                
                 //Temporary Stripe Payment Processing
                 var domain = "https://localhost:7056/";
                 var options = new SessionCreateOptions
@@ -366,11 +370,27 @@ namespace NatuurlikBase.Controllers
                         Quantity = item.Count,
                     };
                     options.LineItems.Add(sessionLineItem);
+                    
                 }
+
+                
 
                 var service = new SessionService();
                 Session session = service.Create(options);
                 _unitOfWork.Order.UpdateStripePayment(UserCartVM.Order.Id, session.Id, session.PaymentIntentId);
+
+                foreach (var userCartItem in UserCartVM.CartList)
+                {
+                    OrderLine orderLine = new()
+                    {
+                        ProductId = userCartItem.ProductId,
+                        Count = userCartItem.Count
+                    };
+
+                    var prod = _db.Products.Where(c => c.Id == userCartItem.ProductId).FirstOrDefault();
+                    prod.QuantityOnHand -= userCartItem.Count;
+                   
+                }
                 _unitOfWork.Save();
                 Response.Headers.Add("Location", session.Url);
                 return new StatusCodeResult(303);
@@ -469,9 +489,20 @@ namespace NatuurlikBase.Controllers
         public IActionResult Increment(int cartId)
         {
             var cart = _unitOfWork.UserCart.GetFirstOrDefault(x => x.Id == cartId);
-            _unitOfWork.UserCart.increaseCount(cart, 1);
-            //Save new count to DB
-            _unitOfWork.Save();
+            var prod = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == cart.ProductId);
+
+            if(cart.Count >= prod.QuantityOnHand)
+            {
+                _unitOfWork.UserCart.increaseCount(cart, 0);
+                TempData["success"] = "Unable to increase quantity. We are receiving new stock soon!";
+            }
+            else
+            {
+                _unitOfWork.UserCart.increaseCount(cart, 1);
+                //Save updated quantity to user's cart.
+                _unitOfWork.Save();
+            }
+           
             return RedirectToAction(nameof(Index));
 
         }

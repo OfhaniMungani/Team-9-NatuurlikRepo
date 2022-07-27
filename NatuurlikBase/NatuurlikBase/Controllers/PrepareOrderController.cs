@@ -92,22 +92,37 @@ namespace NatuurlikBase.Controllers
                 var prod = _db.Products.Where(c => c.Id == packageOrder.ProductId).FirstOrDefault();
                 var ords = _db.Order.Where(c => c.Id == packageOrder.OrderId).FirstOrDefault();
 
-                if (prod.QuantityOnHand > packageOrder.ProductQuantity || prod.QuantityOnHand == packageOrder.ProductQuantity)
-
+                if(ords.IsResellerOrder == true)
                 {
-                    prod.QuantityOnHand -= packageOrder.ProductQuantity;
+                    if (prod.QuantityOnHand > packageOrder.ProductQuantity || prod.QuantityOnHand == packageOrder.ProductQuantity)
+
+                    {
+                        prod.QuantityOnHand -= packageOrder.ProductQuantity;
+                        _db.OrderProduct.Add(packageOrder);
+                        ViewBag.Confirmation = "Are you sure you want to proceed with removal?";
+                        await _db.SaveChangesAsync();
+                        TempData["success"] = "Product Packaged Successfully.";
+
+
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ViewBag.Error = "Insufficient stock levels to package requested quantity.";
+                    }
+                }
+
+                else
+                {
                     _db.OrderProduct.Add(packageOrder);
                     ViewBag.Confirmation = "Are you sure you want to proceed with removal?";
                     await _db.SaveChangesAsync();
                     TempData["success"] = "Product Packaged Successfully.";
-                    
-
                     return RedirectToAction(nameof(Index));
+
                 }
-                else
-                {
-                    ViewBag.Error = "Insufficient stock levels to package requested quantity.";
-                }
+
+               
 
             }
            
