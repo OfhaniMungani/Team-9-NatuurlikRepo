@@ -3684,3 +3684,4 @@ C:\KYLE\My UP\INF 370\Natuurlik Code\Team-9-NatuurlikRepo\NatuurlikBase\Natuurli
 C:\KYLE\My UP\INF 370\Natuurlik Code\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
 C:\KYLE\My UP\INF 370\Natuurlik Code\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\Twilio.dll
 C:\KYLE\My UP\INF 370\Natuurlik Code\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\obj\Debug\net6.0\scopedcss\Pages\SendSupplierOrder.razor.rz.scp.css
+D:\Users\vumis\Desktop\NatuurlikRepo\NatuurlikBase\NatuurlikBase\obj\Debug\net6.0\scopedcss\Pages\SendSupplierOrder.razor.rz.scp.css

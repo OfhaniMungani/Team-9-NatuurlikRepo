@@ -3,6 +3,7 @@
 @using NatuurlikBase.Components
 @using NatuurlikBase.Repository.IRepository
 @using System.Net.Mail
+@using Microsoft.AspNetCore.Identity.UI.Services;
 
 @* Inject JS Interop to call.NET Method using JavaScript @inject Microsoft.JSInterop.IJSRuntime JS*@
 
@@ -10,6 +11,8 @@
 @inject NavigationManager NavigationManager
 @inject IViewSupplierById ViewSupplierById
 @inject ISendSupplierOrderRepository CaptureOrderInventories
+@inject IWebHostEnvironment _hostEnvironment
+@inject IEmailSender _emailSender
 
 
 
@@ -52,7 +55,7 @@
 
         <br/>
         <button type="button"  @onclick="@(()=> OnBack())" class="btn btn-primary">Cancel</button>
-        <button type="submit" class="btn btn-primary" style="border-color: white;color: white;
+        <button type="submit"  @onclick="@(()=> SendSupplierOrderEmail(supplier.SupplierInventory))"    class="btn btn-primary" style="border-color: white;color: white;
                                                                        background-color: blue;
                                                                        text-decoration: none;">Send Email</button>
 
@@ -105,30 +108,19 @@
 
     private void SendSupplierOrderEmail(List<SupplierInventory> supplierOrderInventories)
     {
-        //MailMessage supplierOrderEmail = new MailMessage();
-        //supplierOrderEmail.From = new MailAddress("Natuurlik@gmail.co.za", "Natuurlik");
-        //supplierOrderEmail.To.Add(new MailAddress(supplier.EmailAddress, supplier.CompanyName));
-        //supplierOrderEmail.Subject = supplier.CompanyName;
-        //supplierOrderEmail.IsBodyHtml = true;
-        //supplierOrderEmail.Body = supplierOrderInventories.ToString();
+        var email = supplier.EmailAddress;
+        var name = supplier.CompanyName;
+        var items = supplierOrderInventories.ToString();
 
-        //SmtpClient smtpClient = new SmtpClient("smtp.sendgrid.net", 587);
-        //System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("Natuurlik", "SecurePassword");
-        //smtpClient.Credentials = credentials;
-        //supplierOrderEmail.BodyEncoding = System.Text.Encoding.GetEncoding("utf-8");
+        string wwwRootPath = _hostEnvironment.WebRootPath;
+        var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\supTemp.html"));
+        template = template.Replace("[ITEM]", items).Replace("[NAME]", name);
+        string message = template;
 
-        //supplierOrderEmail.Headers.Add("Message-Id", String.Concat("<", DateTime.Now.ToString("yyMMdd"), ".", DateTime.Now.ToString("HHmmss"), "natuurlik.co.za"));
-        //smtpClient.Send(supplierOrderEmail);
-
-
-        //FYI
-        //await _emailSender.SendEmailAsync(
-        //              Input.Email,
-        //              "Confirm your Natuurlik Account",
-        //              message);
-
-
-
+        _emailSender.SendEmailAsync(
+        email,
+        "Supplier Order",
+        message);
     }
 
 
