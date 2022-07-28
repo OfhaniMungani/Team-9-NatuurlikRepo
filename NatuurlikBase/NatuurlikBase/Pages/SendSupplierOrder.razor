@@ -108,9 +108,16 @@
 
     private void SendSupplierOrderEmail(List<SupplierInventory> supplierOrderInventories)
     {
+        string prod = string.Empty;
+        @foreach(var item in supplierOrderInventories)
+        {
+            
+            prod += item.Inventory.InventoryItemName + " X " + item.InventoryItemQuantity + Environment.NewLine;
+        }
+
         var email = supplier.EmailAddress;
         var name = supplier.CompanyName;
-        var items = supplierOrderInventories.ToString();
+        var items = prod;
 
         string wwwRootPath = _hostEnvironment.WebRootPath;
         var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\supTemp.html"));
