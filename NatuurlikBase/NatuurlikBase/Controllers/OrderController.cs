@@ -426,7 +426,7 @@ namespace NatuurlikBase.Controllers
         public IActionResult QueryDetail(int? queryId)
         {
             //Load all order details
-            OrderQuery orderquery = _uow.OrderQuery.GetFirstOrDefault(x => x.Id == queryId);
+            OrderQuery orderquery = _uow.OrderQuery.GetFirstOrDefault(x => x.Id == queryId, includeProperties: "Order,QueryReason");
 
             return View(orderquery);
         }
