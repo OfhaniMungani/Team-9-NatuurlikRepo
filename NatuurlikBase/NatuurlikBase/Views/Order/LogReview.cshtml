@@ -1,0 +1,171 @@
+﻿@model NatuurlikBase.ViewModels.OrderReviewVMcs
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="page-content-wrapper">
+
+<form method="post" asp-action="LogQuery">
+    <div>
+    @if (ViewBag.Error == null)
+    {
+            
+                <div class="card">
+                    <div class="card-header" style="background-color: #F2F2F2">
+                        <h5>Review Order</h5>
+                    </div>
+                    <div class="card-body">
+                        @*<div asp-validation-summary="All"></div>*@
+
+    
+    
+                <div class="row col">
+			
+			</div>
+
+                       
+
+
+                        <div class="form-group" hidden>
+                             <label asp-for="OrderReview.OrderId" class="control-label">Order Number: </label>
+                             <input asp-for="OrderReview.OrderId" readonly type="text" class="form-control col-md-10" asp-items="@Model.OrdersList"/> 
+                      
+                        </div> 
+                        <div>
+                            
+    @*<ul class="rate-area">
+  <input  asp-for="OrderReview.Rating" type="radio" id="5-star" name="rating" value="5" /><label for="5-star" title="Amazing">5 stars</label>
+  <input asp-for="OrderReview.Rating" type="radio" id="4-star" name="rating" value="4" /><label for="4-star" title="Good">4 stars</label>
+  <input  asp-for="OrderReview.Rating" type="radio" id="3-star" name="rating" value="3" /><label for="3-star" title="Average">3 stars</label>
+  <input  asp-for="OrderReview.Rating" type="radio" id="2-star" name="rating" value="2" /><label for="2-star" title="Not Good">2 stars</label>
+  <input  asp-for="OrderReview.Rating" type="radio" id="1-star" name="rating" value="1" /><label for="1-star" title="Bad">1 star</label>
+</ul>*@
+
+ </div>
+<div class="mb-3">
+			<label asp-for="OrderReview.Rating">Order Rating:</label>
+			1 <input asp-for="OrderReview.Rating" type="radio" value="1" />&nbsp
+            2 <input asp-for="OrderReview.Rating" type="radio" value="2" />&nbsp
+           3 <input asp-for="OrderReview.Rating" type="radio" value="3" />&nbsp
+          4 <input asp-for="OrderReview.Rating" type="radio" value="4" />&nbsp
+           5 <input asp-for="OrderReview.Rating" type="radio" value="5" />&nbsp
+			<span asp-validation-for="OrderReview.Rating" class="text-danger"></span>
+		</div>
+                          <div class="form-group">
+                             <label asp-for="OrderReview.ReviewReasonId" class="control-label">Review Reason:</label>
+                            <select asp-for="OrderReview.ReviewReasonId" class="form-control col-md-10" asp-items="@Model.ReviewReasons"> <option disabled selected>- Select Review Reason -</option></select>
+                        </div> 
+
+                     
+                          <div class="row">
+                            <div class="col-md-10">
+                                <label> Description: </label>
+                                <textarea asp-for="OrderReview.Description" class="form-control"></textarea>
+                                <span asp-validation-for="OrderReview.Description" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <br />
+
+
+                        <button type="submit" asp-controller="Order" asp-action="CreateReview" class="btn btn-success" style="width:150px">Submit </button>
+                        <a asp-controller="Order" asp-action="Index" class="btn btn-outline-dark" style="width:150px">
+                            Cancel
+                        </a>
+                    </div>
+                </div>
+                }
+
+                <div class="form-group">
+   <span class="text-warning">
+      <i class="ratingStar fas fa-star"></i>
+      <i class="ratingStar far fa-star"></i>
+      <i class="ratingStar far fa-star"></i>
+      <i class="ratingStar far fa-star"></i>
+      <i class="ratingStar far fa-star"></i>
+    </span>               
+</div>
+            @* <div class="modal fade" id="exampleModal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <br />
+                       
+                    </div>
+                     <h6 class="col-md-10"> 
+                       @ViewBag.Confirmation
+                        </h6>
+                    
+
+                    <div class="modal-footer border-0">
+                        <div class="form-actions no-color">
+                            <input type="submit" value="Confirm" class="btn btn-success" style="width:150px;"/> 
+                            <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Cancel</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>*@
+         <div class="modal" id="exampleModal1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0"  style="background-color: black;">
+                      <h6 style="color: whitesmoke"; >
+                      <i class="bi bi-info-circle"></i> &nbsp;@ViewBag.Error </h6>
+                </div>
+              
+
+                <div class="modal-footer border-0">
+                   
+                    <div class="form-actions no-color">
+                        <input type="button" value="Close" class="btn btn-outline-dark" data-bs-dismiss="modal"onclick="location.href='@Url.Action("ViewQueries", "Order")'" />
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    </form>
+</div>
+
+
+@section Scripts{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+      @if (ViewBag.Error != null)
+    {
+        <script>
+
+
+
+            $(function () {
+                $("#exampleModal1").modal("show");
+                $("#b1").modal("hide");
+            });
+
+
+        </script>
+    }
+
+    @if (ViewBag.Confirmation != null)
+    {
+        <script>
+
+
+
+            $(function () {
+                $("#exampleModal").modal("show");
+            });
+
+
+        </script>
+    }
+}

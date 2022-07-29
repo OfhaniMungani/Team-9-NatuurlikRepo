@@ -1,0 +1,96 @@
+﻿@model NatuurlikBase.Models.OrderQuery
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div id="page-content-wrapper">
+
+    <form method="post">
+        <div>
+            @if (ViewBag.Error == null)
+            {
+
+                <div class="card">
+                    <div class="card-header" style="background-color: #F2F2F2">
+                        <h5> Order Query Reply</h5>
+                    </div>
+                    <div class="card-body">
+                        @*<div asp-validation-summary="All"></div>*@
+
+
+                        <div class="row col">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="OrderId" class="control-label">Order Number:</label>
+                            <input asp-for="OrderId" class="form-control col-md-10" readonly></input>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="QueryReason.Name" class="control-label">Query Reason:</label>
+                            <input asp-for="QueryReason.Name" class="form-control col-md-10" readonly></input>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label">Description:</label>
+                            <textarea asp-for="Description" class="form-control col-md-10" readonly></textarea>
+                        </div>
+
+                        <div class="form-group">
+                        <label asp-for="QueryFeedback" class="control-label"> Provide Feedback:</label>
+                        <textarea asp-for="QueryFeedback" class="form-control col-md-10"></textarea>
+                    </div>
+
+                    </div>
+                 
+
+            </div>
+            <br />
+            <br />
+
+            <button type="submit" class="btn btn-success" style="width:150px">Update</button>
+            <a asp-controller="Order" asp-action="ViewQueries" class="btn btn-outline-dark" style="width:150px">
+                Cancel
+            </a>
+            }
+
+</div>
+
+    </form>
+</div>
+
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    @if (ViewBag.Error != null)
+    {
+        <script>
+
+
+
+            $(function() {
+                $("#exampleModal1").modal("show");
+                $("#b1").modal("hide");
+            });
+
+
+        </script>
+    }
+
+    @if (ViewBag.Confirmation != null)
+    {
+        <script>
+
+
+
+            $(function() {
+                $("#exampleModal").modal("show");
+            });
+
+
+        </script>
+    }
+}
+

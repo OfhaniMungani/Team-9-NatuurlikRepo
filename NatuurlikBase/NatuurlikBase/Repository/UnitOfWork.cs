@@ -33,6 +33,8 @@ namespace NatuurlikBase.Repository
             Courier = new CourierRepository(_db);
             OrderQuery = new OrderQueryRepository(_db);
             QueryReason = new QueryReasonRepository(_db);
+            ReviewReason = new ReviewReasonRepository(_db);
+            OrderReview = new OrderReviewRepository(_db);
 
 
         }
@@ -53,7 +55,8 @@ namespace NatuurlikBase.Repository
         public IOrderQueryRepository OrderQuery { get; private set; }
 
         public IQueryReasonRepository QueryReason { get; private set; }
-
+        public IReviewReasonRepository ReviewReason { get; private set; }
+        public IOrderReviewcs OrderReview { get; private set; }
 
         public void Save()
         {

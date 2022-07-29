@@ -221,7 +221,215 @@ namespace NatuurlikBase.Controllers
             return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
 
         }
+        public IActionResult ViewQueries()
 
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            IEnumerable<OrderQuery> orderQueries;
+
+            if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
+            {
+                orderQueries = _uow.OrderQuery.GetAll(includeProperties: "Order,QueryReason");
+            }
+            //Allow only for order to be queried which user placed
+            else
+            {
+                orderQueries = _uow.OrderQuery.GetAll(x => x.Order.ApplicationUserId == claim.Value, includeProperties: "Order,QueryReason");
+            }
+
+            return View(orderQueries);
+        }
+
+        public IActionResult ViewReviews()
+
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            IEnumerable<OrderReview> orderReview;
+
+            if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
+            {
+                orderReview = _uow.OrderReview.GetAll(includeProperties: "order,ReviewReason");
+            }
+            //Allow only for order to be queried which user placed
+            else
+            {
+                orderReview = _uow.OrderReview.GetAll(x => x.order.ApplicationUserId == claim.Value, includeProperties: "order,ReviewReason");
+            }
+
+            return View(orderReview);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateQuery(OrderQueryVM orderQueryVM)
+        {
+            orderQueryVM.OrderQuery.QueryStatus = SR.QueryLogged;
+            _db.OrderQuery.Add(orderQueryVM.OrderQuery);
+            _db.SaveChanges();
+            TempData["success"] = "Your query has been submitted successfully.";
+            return RedirectToAction("ViewQueries");
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateReview(OrderReviewVMcs orderReviewVM)
+        {
+            //orderReviewVM.Order.QueryStatus = SR.QueryLogged;
+            _db.OrderReview.Add(orderReviewVM.OrderReview);
+            _db.SaveChanges();
+            TempData["success"] = "Your Review has been submitted successfully.";
+            return RedirectToAction("Index");
+
+        }
+        //GET
+        public IActionResult ReviewQuery(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var orderQuery = _uow.OrderQuery.GetFirstOrDefault(u => u.Id == id, includeProperties: "Order,QueryReason");
+
+
+            if (orderQuery == null)
+            {
+                return NotFound();
+            }
+
+            return View(orderQuery);
+        }
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ReviewQuery(OrderQuery orderQuery)
+
+        {
+            orderQuery.QueryStatus = SR.QueryReview;
+            orderQuery.QueryFeedback = orderQuery.QueryFeedback;
+            _db.OrderQuery.Update(orderQuery);
+            _db.SaveChanges();
+            TempData["success"] = "The order query was reviewed successfully.";
+            return RedirectToAction("ViewQueries");
+
+        }
+
+
+        [HttpGet]
+        public IActionResult LogQuery(int orderId)
+        {
+            if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
+            {
+                OrderQueryVM orderQueryVM = new()
+                {
+                    OrderQuery = new(),
+                    OrdersList = _uow.Order.GetAll().Select(i => new SelectListItem
+                    {
+                        Text = i.Id.ToString(),
+                        Value = i.Id.ToString()
+                    }),
+                    QueryReasons = _uow.QueryReason.GetAll().Select(i => new SelectListItem
+                    {
+                        Text = i.Name,
+                        Value = i.Id.ToString()
+                    })
+                };
+
+                _db.SaveChanges();
+
+                return View(orderQueryVM);
+            }
+            else
+            {
+                //get the orders associated only with the customer or reseller.
+
+
+                OrderQueryVM orderQueryVM = new()
+                {
+                    OrderQuery = new(),
+                    OrdersList = _db.Order.Where(x => x.Id == orderId).Select(i => new SelectListItem
+                    {
+                        Text = i.Id.ToString(),
+                        Value = i.Id.ToString()
+                    }),
+                    QueryReasons = _uow.QueryReason.GetAll().Select(i => new SelectListItem
+                    {
+                        Text = i.Name,
+                        Value = i.Id.ToString()
+                    })
+                };
+                orderQueryVM.OrderQuery.OrderId = orderId;
+                ViewBag.Confirmation = "Confirm order query details?";
+                _db.SaveChanges();
+
+                return View(orderQueryVM);
+            }
+
+        }
+
+        [HttpGet]
+        public IActionResult LogReview(int orderId)
+        {
+            if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
+            {
+                OrderReviewVMcs orderReviewVM = new()
+                {
+                    OrderReview = new(),
+                    OrdersList = _uow.Order.GetAll().Select(i => new SelectListItem
+                    {
+                        Text = i.Id.ToString(),
+                        Value = i.Id.ToString()
+                    }),
+                    ReviewReasons = _uow.ReviewReason.GetAll().Select(i => new SelectListItem
+                    {
+                        Text = i.Name,
+                        Value = i.Id.ToString()
+                    })
+                };
+
+                _db.SaveChanges();
+
+                return View(orderReviewVM);
+            }
+            else
+            {
+                //get the orders associated only with the customer or reseller.
+
+
+                OrderReviewVMcs orderReviewVM = new()
+                {
+                    OrderReview = new(),
+                    OrdersList = _db.Order.Where(x => x.Id == orderId).Select(i => new SelectListItem
+                    {
+                        Text = i.Id.ToString(),
+                        Value = i.Id.ToString()
+                    }),
+                    ReviewReasons = _uow.ReviewReason.GetAll().Select(i => new SelectListItem
+                    {
+                        Text = i.Name,
+                        Value = i.Id.ToString()
+                    })
+                };
+                orderReviewVM.OrderReview.OrderId = orderId;
+                ViewBag.Confirmation = "Confirm order query details?";
+                _db.SaveChanges();
+
+                return View(orderReviewVM);
+            }
+
+        }
+        public IActionResult QueryDetail(int? queryId)
+        {
+            //Load all order details
+            OrderQuery orderquery = _uow.OrderQuery.GetFirstOrDefault(x => x.Id == queryId);
+
+            return View(orderquery);
+        }
 
         public IActionResult Index(string status)
         {

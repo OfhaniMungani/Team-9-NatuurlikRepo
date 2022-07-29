@@ -26,6 +26,8 @@ namespace NatuurlikBase.Repository.IRepository
         IOrderQueryRepository OrderQuery { get; }
 
         IQueryReasonRepository QueryReason { get; }
+        IReviewReasonRepository ReviewReason { get; }
+        IOrderReviewcs OrderReview { get; }
 
         void Save();
     }

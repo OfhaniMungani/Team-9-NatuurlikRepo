@@ -344,6 +344,7 @@
                                 @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
                                 {
                                     <a asp-controller="Order" asp-action="LogQuery" asp-route-orderId="@Model.Order.Id" class="btn btn-warning my-1" value="Query Order">Query Order</a>
+                                     <a asp-controller="Order" asp-action="LogReview" asp-route-orderId="@Model.Order.Id" class="btn btn-warning my-1" value="Review Order">Review Order</a>
 
                                    if (Model.Order.OrderStatus == SR.OrderPending && Model.Order.OrderPaymentStatus== SR.OrderPaymentApproved)
                                     {
