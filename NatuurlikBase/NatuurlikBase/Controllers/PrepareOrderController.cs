@@ -28,10 +28,12 @@ namespace NatuurlikBase.Controllers
 
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index(int orderId)
         {
-            var packageOrderTransactions = _db.OrderProduct.Include(c => c.Order).Include(b => b.Product);
-            return View(await packageOrderTransactions.ToListAsync());
+            PrepareOrderVM model = new PrepareOrderVM();
+            model.PackageOrderProduct = _db.OrderProduct.Where(x => x.OrderId == orderId).Include(c => c.Order).Include(b => b.Product);
+            model.Order = _db.Order.FirstOrDefault(x => x.Id == orderId);
+            return View(model);
         }
 
         public ActionResult GetOrders(int orderId)
@@ -56,79 +58,110 @@ namespace NatuurlikBase.Controllers
 
         public IActionResult Create()
         {
-           
-                ViewData["OrderId"] = new SelectList(_db.Order, "Id", "Id");
-                ViewData["ProductId"] = new SelectList(_db.Products, "Id", "Name");
-                return View();
+
+            ViewData["OrderId"] = new SelectList(_db.Order, "Id", "Id");
+            ViewData["ProductId"] = new SelectList(_db.Products, "Id", "Name");
+            return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id, OrderId,ProductQuantity, ProductId, TransactionDate")] PackageOrderProduct packageOrder)
+        [HttpGet]
+        public IActionResult Create(int orderId)
         {
+
+            //Get all products associated with the order
+            //var prodId = _db.OrderProduct.Where(x => x.OrderId == orderId).Select(x => x.ProductId).ToList();
+
 
             PackageOrderVM packageOrderVM = new PackageOrderVM()
             {
                 PackageOrderProduct = new(),
-                OrdersList = _unitOfWork.Order.GetAll().Select(i => new SelectListItem
-                {
-                    Text = i.Id.ToString(),
-                    Value = i.Id.ToString()
-                }),
-
                 ProductList = _unitOfWork.Product.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
-                })
+                }),
             };
 
-            //packageOrder.OrderId = packageOrderVM.PackageOrderProduct.OrderId;
-            //packageOrder.ProductId = packageOrderVM.PackageOrderProduct.OrderId;
-            //packageOrder.ProductQuantity = packageOrderVM.PackageOrderProduct.ProductQuantity;
+            //populate the requested order
 
-            if (ModelState.IsValid)
+            packageOrderVM.PackageOrderProduct.OrderId = orderId;
+
+            var prod = _db.Products.Where(c => c.Id == packageOrderVM.PackageOrderProduct.ProductId).FirstOrDefault();
+
+            //if(ModelState.IsValid)
+            //{
+            //    if(prod != null)
+            //    {
+            //        if (prod.QuantityOnHand > packageOrderVM.PackageOrderProduct.ProductQuantity || prod.QuantityOnHand == packageOrderVM.PackageOrderProduct.ProductQuantity)
+
+            //        {
+            //            prod.QuantityOnHand -= packageOrderVM.PackageOrderProduct.ProductQuantity;
+            //            //_db.OrderProduct.Add(packageOrderVM.PackageOrderProduct);
+            //            //ViewBag.Confirmation = "Are you sure you want to proceed with removal?";
+            //            _db.SaveChangesAsync();
+            //            TempData["success"] = "Product Packaged Successfully.";
+
+
+            //            return RedirectToAction(nameof(Index));
+            //        }
+            //        else
+            //        {
+            //            ViewBag.Error = "Insufficient stock levels to package requested quantity.";
+            //        }
+            //    }
+
+            //}
+
+
+            return View(packageOrderVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("PrepareOrder")]
+        public IActionResult Capture(PackageOrderVM packageOrderVM)
+        {
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+
+            var actorName = _db.Users.Where(x => x.Id == claim.Value).FirstOrDefault();
+
+            packageOrderVM.PackageOrderProduct.ActorName = actorName.FirstName;
+            packageOrderVM.PackageOrderProduct.OrderId = packageOrderVM.PackageOrderProduct.OrderId;
+            //check to not package more than what is available on hand.
+            var prod = _db.Products.Where(c => c.Id == packageOrderVM.PackageOrderProduct.ProductId).FirstOrDefault();
+            var order = _db.Order.Where(c => c.Id == packageOrderVM.PackageOrderProduct.OrderId).FirstOrDefault();
+
+            if (order.IsResellerOrder == true)
             {
-                var prod = _db.Products.Where(c => c.Id == packageOrder.ProductId).FirstOrDefault();
-                var ords = _db.Order.Where(c => c.Id == packageOrder.OrderId).FirstOrDefault();
 
-                if(ords.IsResellerOrder == true)
+                if (prod != null)
                 {
-                    if (prod.QuantityOnHand > packageOrder.ProductQuantity || prod.QuantityOnHand == packageOrder.ProductQuantity)
+                    if (prod.QuantityOnHand > packageOrderVM.PackageOrderProduct.ProductQuantity || prod.QuantityOnHand == packageOrderVM.PackageOrderProduct.ProductQuantity)
 
                     {
-                        prod.QuantityOnHand -= packageOrder.ProductQuantity;
-                        _db.OrderProduct.Add(packageOrder);
-                        ViewBag.Confirmation = "Are you sure you want to proceed with removal?";
-                        await _db.SaveChangesAsync();
+                        prod.QuantityOnHand -= packageOrderVM.PackageOrderProduct.ProductQuantity;
                         TempData["success"] = "Product Packaged Successfully.";
+                        _db.OrderProduct.Add(packageOrderVM.PackageOrderProduct);
+                        _db.SaveChanges();
+                        return Redirect("PrepareOrder?orderId=" + packageOrderVM.PackageOrderProduct.OrderId.ToString());
 
-
-                        return RedirectToAction(nameof(Index));
                     }
                     else
                     {
-                        ViewBag.Error = "Insufficient stock levels to package requested quantity.";
+                        TempData["error"] = "Insufficient stock available to package the requested quantity.";
+                        return Redirect("PrepareOrder?orderId=" + packageOrderVM.PackageOrderProduct.OrderId.ToString());
                     }
                 }
-
-                else
-                {
-                    _db.OrderProduct.Add(packageOrder);
-                    ViewBag.Confirmation = "Are you sure you want to proceed with removal?";
-                    await _db.SaveChangesAsync();
-                    TempData["success"] = "Product Packaged Successfully.";
-                    return RedirectToAction(nameof(Index));
-
-                }
-
-               
-
             }
-           
-            return View(packageOrder);
+            else
+            {
+                TempData["success"] = "Product Packaged Successfully.";
+                _db.OrderProduct.Add(packageOrderVM.PackageOrderProduct);
+                _db.SaveChanges();
+                return Redirect("PrepareOrder?orderId=" + packageOrderVM.PackageOrderProduct.OrderId.ToString());
+            }
+            return RedirectToAction("Create");
         }
-
-
     }
 }

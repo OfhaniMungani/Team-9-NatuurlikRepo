@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NatuurlikBase.Models.PackageOrderProduct>
+﻿@*@model IEnumerable<NatuurlikBase.Models.PackageOrderProduct>*@
+@model NatuurlikBase.ViewModels.PrepareOrderVM
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -28,15 +29,25 @@
 
 }
 
+@if (TempData["error"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" id="success-alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+            &nbsp @TempData["error"]
+
+        </div>
+    }
+
  <div class="container-fluid">
      <div class="row justify-content-start">
             <div class="col-10 col-sm-10 col-md-10">
-            <h2 class="cheading">Prepared Orders Log:</h2>
+            <h2 class="cheading">Packaged Order Details:</h2>
 		</div>
         <div class="col-md-9 col-lg-8">
-            <a asp-controller="PrepareOrder" asp-action="Create" class="btn btn-success" >
-               <i class="bi bi-plus-circle"></i> &nbsp; Capture Prepared Order
+           <a asp-controller="PrepareOrder" asp-action="Create" asp-route-orderId="@Model.Order.Id" class="btn btn-success" >
+               <i class="bi bi-plus-circle"></i> &nbsp; Package Product
 			</a>
+
 		</div>
 	</div>
     <br /><br />
@@ -45,7 +56,7 @@
     <thead>
         <tr>
             <th class="text-light">
-               Order Ref Number:
+               Order Reference Number:
 			</th><th class="text-light">
                Product
 			</th><th class="text-light">
@@ -54,11 +65,14 @@
             <th class="text-light">
                Date Logged
 			</th>
+            <th class="text-light">
+               Packaged By
+			</th>
             <th class="text-light">Action</th>
 		</tr>
 	</thead>
     <tbody>
-        @foreach(var obj in Model)
+        @foreach(var obj in Model.PackageOrderProduct)
         {
             <tr>
                  <td width="25%">
@@ -72,6 +86,9 @@
 				</td>
                 <td width="25%">
                     @obj.TransactionDate
+				</td>
+                 <td width="25%">
+                    @obj.ActorName
 				</td>
                 <td>
                     <div class="btn-group" role="group">
