@@ -1,4 +1,4 @@
-﻿@model NatuurlikBase.ViewModels.OrderVM
+@model NatuurlikBase.ViewModels.OrderVM
 @using NatuurlikBase.Models
 
 
@@ -311,7 +311,7 @@
                                 {
                                     if (Model.Order.OrderStatus == SR.ProcessingOrder)
                                     {
-                                         <a asp-controller="PrepareOrder" asp-action="Index" class="btn btn-warning my-1" value="Package Order">Package Order</a>
+                                         <a asp-controller="PrepareOrder" asp-action="Index" asp-route-orderId="@Model.Order.Id" class="btn btn-warning my-1" value="Package Order">Package Order</a>
                                         <input type="submit" asp-action="DispatchParcel" class="dispatchOrder my-1" value="Dispatch Order" />
                                     }
 
