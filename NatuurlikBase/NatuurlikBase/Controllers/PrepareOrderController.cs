@@ -33,6 +33,7 @@ namespace NatuurlikBase.Controllers
             PrepareOrderVM model = new PrepareOrderVM();
             model.PackageOrderProduct = _db.OrderProduct.Where(x => x.OrderId == orderId).Include(c => c.Order).Include(b => b.Product);
             model.Order = _db.Order.FirstOrDefault(x => x.Id == orderId);
+            model.OrderLine = _unitOfWork.OrderLine.GetAll(ol => ol.OrderId == orderId, includeProperties: "Product");
             return View(model);
         }
 
@@ -119,7 +120,7 @@ namespace NatuurlikBase.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("PrepareOrder")]
-        public IActionResult Capture(PackageOrderVM packageOrderVM)
+         public IActionResult Capture(PackageOrderVM packageOrderVM)
         {
             var claimsId = (ClaimsIdentity)User.Identity;
             var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
@@ -128,40 +129,70 @@ namespace NatuurlikBase.Controllers
 
             packageOrderVM.PackageOrderProduct.ActorName = actorName.FirstName;
             packageOrderVM.PackageOrderProduct.OrderId = packageOrderVM.PackageOrderProduct.OrderId;
+
+
             //check to not package more than what is available on hand.
             var prod = _db.Products.Where(c => c.Id == packageOrderVM.PackageOrderProduct.ProductId).FirstOrDefault();
             var order = _db.Order.Where(c => c.Id == packageOrderVM.PackageOrderProduct.OrderId).FirstOrDefault();
+            //Get Order Line Details for selected product to package.
+            var orderLine = _db.OrderLine.Where(x => x.OrderId == order.Id).Where(o => o.ProductId == packageOrderVM.PackageOrderProduct.ProductId).FirstOrDefault();
 
-            if (order.IsResellerOrder == true)
+            var packagedQuantity = _db.OrderProduct.Where(x => x.OrderId == order.Id).Where(p => p.ProductId == packageOrderVM.PackageOrderProduct.ProductId).FirstOrDefault();
+
+            if(orderLine == null)
             {
+                TempData["error"] = "The requested product cannot be packaged for this order.";
+                return Redirect("PrepareOrder?orderId=" + packageOrderVM.PackageOrderProduct.OrderId.ToString());
+            }
+            else
 
-                if (prod != null)
+            if (packagedQuantity == null)
+            {
+                if (orderLine.Count != packageOrderVM.PackageOrderProduct.ProductQuantity)
                 {
-                    if (prod.QuantityOnHand > packageOrderVM.PackageOrderProduct.ProductQuantity || prod.QuantityOnHand == packageOrderVM.PackageOrderProduct.ProductQuantity)
+                    TempData["error"] = "The quantity requested for packaging is incorrect!";
+                    return Redirect("PrepareOrder?orderId=" + packageOrderVM.PackageOrderProduct.OrderId.ToString());
+                }
+                else
+                {
 
+                    if (order.IsResellerOrder == true)
                     {
-                        prod.QuantityOnHand -= packageOrderVM.PackageOrderProduct.ProductQuantity;
+
+                        if (prod != null)
+                        {
+                            if (prod.QuantityOnHand > packageOrderVM.PackageOrderProduct.ProductQuantity || prod.QuantityOnHand == packageOrderVM.PackageOrderProduct.ProductQuantity)
+
+                            {
+                                prod.QuantityOnHand -= packageOrderVM.PackageOrderProduct.ProductQuantity;
+                                TempData["success"] = "Product Packaged Successfully.";
+                                _db.OrderProduct.Add(packageOrderVM.PackageOrderProduct);
+                                _db.SaveChanges();
+                                return Redirect("PrepareOrder?orderId=" + packageOrderVM.PackageOrderProduct.OrderId.ToString());
+
+                            }
+                            else
+                            {
+                                TempData["error"] = "Insufficient stock available to package " + orderLine.Count.ToString() + " x " + prod.Name.ToString();
+                                return Redirect("PrepareOrder?orderId=" + packageOrderVM.PackageOrderProduct.OrderId.ToString());
+                            }
+                        }
+                    }
+                    else
+                    {
                         TempData["success"] = "Product Packaged Successfully.";
                         _db.OrderProduct.Add(packageOrderVM.PackageOrderProduct);
                         _db.SaveChanges();
                         return Redirect("PrepareOrder?orderId=" + packageOrderVM.PackageOrderProduct.OrderId.ToString());
-
-                    }
-                    else
-                    {
-                        TempData["error"] = "Insufficient stock available to package the requested quantity.";
-                        return Redirect("PrepareOrder?orderId=" + packageOrderVM.PackageOrderProduct.OrderId.ToString());
                     }
                 }
+
             }
             else
             {
-                TempData["success"] = "Product Packaged Successfully.";
-                _db.OrderProduct.Add(packageOrderVM.PackageOrderProduct);
-                _db.SaveChanges();
-                return Redirect("PrepareOrder?orderId=" + packageOrderVM.PackageOrderProduct.OrderId.ToString());
+                TempData["success"] = "The selected product has already been packaged!";
             }
-            return RedirectToAction("Create");
+            return Redirect("PrepareOrder?orderId=" + packageOrderVM.PackageOrderProduct.OrderId.ToString());
         }
     }
 }

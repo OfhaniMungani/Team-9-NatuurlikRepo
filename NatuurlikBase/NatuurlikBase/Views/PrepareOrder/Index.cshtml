@@ -47,7 +47,15 @@
            <a asp-controller="PrepareOrder" asp-action="Create" asp-route-orderId="@Model.Order.Id" class="btn btn-success" >
                <i class="bi bi-plus-circle"></i> &nbsp; Package Product
 			</a>
-
+            <br />
+            <span class="text-dark">Items to be packaged:</span>
+            <br />
+             @foreach(var item in Model.OrderLine)
+                {
+                    <small class="text-muted">@item.Product.Name x @item.Count</small>
+                    <br />
+                    
+                }
 		</div>
 	</div>
     <br /><br />
