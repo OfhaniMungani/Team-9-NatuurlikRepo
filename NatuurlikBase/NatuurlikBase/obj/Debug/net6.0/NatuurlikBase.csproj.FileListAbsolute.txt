@@ -3691,3 +3691,9 @@ C:\Users\User\Documents\GitHub\NatuurlikRepo\NatuurlikBase\NatuurlikBase\obj\Deb
 C:\Users\User\Documents\GitHub\NatuurlikRepo\NatuurlikBase\NatuurlikBase\obj\Debug\net6.0\NatuurlikBase.pdb
 C:\Users\User\Documents\GitHub\NatuurlikRepo\NatuurlikBase\NatuurlikBase\obj\Debug\net6.0\NatuurlikBase.genruntimeconfig.cache
 C:\Users\User\Documents\GitHub\NatuurlikRepo\NatuurlikBase\NatuurlikBase\obj\Debug\net6.0\ref\NatuurlikBase.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\PhoneNumbers.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\Stripe.net.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\Twilio.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\obj\Debug\net6.0\scopedcss\Pages\ConfigureProduct.razor.rz.scp.css
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\obj\Debug\net6.0\scopedcss\Pages\SendSupplierOrder.razor.rz.scp.css

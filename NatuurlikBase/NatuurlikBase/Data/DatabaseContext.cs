@@ -42,6 +42,8 @@ public class DatabaseContext : IdentityDbContext<ApplicationUser>
     public DbSet<OrderQuery> OrderQuery { get; set; }
     public DbSet<PaymentReminder> PaymentReminder { get; set; }
     public DbSet<OrderReview> OrderReview { get; set; }
+    public DbSet<ReturnedProduct> ReturnedProduct { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         //Establish relationships for ProductInventory on creating the model.

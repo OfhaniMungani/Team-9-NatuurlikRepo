@@ -29,6 +29,8 @@ namespace NatuurlikBase.Repository.IRepository
         IReviewReasonRepository ReviewReason { get; }
         IOrderReviewcs OrderReview { get; }
 
+        IReturnedProductRepository ReturnedProduct { get; }
+
         void Save();
     }
 }

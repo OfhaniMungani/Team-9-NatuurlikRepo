@@ -31,6 +31,9 @@
         public const string QueryLogged = "Pending Review";
         public const string QueryReview = "Reviewed";
 
+        //Returned Product
+        public const string ReturnedProduct = "Includes Returned Product(s)";
+
 
 
     }

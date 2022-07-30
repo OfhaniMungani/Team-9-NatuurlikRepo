@@ -311,8 +311,15 @@
                                 {
                                     if (Model.Order.OrderStatus == SR.ProcessingOrder)
                                     {
-                                         <a asp-controller="PrepareOrder" asp-action="Index" asp-route-orderId="@Model.Order.Id" class="btn btn-warning my-1" value="Package Order">Package Order</a>
+                                         <a asp-controller="PrepareOrder" asp-action="Index" class="btn btn-warning my-1" value="Package Order">Package Order</a>
                                         <input type="submit" asp-action="DispatchParcel" class="dispatchOrder my-1" value="Dispatch Order" />
+                                    }
+
+                                    //Returned product button
+                                     if (Model.Order.OrderStatus == SR.OrderDispatched)
+                                    {
+                                         <a asp-controller="ReturnedProduct" asp-action="Create" asp-route-orderId="@Model.Order.Id" class="btn btn-warning my-1" value="Returned Product">Log Returned Product</a>
+                                        <input type="submit" asp-action="Create" class="dispatchOrder my-1" value="Returned Product" /> 
                                     }
                                     //Reseller order which have to be approved first.
 

@@ -1,0 +1,99 @@
+﻿@model NatuurlikBase.Models.ReturnedProduct
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div id="page-content-wrapper">
+<div>
+        @if (ViewBag.Error == null)
+        {
+            <div class="card">
+                <div class="card-header" style="background-color: #F2F2F2">
+                    <h5>Log Returned Product</h5>
+                </div>
+@*                <input type="hidden" asp-for="OrderId" />*@
+                <div class="card-body">
+                    <div class="col-md-10">
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                              <div class="form-group">
+                             <label asp-for="OrderId" class="control-label">Select Order:</label>
+                            <select asp-for="OrderId" class="form-control col-md-10" asp-items="ViewBag.OrderId"> <option disabled selected>- Select Order -</option></select>
+                             </div> 
+
+                            <div class="form-group">
+                               <label asp-for="ProductId">Select Rteurned Product</label>
+                               <select asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId">
+                                        <option disabled selected>- Select Product -</option>
+                                    </select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="QuantityReceived" class="control-label"></label>
+                                <input asp-for="QuantityReceived" class="form-control" />
+                                <span asp-validation-for="QuantityReceived" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ReturnReasonId" class="control-label">Reason for Return</label>
+                                <select asp-for="ReturnReasonId" class ="form-control col-md-10" asp-items="ViewBag.ReturnReasonId">
+                                     <option disabled selected>- Select Reason -</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-success" style="width:150px">Log Return</button>
+                            <a asp-controller="ReturnedProduct" asp-action="Index" class="btn btn-outline-dark" style="width:150px">
+                                Cancel
+                            </a>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+                <div class="modal fade" id="exampleModal">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                        </div>
+                        <div class="modal-body">
+                            <h6 class="col-md-10"> 
+                           Confirm Returned Product Details
+                        </h6>
+                        </div>
+
+                        <div class="modal-footer border-0">
+                            <div class="form-actions no-color">
+                                <input type="submit" value="Confirm" class="btn btn-success" style="width:150px;"/> 
+                                <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+</div>     
+
+@section Scripts{
+	
+	 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+      @if (ViewBag.Error != null)
+    {
+        <script>
+
+
+
+            $(function () {
+                $("#exampleModal1").modal("show");
+            });
+
+
+        </script>
+    
+    }
+}
