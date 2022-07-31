@@ -27,8 +27,13 @@ namespace NatuurlikBase.Controllers
             return View(databaseContext.ToList());
         }
 
-        public async Task<IActionResult> Create(int? id)
+        public async Task<IActionResult> Create(int orderId)
         {
+            ReturnedProduct returnedProduct = new ReturnedProduct();
+
+            returnedProduct.OrderId = orderId;
+
+            var returned = db.Products.Where(c => c.Id == returnedProduct.ProductId).FirstOrDefault();
             ViewData["OrderId"] = new SelectList(db.Order, "Id", "Id");
             ViewData["ProductId"] = new SelectList(db.Products, "Id", "Name");
             //ViewData["OrderLineId"] = new SelectList(db.OrderLine, "Id", "ProductId", "Count");
@@ -50,15 +55,31 @@ namespace NatuurlikBase.Controllers
                     inv.QuantityOnHand += returnedProduct.QuantityReceived;
                 }
 
-
-
-                //if (returnedProduct.QuantityReceived > orderLine.Count)
-                //{
-                //    ViewBag.CountError = "Quantity Logged is more than the quantity ordered, Please re-enter the details";
-                //}
                 var orderRetrieved = _unitOfWork.Order.GetFirstOrDefault(u => u.Id == returnedProduct.OrderId);
                 //Update order status to approved state and save changes to db.
                 _unitOfWork.Order.UpdateOrderStatus(returnedProduct.OrderId, SR.ReturnedProduct);
+
+                var order = db.Order.Where(c => c.Id == returnedProduct.OrderId).FirstOrDefault();
+                var orderLine = db.OrderLine.Where(x => x.OrderId == order.Id).Where(o => o.ProductId == returnedProduct.ProductId).FirstOrDefault();
+
+                var returnedCount = db.OrderProduct.Where(x => x.OrderId == order.Id).Where(p => p.ProductId == returnedProduct.ProductId).FirstOrDefault();
+
+                if (orderLine == null)
+                {
+                    TempData["Error"] = "Oops! You selected the incorrect product!";
+                    return RedirectToAction("Index");
+
+                }
+                else
+
+                if (returnedCount == null)
+                {
+                    if (orderLine.Count != returnedProduct.QuantityReceived)
+                    {
+                        TempData["CountError"] = "Oops! You attempted to return more than what was ordered!";
+                        return RedirectToAction("Index");
+                    }
+                }
 
 
                 db.ReturnedProduct.Add(returnedProduct);
