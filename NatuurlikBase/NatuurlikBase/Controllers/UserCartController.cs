@@ -373,7 +373,22 @@ namespace NatuurlikBase.Controllers
                     
                 }
 
-                
+                var sessionLineItem1 = new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = (long)(UserCartVM.Order.DeliveryFee * 100),
+                        Currency = "zar",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = UserCartVM.Order.Courier.CourierName,
+                        },
+                    },
+                    Quantity = 1,
+                };
+                options.LineItems.Add(sessionLineItem1);
+
+
 
                 var service = new SessionService();
                 Session session = service.Create(options);
