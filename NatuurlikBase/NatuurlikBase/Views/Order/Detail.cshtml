@@ -195,8 +195,33 @@
                                                    {
                                                          if (Model.Order.OrderStatus == SR.ProcessingOrder)
                                                          {
-                                                            <a asp-controller="PrepareOrder" asp-action="Index" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Package Order">Package Order</a>
-                                                            <input type="submit" asp-action="DispatchParcel" class="btn btn-secondary" value="Dispatch Order" style="width:150px"/>
+                                                           <a asp-controller="PrepareOrder" asp-action="Index" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Package Order">Package Order</a>
+                                                            <input type="button"  data-toggle="modal" data-target="#exampleModal"  class="btn btn-secondary" value="Dispatch Order" style="width:150px"/>
+                                                                <div class="modal fade" id="exampleModal">
+                                                   <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                        </div>
+                        <div class="modal-body">
+                            <h6 class="col-md-10"> 
+                           Are You Sure You Want To Dispatch This Order
+                        </h6>
+                        </div>
+
+                        <div class="modal-footer border-0">
+                            <div class="form-actions no-color">
+                                <input type="submit" value="Confirm"  asp-action="DispatchParcel" class="btn btn-success" style="width:150px;"/> 
+                                <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
                                                          }
                                                          //Returned product button
                                                          if (Model.Order.OrderStatus == SR.OrderDispatched)
@@ -207,8 +232,58 @@
                                                          //Reseller order which have to be approved first.
                                                          if (Model.Order.OrderStatus == SR.OrderPending)
                                                          {
-                                                             <input type="submit" onclick="return validateInput()" asp-action="ApproveResellerOrder" class="btn btn-success" value="Approve" style="width:150px"/>
-                                                             <input type="submit" onclick="return validateInput()" asp-action="RejectResellerOrder" class="btn btn-danger" value="Reject" style="width:150px"/>
+                                                                              <input type="button"  data-toggle="modal" data-target="#exampleModal"  class="approveOrder my-1" value="Approve" />
+                                        <input type="button" data-toggle="modal" data-target="#exampleModal2" class="rejectOrder my-1" value="Reject" />
+                                        	     <div class="modal fade" id="exampleModal">
+                                                   <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                        </div>
+                        <div class="modal-body">
+                            <h6 class="col-md-10"> 
+                           Are You Sure You Want To Approve This Order
+                        </h6>
+                        </div>
+
+                        <div class="modal-footer border-0">
+                            <div class="form-actions no-color">
+                                <input type="submit" value="Confirm" onclick="return validateInput()" asp-action="ApproveResellerOrder" class="btn btn-success" style="width:150px;"/> 
+                                <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+                <div class="modal fade" id="exampleModal2">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                        </div>
+                        <div class="modal-body">
+                            <h6 class="col-md-10"> 
+                           Are You Sure You Want To Reject This Order
+                        </h6>
+                        </div>
+
+                        <div class="modal-footer border-0">
+                            <div class="form-actions no-color">
+                                <input type="submit" value="Confirm"  onclick="return validateInput()" asp-action="RejectResellerOrder" class="btn btn-success" style="width:150px;"/> 
+                                <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
                                                          }
                                                          if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched)
                                                          {                 
@@ -300,4 +375,7 @@
 
 </div>
 
-
+@section Scripts {
+    <script src="~/js/notifications.js"></script>
+    
+}
