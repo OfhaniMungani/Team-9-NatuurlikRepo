@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NatuurlikBase.Models.ReturnedProduct>
+@model IEnumerable<NatuurlikBase.Models.ReturnedProduct>
 
 @{
     ViewData["Title"] = "Index";
@@ -30,16 +30,23 @@
 
 }
 
+@if (TempData["Error"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" id="success-alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+            &nbsp @TempData["Error"]
+
+        </div>
+    }
+
 @if (TempData["CountError"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
-        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-       &nbsp @TempData["CountError"]
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" id="success-alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+            &nbsp @TempData["CountError"]
 
-    </div>
-
-}
-
+        </div>
+    }
 
 @if (TempData["NextCreation"] != null)
 {
@@ -68,11 +75,6 @@
             <div class="col-10 col-sm-10 col-md-10">
             <h2 class="cheading">Returned Products List</h2>
 		</div>
-            <div class="col-md-9 col-lg-8">
-            <a asp-controller="ReturnedProduct" asp-action="Create" class="btn btn-success">
-               <i class="bi bi-plus-circle"></i> &nbsp; Log Returned Product
-			</a>
-		</div>
 	</div>
     <br /><br />
 
@@ -80,7 +82,7 @@
     <thead>
         <tr>
              <th class="text-light">
-               Order Number:
+               Order Number
 			</th>
             <th class="text-light">
                 Product Returned
