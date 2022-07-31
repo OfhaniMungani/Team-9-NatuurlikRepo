@@ -62,78 +62,54 @@ else
     }
 
 
-    <div class="container-fluid">
-        <div class="d-flex-column justify-content-between justify-content-start">
-            <div class="col-10 col-sm-10 col-md-10 p-2">
-                @if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
-                {
-                     <h2 class="cheading"> Order Reviews</h2>
-                }
-                else
-                {
-                    <h2 class="cheading">My Order Reviews</h2>
-                }
-                <br /><br />
-
-                <table class="table" id="tblData" style="background-color: #232323">
-                    <thead>
-                        <tr>
-                            <th class="text-light">
-                              Order Reviews List
-                            </th>
-                           
-                            
-                           
-                        </tr>
-                    </thead>
-               
-                          <tbody>
-                        @foreach (var obj in Model)
-                        {
-                            <tr>
-                                <td>
-                                      <div class="card-body"> 
-                              <p><i> @obj.order.FirstName @obj.order.Surname  @obj.order.ApplicationUser  @obj.LoggedDate</i></p>
-                                 <p><i> Order Number: @obj.OrderId Order Rating: <strong>@obj.Rating</strong> </i></p>
-                                  <div class="card">
-                                        <div class="card-header">
-                                        <div><strong>@obj.ReviewReason.Name</strong></div>  
-                                        </div>
-                                     <div class="card-body">
-                                    <div>  @obj.Description</div>
-                                    </div>
-                                    </div>
-                                       <br/>
-                                @if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
-                                {
-                                   
-
-                                     
-                                        <div class="btn-group" role="group">
-                                            <a href="/Order/Detail?orderId=@obj.order.Id" class="btn btn-sm editbtn"> View Order</a>
-                                        </div>
-                                    
-                                }
-                                else
-                                {
-                                     
-                                        <div class="btn-group" role="group">
-                                            <a href="/Order/QueryDetail?queryId=@obj.Id" class="btn btn-sm editbtn"> <i class="bi bi-pencil-square"></i>&nbsp; View</a>
-                                        </div>
-                                   
-                                }
-                                </div>
-                                </td>
-
-
-                             
-
-                            </tr>
-                        }
-                        </tbody>
-                    
-                </table>
+        <div class="container-fluid">    @*//!!!!!!!!!!!!!!CLIENT SIDE?????????????*@
+            <div class="row justify-content-start">
+                <div class="col-10 col-sm-10 col-md-10">
+                        <h2 class="cheading">Order Reviews</h2>
+                    <br />
+                </div>
             </div>
+                    <table class="table" id="tblData" style="background-color: #232323">
+                        <thead>
+                            <tr>
+                                <th class="text-light">
+                                  Order Reviews List
+                                </th>                        
+                            </tr>
+                        </thead>
+               
+                              <tbody>
+                            @foreach (var obj in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="card-body"> 
+                                            <p><i> @obj.order.FirstName @obj.order.Surname  @obj.order.ApplicationUser  @obj.LoggedDate</i></p>
+                                            <p><i> Order Number: @obj.OrderId Order Rating: <strong>@obj.Rating</strong> </i></p>
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div><strong>@obj.ReviewReason.Name</strong></div>  
+                                                    </div>
+                                                         <div class="card-body">
+                                                            <div>  @obj.Description</div>
+                                                         </div>
+                                                </div>
+                                                <br/>
+                                                    <div class="btn-group" role="group">
+                                                        <a href="/Order/Detail?orderId=@obj.order.Id" class="btn btn-sm editbtn"> View Order</a>
+                                                    </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>                 
+                    </table>
+                </div>  
+
+
+
+
+
         </div>
         @section Scripts {
             <script src="~/js/notifications.js"></script>

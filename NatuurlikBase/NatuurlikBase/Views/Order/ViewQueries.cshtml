@@ -1,4 +1,5 @@
-﻿@model IEnumerable<OrderQuery>
+﻿@using NatuurlikBase.Areas.Identity.Pages.Account.Manage
+@model IEnumerable<OrderQuery>
 
 @if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
 {
@@ -62,19 +63,92 @@ else
     }
 
 
-    <div class="container-fluid">
-        <div class="d-flex-column justify-content-between justify-content-start">
-            <div class="col-10 col-sm-10 col-md-10 p-2">
-                @if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
-                {
-                    <h2 class="cheading">Order Queries List</h2>
-                }
-                else
-                {
-                    <h2 class="cheading">My Order Queries</h2>
-                }
-                <br /><br />
+    @if (User.IsInRole(SR.Role_Reseller) || User.IsInRole(SR.Role_Customer)) //!!!!!!!!!!!!!!!!CLIENT SIDE!!!!!!!!
+    {
+         <div class="container-fluid" id="under">
+            <h2 class="acc">My Account</h2>
+            <div class="row justify-content-center"> @*CLIENT SIDE NAV CODE*@
+                <div class="col-md-3">
+                    <div> 
+                        <div class="card sideside">
+                            <ul class="nav flex-column" >
+                                <li class="nav-item"><a class="nav-link man @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="bi bi-person">&nbsp;</i> Profile</a></li>
+                                <li class="nav-item"><a class="nav-link man @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword" ><i class="bi bi-lock">&nbsp;</i> Reset Password</a></li>
+                                <li class="nav-item"><a class="nav-link man @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-area="Identity" asp-page="/Account/Manage/Email"><i class="bi bi-envelope">&nbsp;</i> Email</a></li>
+                                @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
+                                {
+                                    <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="Index"><i class="bi bi-bag">&nbsp;</i> Orders</a></li>
+                                    <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="ViewQueries"><i class="bi bi-question-circle">&nbsp;</i> Queries</a></li>
+                                    <li class="nav-item"><a class="nav-link man"><i class="bi bi-box-seam">&nbsp;</i> Returns</a></li>
+                                }
+                            </ul> 
+                        </div>
+                    </div>                
+                </div>
 
+                <div class="col-md-9">
+                    <div class="card sideprofile"> 
+                        <h3>My Order Queries</h3>
+                        <br />
+                        <table class="table small" id="tblData" style="background-color: #232323">
+                            <thead>
+                                <tr>
+                                    <th class="text-light">
+                                        Order Number
+                                    </th>
+                                    <th class="text-light">
+                                        Query Reason
+                                    </th>
+                                    <th class="text-light">
+                                        Query Description
+                                    </th>
+                                    <th class="text-light">
+                                        Status
+                                    </th>
+                                    <th class="text-light">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var obj in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @obj.Order.Id
+                                        </td>
+                                        <td>
+                                            @obj.QueryReason.Name
+                                        </td>
+                                        <td>
+                                            @obj.Description
+                                        </td>
+
+                                        <td>
+                                            @obj.QueryStatus
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a href="/Order/QueryDetail?queryId=@obj.Id" class="btn btn-sm editbtn"> <i class="bi bi-pencil-square"></i>&nbsp; View</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>                  
+                </div>
+            </div>
+        </div>
+    }
+
+    else //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ADMIN SIDE!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    {
+      <div class="container-fluid">
+        <div class="row justify-content-start">
+            <div class="col-10 col-sm-10 col-md-10">
+                    <h2 class="cheading">Order Queries List</h2>
+                <br />
+            </div>
+        </div>
                 <table class="table" id="tblData" style="background-color: #232323">
                     <thead>
                         <tr>
@@ -112,9 +186,7 @@ else
                                 <td>
                                     @obj.QueryStatus
                                 </td>
-                             
-                                @if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
-                                {
+
                                     <td>
                                         <div class="btn-group" role="group">
                                             <a href="/Order/ReviewQuery?id=@obj.Id"  class="btn btn-sm editbtn"> <i class="bi bi-pencil-square"></i>&nbsp; Review</a>
@@ -123,25 +195,16 @@ else
                                             <a href="/Order/Detail?orderId=@obj.Order.Id" class="btn btn-sm editbtn"> View Order</a>
                                         </div>
                                     </td>
-                                 
-                                }
-                                else
-                                {
-                                     <td>
-                                        <div class="btn-group" role="group">
-                                            <a href="/Order/QueryDetail?queryId=@obj.Id" class="btn btn-sm editbtn"> <i class="bi bi-pencil-square"></i>&nbsp; View</a>
-                                        </div>
-                                    </td>
-                                }
-
                             </tr>
                         }
-                        </tbody>
-                    
+                        </tbody>                
                 </table>
-            </div>
+            
+        
         </div>
-        </div>
+    }
+
+    </div>
         @section Scripts {
             <script src="~/js/notifications.js"></script>
             <script>

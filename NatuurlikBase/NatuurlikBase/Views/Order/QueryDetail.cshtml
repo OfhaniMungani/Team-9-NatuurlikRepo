@@ -1,4 +1,5 @@
-﻿@model NatuurlikBase.Models.OrderQuery
+﻿@using NatuurlikBase.Areas.Identity.Pages.Account.Manage
+@model NatuurlikBase.Models.OrderQuery
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,60 +7,75 @@
 
 <div id="page-content-wrapper">
 
-    <form method="post">
-        <div>
-            @if (ViewBag.Error == null)
-            {
-
-                <div class="card">
-                    <div class="card-header" style="background-color: #F2F2F2">
-                        <h5>Order Query Overview</h5>
+        <div class="container-fluid" id="under">
+            <h2 class="acc">My Account</h2>
+                <div class="row justify-content-center"> @*CLIENT SIDE NAV CODE*@
+                    <div class="col-md-3">
+                            <div> 
+                                <div class="card sideside">
+                                    <ul class="nav flex-column" >
+                                        <li class="nav-item"><a class="nav-link man @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="bi bi-person">&nbsp;</i> Profile</a></li>
+                                        <li class="nav-item"><a class="nav-link man @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword" ><i class="bi bi-lock">&nbsp;</i> Reset Password</a></li>
+                                        <li class="nav-item"><a class="nav-link man @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-area="Identity" asp-page="/Account/Manage/Email"><i class="bi bi-envelope">&nbsp;</i> Email</a></li>
+                                        @if(User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
+                                        {
+                                        <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="Index"><i class="bi bi-bag">&nbsp;</i> Orders</a></li>
+                                        <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="ViewQueries"><i class="bi bi-question-circle">&nbsp;</i> Queries</a></li>
+                                        <li class="nav-item"><a class="nav-link man"><i class="bi bi-box-seam">&nbsp;</i> Returns</a></li>
+                                        }
+                                    </ul> 
+                                </div>
+                            </div>                
                     </div>
-                    <div class="card-body">
-                        @*<div asp-validation-summary="All"></div>*@
 
+                    <div class="col-md-9">
+                        <form method="post">
+                            <div>
+                                @if (ViewBag.Error == null)
+                                {
 
-                        <div class="row col">
-                        </div>
+                                    <div class="card">
+                                        <div class="card-header" id="ordetails">
+                                            <h5>Order Query Overview</h5>
+                                        </div>
+                                        <div class="card-body">
 
-                        <div class="form-group">
-                            <label asp-for="OrderId" class="control-label">Order Number:</label>
-                            <input asp-for="OrderId" class="form-control col-md-10" readonly></input>
-                        </div>
+                                            <div class="form-group">
+                                                <label asp-for="OrderId" class="control-label">Order Number:</label>
+                                                <input asp-for="OrderId" class="form-control col-md-6" readonly></input>
+                                            </div>
 
-                        <div class="form-group">
-                            <label asp-for="QueryReason.Name" class="control-label"> Query Reason:</label>
-                            <input asp-for="QueryReason.Name" class="form-control col-md-10" readonly></input>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Description" class="control-label">Description:</label>
-                            <textarea asp-for="Description" class="form-control col-md-10" readonly></textarea>
-                        </div>
+                                            <div class="form-group">
+                                                <label asp-for="QueryReason.Name" class="control-label"> Query Reason:</label>
+                                                <input asp-for="QueryReason.Name" class="form-control col-md-6" readonly></input>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="Description" class="control-label">Description:</label>
+                                                <textarea asp-for="Description" class="form-control col-md-6" readonly></textarea>
+                                            </div>
 
-                        @if(Model.QueryFeedback != null)
-                        {
-                          <div class="form-group">
-                          <label asp-for="QueryFeedback" class="control-label"> Feedback from Natuurlik:</label>
-                          <textarea asp-for="QueryFeedback" class="form-control col-md-10" readonly></textarea>
-                        </div>
-                        }
+                                            @if(Model.QueryFeedback != null)
+                                            {
+                                              <div class="form-group">
+                                              <label asp-for="QueryFeedback" class="control-label"> Feedback from Natuurlik:</label>
+                                              <textarea asp-for="QueryFeedback" class="form-control col-md-6" readonly></textarea>
+                                            </div>
+                                            }
                       
+                                            <a asp-controller="Order" asp-action="ViewQueries" class="btn btn-primary btn-block" id="update-profile-button" style="width:150px">
+                                                Back
+                                            </a> 
+                                        </div>                    
+                                </div>
+                                <br />
+                                <br />
 
+                                }
+                            </div>
+                        </form>
                     </div>
-                 
-
-            </div>
-            <br />
-            <br />
-
-            <a asp-controller="Order" asp-action="ViewQueries" class="btn btn-outline-dark" style="width:150px">
-                Back
-            </a>
-            }
-
-</div>
-
-    </form>
+                    </div>
+                </div>
 </div>
 
 

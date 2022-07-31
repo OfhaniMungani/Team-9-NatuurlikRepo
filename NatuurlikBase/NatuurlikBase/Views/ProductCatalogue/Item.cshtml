@@ -11,7 +11,14 @@
 
     <div class="itemspace row justify-content-center">
         <div class="col-lg-6 right">
-            <img class="prodimg" src="@Model.Product.PictureUrl">
+            @if(@Model.Product.QuantityOnHand == 0)
+            {
+                <img src="@Model.Product.PictureUrl" class="prodstock"  alt="Product Image">
+            }
+            else
+            {
+                <img src="@Model.Product.PictureUrl" class="prodimg"  alt="Product Image">
+            }  
         </div>
           <div class="col-lg-6">
         @if(User.IsInRole(SR.Role_Reseller))
@@ -38,7 +45,14 @@
                      <input asp-for="Count" min=1 class="form-control" />
                  </div>
                  <div class="col-5">
-                     <button href="#" class="btn btn-primary btn-block" id="itembtn">Add to Cart</button> @*STAY ON PAGE*@
+                    @if(@Model.Product.QuantityOnHand == 0)
+                    {
+                        <a href="" class="btn btn-primary btn-block" id="itembtn" disabled >OUT OF STOCK</a> 
+                    }
+                    else
+                    {
+                        <button href="#" class="btn btn-primary btn-block" id="itembtn">Add to Cart</button> 
+                    } 
                  </div>
                 <div class="col-4 backbtn">
                     <a asp-area="" asp-controller="ProductCatalogue" asp-action="Index" class="underline">Back</a>

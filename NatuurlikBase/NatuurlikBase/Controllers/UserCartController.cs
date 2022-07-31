@@ -434,10 +434,11 @@ namespace NatuurlikBase.Controllers
             string delivery = order.DeliveryFee.ToString();
             string vat = order.InclusiveVAT.ToString();
 
+            var callbackUrl = Url.Action("Index", "Order", values: null, protocol: Request.Scheme);
             string wwwRootPath = _hostEnvironment.WebRootPath;
             var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\custOrderTemp.html"));
             template = template.Replace("[NAME]", name).Replace("[TOTAL]", total).Replace("[DEL]", delivery).Replace("[VAT]", vat)
-                .Replace("[ID]", number).Replace("[DATE]", date);
+                .Replace("[ID]", number).Replace("[DATE]", date).Replace("[URL]", callbackUrl);
             string message = template;
 
             _emailSender.SendEmailAsync(
@@ -468,12 +469,12 @@ namespace NatuurlikBase.Controllers
             string delivery = order.DeliveryFee.ToString();
             string vat = order.InclusiveVAT.ToString();
             string status = order.OrderPaymentStatus.ToString();
-            //var callbackUrl = Url.Page("/Order");
 
+            var callbackUrl = Url.Action("Index", "Order", values: null, protocol: Request.Scheme);
             string wwwRootPath = _hostEnvironment.WebRootPath;
             var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\resOrderTemp.html"));
             template = template.Replace("[NAME]", name).Replace("[TOTAL]", total).Replace("[DEL]", delivery).Replace("[VAT]", vat)
-                .Replace("[ID]", number).Replace("[STATUS]", status).Replace("[DATE]", date);
+                .Replace("[ID]", number).Replace("[STATUS]", status).Replace("[DATE]", date).Replace("[URL]", callbackUrl);
             string message = template;
 
             _emailSender.SendEmailAsync(
