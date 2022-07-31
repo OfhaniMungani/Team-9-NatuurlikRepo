@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Order>
+﻿@using NatuurlikBase.Areas.Identity.Pages.Account.Manage
+@model IEnumerable<Order>
 
 @if(User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
 {
@@ -13,7 +14,11 @@ else
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+<style>
+    ul{
+        list-style-type: none;
+    }
+</style>
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -110,108 +115,197 @@ else
     }
    
 
- <div class="container-fluid">
-     <div class="d-flex-column justify-content-between justify-content-start">
-            <div class="col-10 col-sm-10 col-md-10 p-2">
-                @if(User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
-                {
-                    <h2 class="cheading">Orders List:</h2>
-                }
-                else
-                {
-                    <h2 class="cheading">My Natuurlik Orders:</h2>
-                }
-            
-		</div>
-         @if(User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
-            {
-                  <div class="p-2">
-            <ul class="list-group list-group-horizontal-sm">
-               
-                         <a class="button-88 mx-1" role="button"  asp-controller="Order" asp-action="Index" asp-route-status="pending">
-                    <li class="list-group-item" @pending>Pending</li>
-                </a>
-                   
-                 <a class="button-88 mx-1"  asp-controller="Order" asp-action="Index" asp-route-status="processing">
-                    <li class="list-group-item" @processing>Processing</li>
-                </a>
-                 <a class="button-88 mx-1" asp-controller="Order" asp-action="Index" asp-route-status="dispatched">
-                    <li class="list-group-item" @dispatched>Dispatched</li>
-                </a>
+    @if (User.IsInRole(SR.Role_Reseller) || User.IsInRole(SR.Role_Customer))  /////CLIENT SIDE
+    {
+        <div class="container-fluid" id="under">
+            <h2 class="acc">My Account</h2>
+            <div class="row justify-content-center"> @*CLIENT SIDE NAV CODE*@
+                <div class="col-md-3">
+                    <div> 
+                        <div class="card sideside">
+                            <ul class="nav flex-column" >
+                                <li class="nav-item"><a class="nav-link man @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="bi bi-person">&nbsp;</i> Profile</a></li>
+                                <li class="nav-item"><a class="nav-link man @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword" ><i class="bi bi-lock">&nbsp;</i> Reset Password</a></li>
+                                <li class="nav-item"><a class="nav-link man @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-area="Identity" asp-page="/Account/Manage/Email"><i class="bi bi-envelope">&nbsp;</i> Email</a></li>
+                                @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
+                                {
+                                    <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="Index"><i class="bi bi-bag">&nbsp;</i> Orders</a></li>
+                                    <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="ViewQueries"><i class="bi bi-question-circle">&nbsp;</i> Queries</a></li>
+                                    <li class="nav-item"><a class="nav-link man"><i class="bi bi-box-seam">&nbsp;</i> Returns</a></li>
+                                }
+                            </ul> 
+                        </div>
+                    </div>                
+                </div>
 
-                    <a class="button-88 mx-1" asp-controller="Order" asp-action="Index" asp-route-status="cancelled">
-                    <li class="list-group-item" @cancelled>Cancelled</li>
-                </a>
-               
-                  <a class="button-89 mx-1" style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="all">
-                    <li class="list-group-item" @all>Clear Filter</li>
-                </a>
-                </ul>
+                <div class="col-md-9">
+                    <div class="card sideprofile"> 
+                        <h3>My Orders</h3>
+                        <br />
+                        <table class="table small" id="tblData" style="background-color: #232323">
+                            <thead>
+                                <tr>
+                                    <th class="text-light">
+                                        Order #
+                                    </th>
+                                    <th class="text-light">
+                                        Order Date
+                                    </th>
+                                    <th class="text-light">
+                                        First Name
+                                    </th>
+                                    <th class="text-light">
+                                        Surname
+                                    </th>
+                                    <th class="text-light">
+                                        Phone Nr
+                                    </th>
+                                    <th class="text-light">
+                                        Status
+                                    </th>
+                                    <th class="text-light">
+                                        Total
+                                    </th>
+                                    <th class="text-light">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var obj in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @obj.Id                                       
+                                        </td>
+                                        <td>
+                                            @obj.CreatedDate.ToString("d")                                       
+                                        </td>
+                                        <td>
+                                            @obj.FirstName                                       
+                                        </td>
+                                        <td>
+                                            @obj.Surname
+                                        </td>
+                                        <td>
+                                            @obj.PhoneNumber
+                                        </td>
+                                        <td>
+                                            @obj.OrderStatus
+                                        </td>
+                                        <td>
+                                            @obj.OrderTotal
+                                        </td>
+
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a href="/Order/Detail?orderId=@obj.Id" class="btn btn-sm editbtn"> <i class="bi bi-pencil-square"></i>&nbsp; View Details</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>                  
+                </div>
+            </div>
         </div>
-            }
-          
-	</div>
+    }
 
-    <br /><br />
 
-<table class="table" id="tblData" style="background-color: #232323">
-    <thead>
-        <tr>
-            <th class="text-light">
-                First Name
-			</th>
-               <th class="text-light">
-                Surname
-			</th>
-             <th class="text-light">
-                Phone Number
-			</th>
-             <th class="text-light">
-                Email Address
-			</th>
-             <th class="text-light">
-                Status
-			</th>
-             <th class="text-light">
-                Total
-			</th>
-            <th class="text-light">Action</th>
-		</tr>
-	</thead>
-    <tbody>
-        @foreach(var obj in Model)
-        {
-            <tr>
-                <td>
-                    @obj.FirstName                                       
-				</td>
-                <td>
-                    @obj.Surname
-                </td>
-                <td>
-                    @obj.PhoneNumber
-                </td>
-                 <td>
-                    @obj.ApplicationUser.Email
-                </td>
-                 <td>
-                    @obj.OrderStatus
-                </td>
-                 <td>
-                    @obj.OrderTotal
-                </td>
+    else /////////////////////////////////////////////////////////////////////////ADMIN SIDE
+    {
+     <div class="container-fluid">
+         <div class="d-flex-column justify-content-between justify-content-start">
+                <div class="col-10 col-sm-10 col-md-10 p-2">
+                    <h2 class="cheading">Orders List</h2>           
+		                </div>
+                            <div class="p-2">
+                                <p>Filter Orders:</p>
+                                <ul class="list-group list-group-horizontal-sm">                             
+                                    <li class="" @pending><a class="btn btn-info" role="button"  asp-controller="Order" asp-action="Index" asp-route-status="pending">Pending</a></li>                                 
+                                    <li class="" @processing><a class="btn btn-info"  asp-controller="Order" asp-action="Index" asp-route-status="processing">Processing</a></li>               
+                                    <li class="" @dispatched><a class="btn btn-info" asp-controller="Order" asp-action="Index" asp-route-status="dispatched">Dispatched</a></li>               
+                                    <li class="" @cancelled><a class="btn btn-info" asp-controller="Order" asp-action="Index" asp-route-status="cancelled">Cancelled </a></li>                            
+                                    <li class="" @all><a class="btn btn-secondary" style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="all">Clear Filter</a></li>
                 
-                <td>
-                    <div class="btn-group" role="group">
-                        <a href="/Order/Detail?orderId=@obj.Id" class="btn btn-sm editbtn"> <i class="bi bi-pencil-square"></i>&nbsp; Details</a>
-					</div>
-				</td>
-			</tr>
-        }
-    </tbody>
+                                </ul>
+                        </div>                    
+	    </div>
 
-</table>
-</div>
+        <br />
+
+            <table class="table" id="tblData" style="background-color: #232323">
+                <thead>
+                    <tr>
+                        <th class="text-light">
+                            Order #
+			            </th>
+                        <th class="text-light">
+                            Order Date
+			            </th>
+                        <th class="text-light">
+                            First Name
+			            </th>
+                           <th class="text-light">
+                            Surname
+			            </th>
+                         <th class="text-light">
+                            Phone Number
+			            </th>
+                         <th class="text-light">
+                            Email Address
+			            </th>
+                         <th class="text-light">
+                            Status
+			            </th>
+                         <th class="text-light">
+                            Total
+			            </th>
+                        <th class="text-light">Action</th>
+		            </tr>
+	            </thead>
+                <tbody>
+                    @foreach(var obj in Model)
+                    {
+                        <tr>
+                            <td>
+                                @obj.Id                                       
+				            </td>
+                            <td>
+                                @obj.CreatedDate.ToString("d")                                       
+				            </td>
+                            <td>
+                                @obj.FirstName                                       
+				            </td>
+                            <td>
+                                @obj.Surname
+                            </td>
+                            <td>
+                                @obj.PhoneNumber
+                            </td>
+                             <td>
+                                @obj.ApplicationUser.Email
+                            </td>
+                             <td>
+                                @obj.OrderStatus
+                            </td>
+                             <td>
+                                @obj.OrderTotal
+                            </td>
+                
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="/Order/Detail?orderId=@obj.Id" class="btn btn-sm editbtn"> <i class="bi bi-pencil-square"></i>&nbsp; View Details</a>
+					            </div>
+				            </td>
+			            </tr>
+                    }
+                </tbody>
+            </table>
+    </div>
+    }
+
+
+
 </div>
 @section Scripts {
     <script src="~/js/notifications.js"></script>

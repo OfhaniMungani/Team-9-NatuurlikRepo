@@ -183,6 +183,26 @@ namespace NatuurlikBase.Controllers
             //Update order status to approved state and save changes to db.
             _uow.Order.UpdateOrderPaymentStatus(OrderVM.Order.Id, SR.OrderPaymentApproved);
             _uow.Save();
+
+            var user = _db.User.Where(z => z.Id == orderRetrieved.ApplicationUserId).FirstOrDefault();
+            string email = user.Email;
+            string name = user.FirstName;
+            string number = orderRetrieved.Id.ToString();
+            string date = DateTime.Now.ToString("M");
+            string status = orderRetrieved.OrderPaymentStatus.ToString();
+            string total = orderRetrieved.OrderTotal.ToString();           
+
+            string wwwRootPath = _hostEnvironment.WebRootPath;
+            var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\paidTemp.html"));
+            template = template.Replace("[NAME]", name).Replace("[STATUS]", status)
+                .Replace("[ID]", number).Replace("[DATE]", date).Replace("[TOTAL]", total);
+            string message = template;
+
+            _emailSender.SendEmailAsync(
+            email,
+            "Payment Received",
+            message);
+
             TempData["Success"] = "Reseller Order payment captured successfully.";
             return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
 

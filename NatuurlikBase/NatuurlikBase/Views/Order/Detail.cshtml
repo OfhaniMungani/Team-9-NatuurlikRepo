@@ -1,4 +1,5 @@
 @model NatuurlikBase.ViewModels.OrderVM
+@using NatuurlikBase.Areas.Identity.Pages.Account.Manage
 @using NatuurlikBase.Models
 
 
@@ -13,6 +14,13 @@
         <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
     </symbol>
 </svg>
+
+<style>
+    .rightside{
+        text-align:right;
+    }
+</style>
+
 
 <div id="page-content-wrapper">
     @if (TempData["success"] != null)
@@ -37,343 +45,259 @@
     }
 
 
-    <form method="post">
-        <input asp-for="Order.Id" hidden />
-        <br />
-        <div class="container">
-            <div class="card">
-                <div class="card-header bg-dark text-light ml-0 row container">
-                    <div class="col-12 d-none d-md-block col-md-6 pb-1">
-                        <h6>Order #@Model.Order.Id</h6>
-                        @if (User.IsInRole(SR.Role_Admin))
-                        {
-                            <h5>Who Owns Order:</h5>
-                            <h6> Customer Full Name : @Model.Order.ApplicationUser.FirstName @Model.Order.ApplicationUser.Surname</h6>
-                            <h6> Customer Contact Number : @Model.Order.ApplicationUser.PhoneNumber</h6>
-                        }
-
+     @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!CUSTOMER SIDE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*@
+   @if (User.IsInRole(SR.Role_Reseller) || User.IsInRole(SR.Role_Customer))
+   {
+        <div class="container-fluid" id="under">
+            <h2 class="acc">My Account</h2>
+                <div class="row justify-content-center"> @*CLIENT SIDE NAV CODE*@
+                    <div class="col-md-3">
+                            <div> 
+                                <div class="card sideside">
+                                    <ul class="nav flex-column" >
+                                        <li class="nav-item"><a class="nav-link man @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="bi bi-person">&nbsp;</i> Profile</a></li>
+                                        <li class="nav-item"><a class="nav-link man @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword" ><i class="bi bi-lock">&nbsp;</i> Reset Password</a></li>
+                                        <li class="nav-item"><a class="nav-link man @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-area="Identity" asp-page="/Account/Manage/Email"><i class="bi bi-envelope">&nbsp;</i> Email</a></li>
+                                        @if(User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
+                                        {
+                                        <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="Index"><i class="bi bi-bag">&nbsp;</i> Orders</a></li>
+                                        <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="ViewQueries"><i class="bi bi-question-circle">&nbsp;</i> Queries</a></li>
+                                        <li class="nav-item"><a class="nav-link man"><i class="bi bi-box-seam">&nbsp;</i> Returns</a></li>
+                                        }
+                                    </ul> 
+                                </div>
+                            </div>                
                     </div>
 
+                    <div class="col-md-9">
+                        <form method="post">               
+                                <div class="card">
+                                    <div class="card-header" id="ordetails">
+                                        <div class="d-flex justify-content-between">
+                                            <medium id="strong">My Order Details</medium> 
+                                            <small>Order Date: @Model.Order.CreatedDate.ToString("d")</small> 
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <small>Order #@Model.Order.Id</small> 
+                                        </div>
+                                    </div>
+                                    <div class="card-body">        
+                                        <div class="row">
+                                            <div class="col-md-6 smaller">
+                                                <h2 id="light">Order Status: <strong>@Model.Order.OrderStatus</strong></h2>
+                                                <p id="paydue"><strong>@Model.Order.OrderPaymentStatus</strong></p>
+                                            </div>
+                                            <div class="col-md-6 rights">
+                                                 @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
+                                                 {
+                                                    <a asp-controller="Order" asp-action="LogQuery" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Query Order">Query Order</a>
+                                                    <a asp-controller="Order" asp-action="LogReview" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Review Order">Review Order</a>
+
+                                                     if (Model.Order.OrderStatus == SR.OrderPending && Model.Order.OrderPaymentStatus== SR.OrderPaymentApproved)
+                                                     {
+                                                     <input type="submit" onclick="return validateInput()" asp-action="CancelOrder" class="btn btn-danger" style="width:150px" value="Cancel Order" />
+                                                     }
+                                                 }
+                                                 @if(User.IsInRole(SR.Role_Reseller) && Model.Order.OrderStatus == SR.OrderPending)
+                                                 {
+                                                    <input type="submit" onclick="return validateInput()" asp-action="CancelOrder" class="btn btn-danger" style="width:150px" value="Cancel Order" />
+                                                 }
+                                            </div>
+                                        </div>                                                    
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="row">
+                                                            <div class="col-md-3 strongdetails">
+                                                                <p id="strong">Contact Person</p>
+                                                                <label>@Model.Order.FirstName @Model.Order.Surname</label> <br />
+                                                                <label>@Model.Order.PhoneNumber</label> <br />
+                                                                <label>@Model.Order.ApplicationUser.Email</label> 
+                                                                <br />
+                                                                <p id="strongone">Delivery Address</p>
+                                                                <label>@Model.Order.StreetAddress</label> <br />
+                                                                <label>@Model.Order.Suburb.SuburbName</label> <br />
+                                                                <label>@Model.Order.City.CityName</label> <br />
+                                                                <label>@Model.Order.Province.ProvinceName</label> <br />
+                                                                <label>@Model.Order.Country.CountryName</label> <br />
+                                                                <label>@Model.Order.Suburb.PostalCode</label>
+                                                            </div>
+                                                                <br />
+                                                            <div class="col-md-4">
+                                                                <p id="strong">Delivery Details</p>
+                                                                <label>Courier: @Model.Order.Courier.CourierName</label> <br />
+                                                                <label>Tracking Number: @Model.Order.ParcelTrackingNumber</label> <br />
+                                                                <label>Dispatched Date: @Model.Order.DispatchedDate.ToString("d")</label>
+                                                            </div>
+                                                            <div class="col-md-5">
+                                                                <p id="strong">Order Summary</p>
+                                                                    <div class="card">
+                                                                        <div class="card-body">
+                                                                            @foreach (var line in Model.OrderLine)
+                                                                        {
+                                                                            <div class="d-flex justify-content-between" id="cartitems">
+                                                                                <small>@line.Product.Name</small>
+                                                                                <small><strong>@((line.Count * line.Price).ToString("0.00"))</strong></small>
+                                                                            </div>
+                                                                            <small class="text-muted">Price : @line.Price.ToString("0.00")</small> <br />
+                                                                            <small class="text-muted">Quantity: @line.Count</small>
+                                                                            <hr />
+                                                                        }
+                                                                            <div class="d-flex justify-content-between" id="summarytotal">
+                                                                                <p>Total (ZAR)</p>
+                                                                                <p id="">ZAR @Model.Order.OrderTotal.ToString("0.00")</p>
+                                                                            </div>
+                                                                        </div>
+                                                                   </div>            
+                                                            </div>
+                                                        </div>                              
+                                                        <a asp-action="Index" class="btn btn-primary btn-block" id="update-profile-button" style="width:150px">
+                                                            Back
+                                                        </a>
+                                                    </div>
+                                                </div>                               
+                                    </div>
+                                </div>
+                            <input asp-for="Order.Id" hidden />
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="container rounded p-2">
-                        <div class="row">
-                            <div class="col-12 col-lg-6 pb-4">
-                                <div class="row">
-                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="text-dark">Contact Person Details:</span>
-                                    </h4>
-                                </div>
-                                <div class="row my-1">
-                                    <div class="col-3">First Name:</div>
-                                    <div class="col-9">
-                                        @if (User.IsInRole(SR.Role_Reseller) || User.IsInRole(SR.Role_Customer))
-                                        {
-                                            <input asp-for="Order.FirstName" type="text" class="form-control" />
-                                            <span asp-validation-for="Order.FirstName" class="text-danger"></span>
-                                        }
-                                        else
-                                        {
-                                            <input asp-for="Order.FirstName" readonly type="text" class="form-control" />
-                                        }
+        </div>
+    }
+
+    else
+@*    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ADMIN SIDE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*@
+    {
+                    <form method="post">               
+                                <div class="card">
+                                    <div class="card-header" id="">
+                                        <div class="d-flex justify-content-between">
+                                            <medium id="strong">Order Details</medium> 
+                                            <small>Order Date: @Model.Order.CreatedDate.ToString("d")</small> 
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <small>Order #@Model.Order.Id</small> 
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row my-1">
-                                    <div class="col-3">Surname:</div>
-                                    <div class="col-9">
-                                        @if (User.IsInRole(SR.Role_Reseller) || User.IsInRole(SR.Role_Customer))
-                                        {
-                                            <input asp-for="Order.Surname" type="text" class="form-control" />
-                                            <span asp-validation-for="Order.Surname" class="text-danger"></span>
-                                        }
-                                        else
-                                        {
-                                            <input asp-for="Order.Surname" readonly type="text" class="form-control" />
-                                        }
-                                    </div>
-                                </div>
+                                    <div class="card-body"> 
+                                        <div class="row ordstatus">
+                                            <div class="col-md-4">
+                                                <h2 id="ordspace">Order Status: <strong>@Model.Order.OrderStatus</strong></h2>  
+                                                @if (User.IsInRole(SR.Role_Admin))
+                                                {
+                                                    <h5><strong>Account Holder</strong></h5>
+                                                    <medium>Full Name: @Model.Order.ApplicationUser.FirstName @Model.Order.ApplicationUser.Surname</medium> <br />
+                                                    <medium>Phone Number: @Model.Order.ApplicationUser.PhoneNumber</medium> <br />
+                                                }                                                        
+                                            </div>                                           
+                                            <div class="col-md-8 rightside">
+                                                <label id="paying"><strong>Payment Status: @Model.Order.OrderPaymentStatus</strong></label> <br />                                             
+                                                   @if (User.IsInRole(SR.Role_Admin))
+                                                   {
+                                                         if (Model.Order.OrderStatus == SR.ProcessingOrder)
+                                                         {
+                                                            <a asp-controller="PrepareOrder" asp-action="Index" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Package Order">Package Order</a>
+                                                            <input type="submit" asp-action="DispatchParcel" class="btn btn-secondary" value="Dispatch Order" style="width:150px"/>
+                                                         }
+                                                         //Returned product button
+                                                         if (Model.Order.OrderStatus == SR.OrderDispatched)
+                                                         {
+                                                             <a asp-controller="ReturnedProduct" asp-action="Create" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:250px" value="Returned Product">Log Returned Product</a>
+                                                         }
 
-                                <div class="row my-1">
-                                    <div class="col-3">Phone No:</div>
-                                    <div class="col-9">
-                                        @if (User.IsInRole(SR.Role_Reseller) || User.IsInRole(SR.Role_Customer))
-                                        {
-                                            <input asp-for="Order.PhoneNumber" type="text" class="form-control" />
-                                            <span asp-validation-for="Order.PhoneNumber" class="text-danger"></span>
-                                        }
-                                        else
-                                        {
-                                            <input asp-for="Order.PhoneNumber" readonly type="text" class="form-control" />
-                                        }
-                                    </div>
-                                </div>
-
-                                <br>
-
-                                <div class="row">
-                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="text-dark">Delivery Details:</span>
-                                    </h4>
-                                </div>
-
-                                <div class="row my-1">
-                                    <div class="col-3">Courier:</div>
-                                    <div class="col-9">
-
-                                        <input asp-for="Order.Courier.CourierName" readonly type="text" class="form-control" />
-                                    </div>
-                                </div>
-
-                                <div class="row my-1">
-                                    <div class="col-3">Street:</div>
-                                    <div class="col-9">
-
-                                        <input asp-for="Order.StreetAddress" readonly type="text" class="form-control" />
-                                    </div>
-                                </div>
-
-                                <div class="row my-1">
-                                    <div class="col-3">Country:</div>
-                                    <div class="col-9">
-
-                                        <input asp-for="Order.Country.CountryName" readonly type="text" class="form-control" />
-                                    </div>
-                                </div>
-
-                                <div class="row my-1">
-                                    <div class="col-3">Province:</div>
-                                    <div class="col-9">
-
-                                        <input asp-for="Order.Province.ProvinceName" readonly type="text" class="form-control" />
-                                    </div>
-                                </div>
-
-                                <div class="row my-1">
-                                    <div class="col-3">City:</div>
-                                    <div class="col-9">
-
-                                        <input asp-for="Order.City.CityName" readonly type="text" class="form-control" />
-                                    </div>
-                                </div>
-
-                                <div class="row my-1">
-                                    <div class="col-3">Suburb:</div>
-                                    <div class="col-9">
-
-                                        <input asp-for="Order.Suburb.SuburbName" readonly type="text" class="form-control" />
-                                    </div>
-                                </div>
-
-                                <div class="row my-1">
-                                    <div class="col-3">Postal Code:</div>
-                                    <div class="col-9">
-
-                                        <input asp-for="Order.Suburb.PostalCode" readonly type="text" class="form-control" />
-                                    </div>
-                                </div>
-                                <br />
-                                  <div class="row">
-                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="text-dark">Order Details:</span>
-                                    </h4>
-                                </div>
-
-
-                                <div class="row my-1">
-                                    <div class="col-3">Email Address:</div>
-                                    <div class="col-9">
-                                        <input asp-for="Order.ApplicationUser.Email" readonly type="text" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="row my-1">
-                                    <div class="col-3">Order Date:</div>
-                                    <div class="col-9">
-
-                                        <input value="@Model.Order.CreatedDate.ToShortDateString()" readonly type="text" class="form-control" />
-
-                                    </div>
-                                </div>
-                                @*<div class="row my-1">
-                                <div class="col-3">Courier:</div>
-                                <div class="col-9">
-                                @if(User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA)){
-                                <input asp-for="Order.CourierName"  id="carrier" type="text" class="form-control" />
-                                }
-                                else
-                                {
-                                <input asp-for="Order.CourierName" readonly type="text" class="form-control" />
-                                }
-                                </div>
-                                </div>*@
-
-
-                                <div class="row my-1">
-                                    <div class="col-3">Tracking Number:</div>
-                                    <div class="col-9">
-                                        @if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
-                                        {
-
-                                        //Only allow the tracking number to be editable for Admin or SA and when status is processing.
-                                            @if (@Model.Order.OrderStatus == SR.ProcessingOrder)
-                                            {
-                                                <input asp-for="Order.ParcelTrackingNumber" id="trackingNumber" type="text" class="form-control" />
-                                            }
-                                            else
-                                            {
-                                                <input asp-for="Order.ParcelTrackingNumber" readonly type="text" class="form-control" />
-
-                                            }
-
-                                        }
-                                        else
-                                        {
-                                            <input asp-for="Order.ParcelTrackingNumber" readonly type="text" class="form-control" />
-                                        }
-                                    </div>
-                                </div>
-                                <div class="row my-1">
-                                    <div class="col-3">Date Shipped:</div>
-                                    <div class="col-9">
-                                        <input value="@Model.Order.DispatchedDate.ToShortDateString()" type="text" readonly class="form-control" />
-                                    </div>
-                                </div>
-
-                                <div class="row my-1">
-                                    <div class="col-3">Payment Status:</div>
-                                    <div class="col-9">
-                                        <input asp-for="Order.OrderPaymentStatus" type="text" readonly class="form-control" />
-                                    </div>
-                                </div>
-
-                                <button type="submit" asp-action="UpdateOrderStatus" class="btn btn-success" data-toggle="modal" style="width:250px">Update Order Details</button>
-                                <a asp-action="Index" class="btn btn-outline-dark" style="width:150px">
-                                    Back
-                                </a>
-                                @*
-                                <a asp-action="Index" class="btn btn-outline-info form-control btn-sm">Back</a>
-
-                                <button type="submit" asp-action="UpdateOrderStatus" class="btn btn-success form-control mx-2"
-                                formmethod="post">
-                                Update Order Details
-                                </button>*@
-
-
-                            </div>
-                            <div class="col-12 col-lg-5 offset-lg-1">
-                                <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="text-dark">Order Summary</span>
-                                </h4>
-                                @if (Model.Order.OrderStatus == SR.OrderCancelled)
-                                {
-
-                                    <label class="btn btn-outline-danger form-control my-2">Status : @Model.Order.OrderStatus</label>
-
-                                }
-                                else
-                                {
-                                    <button class="orderStatus">Status : @Model.Order.OrderStatus</button>
-
-                                }
-
-                                <ul class="list-group mb-3">
-
-                                    @foreach (var line in Model.OrderLine)
-                                    {
-                                        <li class="list-group-item d-flex justify-content-between p-2">
-                                            <div class="row container">
-                                                <div class="col-8">
-
-                                                    <h6 class="my-0 text-dark">@line.Product.Name</h6>
-                                                    <small class="text-muted">Price : @line.Price.ToString("0.00")</small><br />
-                                                    <small class="text-muted">Quantity : @line.Count</small>
-                                                </div>
-                                                <div class="col-4">
-                                                    <p class="text-black">@((line.Count * line.Price).ToString("0.00"))</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    }
-
-
-                                    <li class="list-group-item bg-dark">
-                                        <div class="row container">
-                                            <div class="col-6">
-                                                <h5 class="text-white">TOTAL </h5>
-                                            </div>
-                                            <div class="col-6 text-right">
-                                                <h5 class="text-white"> ZAR @Model.Order.OrderTotal.ToString("0.00")</h5>
+                                                         //Reseller order which have to be approved first.
+                                                         if (Model.Order.OrderStatus == SR.OrderPending)
+                                                         {
+                                                             <input type="submit" onclick="return validateInput()" asp-action="ApproveResellerOrder" class="btn btn-success" value="Approve" style="width:150px"/>
+                                                             <input type="submit" onclick="return validateInput()" asp-action="RejectResellerOrder" class="btn btn-danger" value="Reject" style="width:150px"/>
+                                                         }
+                                                         if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched)
+                                                         {                 
+                                                             if(Model.Order.OrderPaymentStatus == SR.ResellerDelayedPayment)
+                                                             {
+                                                                 <input type="submit" onclick="return validateInput()" asp-action="CaptureResellerPayment" class="btn btn-success" value="Capture Payment" style="width:150px"/>
+                                                             }
+                                                         }
+                                                         if (Model.Order.OrderStatus == SR.ProcessingOrder)
+                                                         {
+                                                             <input type="submit" class="btn btn-danger" asp-action="CancelOrder" value="Cancel Order" style="width:150px"/>
+                                                         }
+                                                  }
                                             </div>
                                         </div>
-                                    </li>
-                                </ul>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="row">
+                                                            <div class="col-md-4 strongdetails">
+                                                                <h5 class="spaceing"><strong>Contact Person</strong></h5>
+                                                                <label>Full Name: @Model.Order.FirstName @Model.Order.Surname</label> <br />
+                                                                <label>Phone Number: @Model.Order.PhoneNumber</label> <br />
+                                                                <label>Email Address: @Model.Order.ApplicationUser.Email</label> 
+                                                                <br />
+                                                                <h5 id="stronger" class="spaceing"><strong>Delivery Address</strong></h5>
+                                                                <label>Street Address: @Model.Order.StreetAddress</label> <br />
+                                                                <label>Suburb: @Model.Order.Suburb.SuburbName</label> <br />
+                                                                <label>City: @Model.Order.City.CityName</label> <br />
+                                                                <label>Province: @Model.Order.Province.ProvinceName</label> <br />
+                                                                <label>Country: @Model.Order.Country.CountryName</label> <br />
+                                                                <label>Postal Code: @Model.Order.Suburb.PostalCode</label>
 
-                                @if (User.IsInRole(SR.Role_Admin))
-                                {
-                                    if (Model.Order.OrderStatus == SR.ProcessingOrder)
-                                    {
-                                         <a asp-controller="PrepareOrder" asp-action="Index" asp-route-orderId="@Model.Order.Id" class="btn btn-warning my-1" value="Package Order">Package Order</a>
-                                        <input type="submit" asp-action="DispatchParcel" class="dispatchOrder my-1" value="Dispatch Order" />
-                                    }
+                                                            </div>
+                                                                <br />
+                                                            <div class="col-md-4">
+                                                                <h5 class="spaceing"><strong>Delivery Details</strong></h5>
+                                                                <label>Courier: @Model.Order.Courier.CourierName</label> <br />  
+                                                                <label>Dispatched Date:</label>
+                                                                    @if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                                                                    {
+                                                                        <label> @Model.Order.DispatchedDate.ToString("d")</label>
+                                                                    }
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <label>Tracking Number: @Model.Order.ParcelTrackingNumber</label>
+                                                                            @*Only allow the tracking number to be editable for Admin or SA and when status is processing.*@
+                                                                            @if (@Model.Order.OrderStatus == SR.ProcessingOrder)
+                                                                            {
+                                                                                <input asp-for="Order.ParcelTrackingNumber" id="trackingNumber" type="text" class="form-control" />
+                                                                            }                                                            
+                                                                    </div> 
+                                                                </div>                                                                
+                                                            <div class="col-md-4">
+                                                               <h5 class="spaceing"><strong>Order Summary</strong></h5>
+                                                                    <div class="card">
+                                                                        <div class="card-body">
+                                                                            @foreach (var line in Model.OrderLine)
+                                                                        {
+                                                                            <div class="d-flex justify-content-between" id="cartitems">
+                                                                                <medium>@line.Product.Name</medium>
+                                                                                <medium><strong>@((line.Count * line.Price).ToString("0.00"))</strong></medium>
+                                                                            </div>
+                                                                            <small class="text-muted">Price : @line.Price.ToString("0.00")</small> <br />
+                                                                            <small class="text-muted">Quantity: @line.Count</small>
+                                                                            <hr />
+                                                                        }
+                                                                            <div class="d-flex justify-content-between" id="summarytotal">
+                                                                                <h5>Total (ZAR)</h5>
+                                                                                <h5 id="">ZAR @Model.Order.OrderTotal.ToString("0.00")</h5>
+                                                                            </div>
 
-                                    //Returned product button
-                                     if (Model.Order.OrderStatus == SR.OrderDispatched)
-                                    {
-                                         <a asp-controller="ReturnedProduct" asp-action="Create" asp-route-orderId="@Model.Order.Id" class="btn btn-warning my-1" value="Returned Product">Log Returned Product</a>
-                                        <input type="submit" asp-action="Create" class="dispatchOrder my-1" value="Returned Product" /> 
-                                    }
-                                    //Reseller order which have to be approved first.
-
-                                    if (Model.Order.OrderStatus == SR.OrderPending)
-                                    {
-                                        <input type="submit" onclick="return validateInput()" asp-action="ApproveResellerOrder" class="approveOrder my-1" value="Approve" />
-                                        <input type="submit" onclick="return validateInput()" asp-action="RejectResellerOrder" class="rejectOrder my-1" value="Reject" />
-
-                                    }
-                                    if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched)
-                                    {                 
-                                        if(Model.Order.OrderPaymentStatus == SR.ResellerDelayedPayment)
-                                        {
-                                             <input type="submit" onclick="return validateInput()" asp-action="CaptureResellerPayment" class="approveOrder my-1" value="Capture Payment" />
-
-                                        }
-                                    }
-
-                                    if (Model.Order.OrderStatus == SR.ProcessingOrder)
+                                                                        </div>
+                                                                   </div>            
+                                                            </div>
+                                                        </div>      
+                                                        <div>
+                                                        @*<button type="submit" formmethod="post" class="btn btn btn-success" asp-action="UpdateOrderStatus" style="width:150px;"> Update Order </button> *@           
+                                                        <a asp-action="Index" class="btn btn-outline-dark" style="width:150px">
+                                                            Back
+                                                        </a>
+                                                        </div>
+                                                    </div>
+                                                </div>                               
+                                    </div>
+                                </div>
+                            <input asp-for="Order.Id" hidden />
+                        </form>        
+    }
 
 
-                                    {
-                                        <input type="submit" class="rejectOrder my-1" asp-action="CancelOrder" value="Cancel Order" />
-                                    }
-                                }
-
-
-
-                                @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
-                                {
-                                    <a asp-controller="Order" asp-action="LogQuery" asp-route-orderId="@Model.Order.Id" class="btn btn-warning my-1" value="Query Order">Query Order</a>
-                                     <a asp-controller="Order" asp-action="LogReview" asp-route-orderId="@Model.Order.Id" class="btn btn-warning my-1" value="Review Order">Review Order</a>
-
-                                   if (Model.Order.OrderStatus == SR.OrderPending && Model.Order.OrderPaymentStatus== SR.OrderPaymentApproved)
-                                    {
-                                        <input type="submit" onclick="return validateInput()" asp-action="CancelOrder" class="rejectOrder my-1" value="Cancel" />
-                                    }
-                                }
-
-                                @if(User.IsInRole(SR.Role_Reseller) && Model.Order.OrderStatus == SR.OrderPending)
-                                {
-                                    <input type="submit" onclick="return validateInput()" asp-action="CancelOrder" class="rejectOrder my-1" value="Cancel" />
-
-                                }
-
-                
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-
+</div>
 
 

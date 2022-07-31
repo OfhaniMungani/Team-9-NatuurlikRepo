@@ -1,11 +1,16 @@
 ﻿@model int
 
-<div class="container row">
-    <div class="col-12 text-center">
-        <h1 class="text-primary text-center"> Your Order has been placed successfully! Please check your status soon 
-            to see whether Natuurlik staff accepted your order.
-        </h1>
-        <label> Order Reference #: @Model </label>
+<div class="container" id="conf"> 
+    <div id="center">
+        <img src="~/images/confirm.png"/>
+        <br />
+        <br />           
+            <h2> Thank you! <br /> </h2>
+            <h4 >Your order has been placed.</h4>      
+            <h5 id="notice">An email will be sent once your order has <br/> been approved</h5>
+                <label class="numspace"> Order Number <strong>#@Model </strong></label>
+            <div class="row justify-content-center">
+                <a asp-controller="ProductCatalogue" asp-action="Index" class="btn btn-primary btn-block" id="itembtn" style="width:300px">Browse Products</a>
+            </div>      
     </div>
-
 </div>

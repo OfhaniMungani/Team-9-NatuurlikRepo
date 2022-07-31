@@ -118,10 +118,11 @@
         var email = supplier.EmailAddress;
         var name = supplier.CompanyName;
         var items = prod;
+        var date = DateTime.Now.ToString("D");
 
         string wwwRootPath = _hostEnvironment.WebRootPath;
-        var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\supTemp.html"));
-        template = template.Replace("[ITEM]", items).Replace("[NAME]", name);
+        var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\suppOrderTemp.html"));
+        template = template.Replace("[ITEMS]", items).Replace("[NAME]", name).Replace("[DATE]", date);
         string message = template;
 
         _emailSender.SendEmailAsync(

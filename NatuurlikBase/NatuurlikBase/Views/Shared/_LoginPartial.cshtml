@@ -4,7 +4,18 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+
+<style>
+    #borad{
+        border-right: 1px solid lightgrey;
+        padding-right:10px;
+    }
+</style>
+
 <ul class="navbar-nav">
+    <li class="nav-item" id="borad"> 
+        <a class="nav-link text-dark" asp-area="" asp-controller="UserCart" asp-action="Index"><i class="bi bi-cart4"></i></a>
+    </li>
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
