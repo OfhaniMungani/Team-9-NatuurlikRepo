@@ -1,0 +1,169 @@
+﻿@page "/sendsupplierorder/{id:int}"
+
+@using NatuurlikBase.Components
+@using NatuurlikBase.Repository.IRepository
+@using System.Net.Mail
+@using Microsoft.AspNetCore.Identity.UI.Services;
+
+@* Inject JS Interop to call.NET Method using JavaScript @inject Microsoft.JSInterop.IJSRuntime JS*@
+
+@inject IJSRuntime JSRuntime;
+@inject NavigationManager NavigationManager
+@inject IViewSupplierById ViewSupplierById
+@inject ISendSupplierOrderRepository CaptureOrderInventories
+@inject IWebHostEnvironment _hostEnvironment
+@inject IEmailSender _emailSender
+
+
+
+    <SuccessMessageComponent SuccessMessage="@supplierOrderSent"></SuccessMessageComponent>
+<div class="card">
+    <div class="card-header" style="background-color: #F2F2F2">
+        <h5>Supplier Order Details:</h5>
+    </div>
+        <div class="card-body">
+@if (this.supplier != null)
+        {
+            <EditForm Model="supplier" OnValidSubmit="OnValidSubmit">
+                <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <label class="">Supplier:</label>
+     
+            <InputText class="form-control" disabled id="name"  @bind-Value="supplier.CompanyName"></InputText>
+         <br>
+        <label class="">Email Address:</label>
+      
+            <InputText class="form-control" disabled id="name"  @bind-Value="supplier.EmailAddress"></InputText>
+        <br>
+        <label class="">Contact Number:</label>
+            <InputText class="form-control" disabled id="name"  @bind-Value="supplier.PhoneNumber"></InputText>
+        <br>
+        @*<label class="pl-4">Email Subject:</label>
+
+           <InputText class="pl-4 form-control" @bind-Value="supplier.Subject"></InputText>
+        <br>
+        <label class="pl-4">Email Message:</label>
+        <br>
+            <InputText class="pl-4 form-control" style="width:400; height:150px" @bind-Value="supplier.Message"></InputText>
+        <br>*@
+            
+        <div>
+            <SupplierOrderInventoriesComponent 
+            SupplierOrderInventories = "supplier.SupplierInventory"
+            OnInventorySelected="OnInventorySelected">
+            </SupplierOrderInventoriesComponent>
+        </div>
+        
+        <br/>
+        <button type="submit"  @onclick="@(()=> SendSupplierOrderEmail(supplier.SupplierInventory))" class="btn btn-success" style="width:150px">Send Email</button>
+        <button type="button"  @onclick="@(()=> OnBack())" class="btn btn-outline-dark" style="width:150px">Cancel</button>
+        
+
+    </EditForm>
+
+    }
+        </div>
+</div>
+    @code {
+    //Code Behind
+
+
+
+    private string supplierOrderSent;
+
+    //ALT Step: Cancel operation
+    private void OnBack()
+    {
+        NavigationManager.NavigateTo($"/supplierslist", true);
+    }
+
+
+    private Supplier supplier;
+
+    //private SupplierOrderVM supplierOrderVM;
+
+    public List<ProductInventory> ProductInventories;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        this.supplier = await ViewSupplierById.ExecuteAsync(this.Id);
+    }
+
+    private void OnInventorySelected(List<SupplierInventory> supplierOrderInventories)
+    {
+        this.supplier.SupplierInventory = supplierOrderInventories;
+    }
+
+    private void OnValidSubmit()
+    {
+        CaptureOrderInventories.ExecuteAsync(this.supplier);
+        //NavigationManager.NavigateTo($"/supplierslist", true);
+        this.supplierOrderSent =  $"Supplier order details sent to supplier successfully";
+
+
+    }
+
+   
+
+
+    private void SendSupplierOrderEmail(List<SupplierInventory> supplierOrderInventories)
+    {
+        string prod = string.Empty;
+        @foreach(var item in supplierOrderInventories)
+        {
+            
+            prod += item.Inventory.InventoryItemName + " X " + item.InventoryItemQuantity + Environment.NewLine;
+        }
+
+        var email = supplier.EmailAddress;
+        var name = supplier.CompanyName;
+        var items = prod;
+        var date = DateTime.Now.ToString("D");
+
+        string wwwRootPath = _hostEnvironment.WebRootPath;
+        var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\suppOrderTemp.html"));
+        template = template.Replace("[ITEMS]", items).Replace("[NAME]", name).Replace("[DATE]", date);
+        string message = template;
+
+        _emailSender.SendEmailAsync(
+        email,
+        "Supplier Order",
+        message);
+    }
+
+
+
+    //  List<string> InventoryList = new List<string>();
+    //protected override void OnAfterRender(bool firstRender)
+    //{
+    //  base.OnAfterRender(firstRender);
+    //  if (firstRender)
+    //  {
+    //    // See warning about memory above in the article
+    //    var dotNetReference = DotNetObjectReference.Create(this);
+    //    await JSRuntime.InvokeAsync("BlazorUniversity.startRandomGenerator", dotNetReference);
+    //  }
+    //}
+    //[JSInvokable("AddText")]
+    //public void AddInventoryItemToList(string text)
+    //{
+    //  InventoryList.Add(text.ToString());
+    //  while (InventoryList.Count > 10)
+    //    InventoryList.RemoveAt(0);
+    //  StateHasChanged();
+    //  System.Diagnostics.Debug.WriteLine("DotNet: Received " + text);
+    //}
+
+
+    //private async Task RetrieveInventory()
+    //{
+    //   await JSRuntime.InvokeVoidAsync("DisplayName");
+    //}
+}
+
+    
+

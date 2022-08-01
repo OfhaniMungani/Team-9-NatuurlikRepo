@@ -1,0 +1,86 @@
+﻿@using NatuurlikBase.Repository.IRepository
+
+@inject IViewSuppliersByName SearchSuppliersByName
+
+<div class="input-group">
+    <input type="text" 
+        class="form-control form-control-lg" 
+        style="max-width:600px"
+        placeholder="Enter Name of Supplier to Search"
+        @bind-value="supplierSearchParam" 
+        @bind-value:event="oninput"
+        />    
+    <button type="button" class="input-group-text" 
+        @onclick="@( async()=> { await ViewSuppliers(); } )">Search</button>
+</div>
+@if (this.DisplaySearchResult 
+    && _suppliers != null
+    && selectedSupplier == null)
+{
+    <div style="overflow-y:auto; max-height:300px; max-width:600px; border:2px solid; padding-top:5px">
+        <ul style="list-style-type:disc;">
+            @foreach(var supplier in _suppliers)
+            {
+                <li style="cursor:pointer; font-weight:normal;" @onclick="@(async() => { await SelectSupplier(supplier); })"
+                    @key="supplier.Id">@supplier.CompanyName</li>
+                    
+            }
+        </ul>
+    </div>
+}
+
+@code {
+  
+    private string? _searchBySupplierName;
+
+
+    public string supplierSearchParam
+    {
+        get => _searchBySupplierName;
+        set
+        {
+            _searchBySupplierName = value;
+            if (!string.IsNullOrWhiteSpace(_searchBySupplierName) &&
+                //more than three characters have been typed
+                _searchBySupplierName.Length > 3)
+            {
+                ViewSuppliers();
+            }
+        }
+    }
+
+    private List<Supplier>? _suppliers;
+    private Supplier? selectedSupplier;
+
+    [Parameter]
+    public EventCallback<List<Supplier>> OnSearchSuppliers{ get; set; }
+
+
+
+    [Parameter]
+    public EventCallback<Supplier> OnSelectSupplier { get; set; }
+
+    private async Task SelectSupplier(Supplier supplier)
+    {
+        await OnSelectSupplier.InvokeAsync(supplier);
+        selectedSupplier = supplier;
+        _searchBySupplierName = "";
+    }
+
+    [Parameter]
+    public bool DisplaySearchResult { get; set; } = false;
+    
+    private async Task ViewSuppliers()
+    {
+        var supps = (await SearchSuppliersByName
+            .SearchSupplierAsync(supplierSearchParam??string.Empty))?.ToList();
+        
+        //await search results and populate relevant control.
+        await OnSearchSuppliers.InvokeAsync(supps);
+        _suppliers = supps;
+        this.selectedSupplier = null;
+        StateHasChanged();
+    }
+
+  
+}

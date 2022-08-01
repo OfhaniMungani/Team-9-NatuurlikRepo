@@ -50,5 +50,8 @@ namespace NatuurlikBase.Models
         [ForeignKey("SuburbId")]
         public Suburb Suburb { get; set; }
 
+        public List<SupplierInventory>? SupplierInventory { get; set; }
+
+
     }
 }

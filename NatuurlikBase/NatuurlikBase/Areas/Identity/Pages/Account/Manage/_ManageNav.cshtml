@@ -9,19 +9,17 @@
 }
 
 <div>
-    <div class="card" id="side">
+    <div class="card sideside">
         <ul class="nav flex-column" >
-            <li class="nav-item"><a class="nav-link man @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
-            <li class="nav-item"><a class="nav-link man @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Reset Password</a></li>
-            <li class="nav-item"><a class="nav-link man @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
-            <li class="nav-item"><a class="nav-link man">Orders</a></li>
-            <li class="nav-item"><a class="nav-link man">Returns</a></li>
-        @*    @if (hasExternalLogins)
+            <li class="nav-item"><a class="nav-link man @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index"><i class="bi bi-person">&nbsp;</i> Profile</a></li>
+            <li class="nav-item"><a class="nav-link man @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword"><i class="bi bi-lock">&nbsp;</i> Reset Password</a></li>
+            <li class="nav-item"><a class="nav-link man @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email"><i class="bi bi-envelope">&nbsp;</i> Email</a></li>
+            @if(User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
             {
-                <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
+            <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="Index"><i class="bi bi-bag">&nbsp;</i> Orders</a></li>
+            <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="ViewQueries"><i class="bi bi-question-circle">&nbsp;</i> Queries</a></li>
+            <li class="nav-item"><a class="nav-link man"><i class="bi bi-box-seam">&nbsp;</i> Returns</a></li>
             }
-            <li class="nav-item"><a class="nav-link man @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
-            <li class="nav-item"><a class="nav-link man @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>*@
         </ul>
     </div>
 </div>

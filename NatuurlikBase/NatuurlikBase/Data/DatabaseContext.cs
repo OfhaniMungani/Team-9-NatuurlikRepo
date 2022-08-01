@@ -29,10 +29,39 @@ public class DatabaseContext : IdentityDbContext<ApplicationUser>
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<QueryReason> QueryReason { get; set; }
     public DbSet<ReviewReason> ReviewReason { get; set; }
+    public DbSet<InventoryProcured> InventoryProcured { get; set; }
+    public DbSet<InventoryItemTransaction> InventoryItemTransaction { get; set; }
+    public DbSet<ProductTransaction> ProductTransaction { get; set; }
+    public DbSet<WriteOffInventory> InventoryWriteOff { get; set; } 
+    public DbSet<WriteOffProduct> ProductWriteOff { get; set; }
+    public DbSet<Cart> UserCart { get; set; }
+    public DbSet<Order> Order { get; set; }
+    public DbSet<OrderLine> OrderLine { get; set; }
+    public DbSet<VAT> VAT { get; set; }
+    public DbSet<PackageOrderProduct> OrderProduct { get; set; }
+    public DbSet<OrderQuery> OrderQuery { get; set; }
+    public DbSet<PaymentReminder> PaymentReminder { get; set; }
+    public DbSet<OrderReview> OrderReview { get; set; }
+    public DbSet<ReturnedProduct> ReturnedProduct { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        //Establish relationships for ProductInventory on creating the model.
         base.OnModelCreating(builder);
+
+        builder.Entity<ProductInventory>()
+                .HasKey(pi => new { pi.ProductId, pi.InventoryItemId });
+
+        builder.Entity<ProductInventory>()
+            .HasOne(pi => pi.Product)
+            .WithMany(p => p.ProductInventories)
+            .HasForeignKey(pi => pi.ProductId);
+
+        builder.Entity<ProductInventory>()
+            .HasOne(pi => pi.Inventory)
+            .WithMany(i => i.ProductInventories)
+            .HasForeignKey(pi => pi.InventoryItemId);
+
 
     }
 

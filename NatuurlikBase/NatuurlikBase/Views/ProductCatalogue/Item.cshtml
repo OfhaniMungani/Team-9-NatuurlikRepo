@@ -1,47 +1,74 @@
 ﻿@model Cart
 
-
 @section catalogue {
     <link href="@Url.Content("~/css/catalogue.css")" rel="stylesheet" type="text/css" />
 }
 
 <div class="container">
+
+<form method="post">
+    <input hidden asp-for="ProductId" />
+
     <div class="itemspace row justify-content-center">
-        <div class="col-lg-6 left">
-            <img class="prodimg" src="@Model.Product.PictureUrl">
+        <div class="col-lg-6 right">
+            @if(@Model.Product.QuantityOnHand == 0)
+            {
+                <img src="@Model.Product.PictureUrl" class="prodstock"  alt="Product Image">
+            }
+            else
+            {
+                <img src="@Model.Product.PictureUrl" class="prodimg"  alt="Product Image">
+            }  
         </div>
           <div class="col-lg-6">
         @if(User.IsInRole(SR.Role_Reseller))
         {
              <h2 class="itemTitle">@Model.Product.Name</h2>
-            <h3><strong>R @Model.Product.ResellerPrice.ToString("0.00")</strong> </h3> 
+            
+             <h3><strong>R @Model.Product.ResellerPrice.ToString("0.00")</strong> </h3> 
             <p id="itemdesc">
                @Model.Product.Description
                 </p>
             }
             else
             {
-                  <h2 class="itemTitle">@Model.Product.Name</h2>
+            <h2 class="itemTitle">@Model.Product.Name</h2>
             <h3><strong>R @Model.Product.CustomerPrice.ToString("0.00")</strong> </h3> 
             <p id="itemdesc">
                @Model.Product.Description
             </p>
-            }
+            }           
+
+             <div class="row">
+                 <div class="col-3">
+                     <label class="small" asp-for="Count">Count</label>
+                     <input asp-for="Count" min=1 class="form-control" />
+                 </div>
+                 <div class="col-5">
+                    @if(@Model.Product.QuantityOnHand == 0)
+                    {
+                        <a href="" class="btn btn-primary btn-block" id="itembtn" disabled >OUT OF STOCK</a> 
+                    }
+                    else
+                    {
+                        <button href="#" class="btn btn-primary btn-block" id="itembtn">Add to Cart</button> 
+                    } 
+                 </div>
+                <div class="col-4 backbtn">
+                    <a asp-area="" asp-controller="ProductCatalogue" asp-action="Index" class="underline">Back</a>
+                </div>
+             </div>
             
-            <div class="row">
-                <div class="col-4">
-                    <a asp-area="" asp-controller="ProductCatalogue" asp-action="Index" class="btn btn-primary btn-block" id="itembtn">Back</a>
-                </div>
-                <div class="col-5">
-                    <button href="#" class="btn btn-primary btn-block" id="itembtn">Add to Cart</button>
-                </div>
-            </div>
             <h6>Category</h6>
             <p id="itemcat">@Model.Product.Category.Name</p>
              <h6>By</h6>
             <p id="itemcat">@Model.Product.Brand.Name</p>
         </div>       
     </div>
+
+</form>
+
+
 
     <h4>Related Products</h4>
         <div class="container" >
@@ -80,4 +107,6 @@
               </div>
             </div>
         </div>
+</div>
+
 </div>

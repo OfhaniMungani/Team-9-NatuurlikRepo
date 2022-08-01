@@ -1,0 +1,123 @@
+﻿@page "/produce"
+@using NatuurlikBase.Components
+@using NatuurlikBase.Repository.IRepository
+@using NatuurlikBase.ViewModels
+
+@inject IProduceFinishedProduct ProduceProduct
+@inject IValidateEnoughInventories ValidateEnoughInventories
+@inject NavigationManager NavigationManager
+
+<ErrorMessageComponent ErrorMessage="@exceptionMessage"></ErrorMessageComponent>
+<SuccessMessageComponent SuccessMessage="@producedSuccessfully"></SuccessMessageComponent>
+ 
+<div class="card">
+    <div class="card-header" style="background-color: #F2F2F2">
+            <h5>Produce Finished Product</h5>
+     </div>
+<br/>
+<div class="card-body">
+@if (produceVM != null)
+{
+    <EditForm Model="produceVM" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+
+        <div class="form-group">
+            <label for="inv">Select Product:</label>
+            <ViewProductsComponent 
+                OnSelectProduct="OnSelectProduct"
+                DisplaySearchResult="true"></ViewProductsComponent> 
+                <br/>
+            <InputText id="inv" class="form-control" style="width:625px" @bind-Value="produceVM.ProductName" disabled></InputText>            
+            <input type="hidden" value="@produceVM.ProductId" />  
+            @if (selectedProduct != null)
+            {
+                <div style="margin-top:3px">
+                   
+                </div>                
+            }
+            
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 col">
+                <div class="form-group">
+                    <label for="qty">Quantity to Produce:</label>
+                    <InputNumber id="qty" @bind-Value="produceVM.QuantityToProduce" class="form-control"></InputNumber>
+                </div>
+            </div>
+        </div>
+
+        <br/>
+        @*<button type="button"  @onclick="@(()=> OnCancel())" class="btn btn-primary">Cancel</button>*@
+        <button type="submit" class="btn btn-success" style="width:150px">Produce</button>
+        @*<button @onclick="Cancel" class="btn btn-danger" style="width:150px">Cancel</button>*@
+              
+    </EditForm>
+}
+</div>
+</div>
+
+
+@code {
+
+
+    
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo($"/Dashboard", true);
+    }
+
+
+    private ProduceVM produceVM = new ProduceVM();
+    private string producedSuccessfully;
+    private string exceptionMessage;
+    private Product selectedProduct;
+
+
+    private async Task OnValidSubmit()
+    {
+        if (!await ValidateEnoughInventories.ExecuteAsync(this.selectedProduct, this.produceVM.QuantityToProduce))
+        {
+            exceptionMessage = $"Insufficient inventories available for producing: {this.produceVM.QuantityToProduce} x {this.selectedProduct.Name}";
+
+            return;
+        }
+
+        else if(this.selectedProduct == null)
+        {
+              exceptionMessage = $"No product has been selected for production";
+        }
+        
+        else
+        {
+            await ProduceProduct.ExecuteAsync(
+            this.selectedProduct,
+            this.produceVM.QuantityToProduce,
+            "Hannes"
+        );
+        this.producedSuccessfully =  $"Produced {this.produceVM.QuantityToProduce} x {this.selectedProduct.Name} successfully";
+            //Reinitialize Produce View Model
+            this.produceVM = new ProduceVM();
+            //No product is selected on form load
+            this.selectedProduct = null;
+             //NavigationManager.NavigateTo($"/produce", true);
+            return;
+        }
+
+       
+       
+        //set error message to empty string while not having being called
+        
+    }
+
+    public void OnSelectProduct(Product product)
+    {
+        this.selectedProduct = product;
+        produceVM.ProductId = product.Id;
+        produceVM.ProductName = product.Name;
+    }
+
+}
+

@@ -17,6 +17,19 @@ namespace NatuurlikBase.Repository.IRepository
         IProductBrandRepository Brand { get; }
         IProductCategoryRepository Category { get; }
         ISupplierRepository Supplier { get; }
+        IUserCartRepository UserCart { get; }
+
+        IOrderRepository Order { get; }
+
+        IOrderLineRepository OrderLine { get; }
+        ICourierRepository Courier { get; }
+        IOrderQueryRepository OrderQuery { get; }
+
+        IQueryReasonRepository QueryReason { get; }
+        IReviewReasonRepository ReviewReason { get; }
+        IOrderReviewcs OrderReview { get; }
+
+        IReturnedProductRepository ReturnedProduct { get; }
 
         void Save();
     }

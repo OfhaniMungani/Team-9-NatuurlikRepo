@@ -12,7 +12,11 @@
     <link rel="stylesheet" href="~/css/crud.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/fonts.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+    <link href="@Url.Content("~/css/orderfilters.css")" rel="stylesheet" type="text/css" />
+    @RenderSection("Styles", false)
     @RenderSection("fonts", false)
+    @RenderSection("account", false)
     @RenderSection("crud", false)
     @RenderSection("admin", false)
 </head>
@@ -50,14 +54,23 @@
                         <li>
                             <a asp-area="" asp-controller="ProductCategory" asp-action="Index">Product Categories</a>
                         </li>
+                         <li>
+                            <a asp-area="" asp-controller="ConfigureProduct" asp-action="Index">Product Configuration</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Produce" asp-action="Index">Produce Product</a>
+                        </li>
                     </ul>
                 </li>
                 <li>
                     <a href="#orderSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-bag">&nbsp;</i> Orders</a>
                     <ul class="collapse list-unstyled" id="orderSubmenu">
                         <li>
-                            <a asp-area="" asp-controller="Dashboard" asp-action="Index">Orders</a>
+                            <a asp-area="" asp-controller="Order" asp-action="Index">Manage Orders</a>
                         </li>
+                        <li>
+                            <a asp-area="" asp-controller="PaymentReminder" asp-action="Index">Payment Reminders</a>
+                        </li>                     
                         <li>
                             <a asp-area="" asp-controller="ReturnReason" asp-action="Index">Return Reasons</a>
                         </li>
@@ -67,8 +80,15 @@
                          <li>
                             <a asp-area="" asp-controller="ReviewReason" asp-action="Index">Review Reasons</a>
                         </li>
+
                         <li>
                             <a asp-area="" asp-controller="Courier" asp-action="Index">Couriers</a>
+                        </li>
+                           <li>
+                            <a asp-area="" asp-controller="Order" asp-action="ViewQueries">View Order Queries</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Order" asp-action="ViewReviews">View Order Reviews</a>
                         </li>
                     </ul>
                 </li>
@@ -76,7 +96,7 @@
                     <a asp-area="" asp-controller="Supplier" asp-action="Index"><i class="bi bi-truck">&nbsp;</i>Suppliers</a>
                 </li>
                 <li>
-                    <a href="#inventorySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-bar-chart">&nbsp;</i> Inventory</a>
+                    <a href="#inventorySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-bar-chart">&nbsp;</i> Inventory Management</a>
                     <ul class="collapse list-unstyled" id="inventorySubmenu">
                         <li>
                             <a asp-area="" asp-controller="InventoryItem" asp-action="Index">Inventory Items</a>
@@ -90,6 +110,13 @@
                         <li>
                             <a asp-area="" asp-controller="Dashboard" asp-action="Index">Inventory Levels</a>
                         </li>
+                        <li>
+                            <a asp-area="" asp-controller="SupplierOrder" asp-action="Index"> Send Supplier Order</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="InventoryProcured" asp-action="Index">Capture Procured Inventory</a>
+                        </li>
+                        
                     </ul>
                 </li>
 
@@ -134,6 +161,11 @@
                 <li>
                     <a asp-area="Admin" asp-controller="User" asp-action="Index"><i class="bi bi-person">&nbsp;</i> Users</a>
                 </li>
+
+                  <li>
+                    <a asp-area="Admin" asp-controller="VAT" asp-action="Index"><i class="bi bi-tags">&nbsp;</i> Manage VAT </a>
+                </li>
+
                 <li>
                     <a asp-area="" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-question-circle">&nbsp;</i> Help</a>
                 </li>
@@ -233,5 +265,7 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/chat.js"></script>
 </body>
 </html>

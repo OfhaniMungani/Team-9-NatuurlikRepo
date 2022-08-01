@@ -1,0 +1,31 @@
+﻿@inject NavigationManager NavigationManager
+
+
+@if (Product != null)
+{
+    <tr>
+        <td>@Product.Name</td>
+        <td>@Product.QuantityOnHand</td>
+       
+        <td>
+            <button type="submit" class="btn btn-success" @onclick="@(()=> ConfigureProduct(Product.Id))"><i class="bi bi-tools"></i> &nbsp; Configure Inventories</button>
+        </td>
+    </tr>    
+}
+
+
+@code {
+
+    [Parameter]
+    public Product? Product { get; set; }
+
+    [Parameter]
+    public EventCallback OnPageLoad { get; set; }
+
+    private void ConfigureProduct(int productId)
+    {
+        NavigationManager.NavigateTo($"ConfigureProduct/{productId}", true);
+    }
+
+
+}

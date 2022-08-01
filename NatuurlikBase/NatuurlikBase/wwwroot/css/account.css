@@ -15,24 +15,37 @@
     margin-bottom: 10px;
 }
 
+.numspace, #notice {
+    padding-top: 10px;
+}
+
+#notice {
+    font-family: Montserrat-Regular;
+}
+
 .head {
     padding-top: 10%;
     font-family: Montserrat-Medium;
     padding-bottom: 20px;
-    text-align:center;
+    text-align: center;
 }
 
-#reg, #log{
+#reg, #log {
     margin-bottom: 50px;
 }
 
-#center{
-    text-align:center;
+#center {
+    text-align: center;
 }
 
 #foremail {
     margin-top: 100px;
     margin-bottom: 200px;
+}
+
+#conf {
+    margin-top: 100px;
+    margin-bottom: 100px;
 }
 
 #sucemail {
@@ -49,17 +62,101 @@
     margin-bottom: 20px;
 }
 
-.man{
+.man {
     color: black;
 }
 
 #side {
     width: 80%;
     background-color: #FDFDFD;
+    border: none;
 }
 
-@media (min-width: 1024px) {
+#ordetails {
+    background-color: black;
+    color: white;
+    padding-left: 20px;
+    padding-bottom: 10px;
+}
 
+#paydue {
+    color: red;
+    padding-bottom: 30px;
+}
+
+#paying {
+    color: red;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    padding-right: 10px;
+}
+
+#strong, #strongone {
+    font-family: Montserrat-SemiBold;
+}
+
+#stronger, #strongone {
+    padding-top: 50px;
+}
+
+.spaceing {
+    padding-bottom: 10px;
+}
+
+.strongdetails {
+    margin-bottom: 50px;
+}
+
+.smaller, .rights {
+    padding-top: 20px;
+}
+
+.rights {
+    text-align: right;
+}
+
+#summarytotal {
+    font-family: Montserrat-SemiBold;
+}
+
+.man {
+    border-bottom: 1px solid lightgrey;
+}
+
+
+#light {
+    font-family: Montserrat-Light;
+}
+
+#under {
+    padding-right: 130px;
+    padding-left: 130px;
+    margin-bottom: 50px;
+}
+
+.sideside {
+    width: 250px;
+}
+
+.sideprofile {
+    padding-top: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 50px;
+}
+
+.ordstatus {
+    padding-top: 20px;
+    padding-bottom: 60px;
+}
+
+#ordspace {
+    padding-bottom: 15px;
+}
+
+
+
+@media (min-width: 1025px) {
     #log, #res {
         margin-top: 100px;
         margin-bottom: 100px;
@@ -68,8 +165,10 @@
     #reg {
         margin-top: 50px;
     }
+}
 
-    #under{
-        margin-bottom: 100px;
+@media (min-width: 1581px) {
+    .sideside {
+        width: 300px;
     }
 }

@@ -45,9 +45,7 @@ namespace NatuurlikBase.Controllers
 
             if (id == null || id == 0)
             {
-                //create product
-                //ViewBag.CategoryList = CategoryList;
-                //ViewData["CoverTypeList"] = CoverTypeList;
+               
                 return View(productVM);
             }
             else
@@ -55,7 +53,6 @@ namespace NatuurlikBase.Controllers
                 productVM.Product = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id);
                 return View(productVM);
 
-                //update product
             }
 
 
@@ -71,7 +68,8 @@ namespace NatuurlikBase.Controllers
             {
 
                 if (_context.Products.Any(c => c.Name==obj.Product.Name && c.CustomerPrice==obj.Product.CustomerPrice && c.ResellerPrice == obj.Product.ResellerPrice 
-                && c.Description == obj.Product.Description && c.CategoryId == obj.Product.CategoryId && c.ProductBrandId == obj.Product.ProductBrandId && c.PictureUrl == obj.Product.PictureUrl))
+                && c.Description == obj.Product.Description && c.CategoryId == obj.Product.CategoryId && c.ProductBrandId == obj.Product.ProductBrandId && 
+                c.PictureUrl == obj.Product.PictureUrl && c.ThresholdValue == obj.Product.ThresholdValue))
            
                    
                 {

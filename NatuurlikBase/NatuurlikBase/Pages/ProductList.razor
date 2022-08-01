@@ -1,0 +1,83 @@
+﻿@page "/products"
+@using NatuurlikBase.Components
+@using NatuurlikBase.Repository.IRepository
+
+@inject NavigationManager NavigationManager
+@inject IViewProductsByName ViewProductsByName
+
+
+@code {
+      private async Task LoadProducts()
+    {
+        var prods = await ViewProductsByName.ExecuteSearchAsync();
+        this.productsList = prods.ToList();
+    }
+}
+
+<style>
+    table{
+        border-bottom: 1px solid black;
+    }
+</style>
+
+ <div class="container-fluid">
+     <div class="row justify-content-start">
+            <div class="col-10 col-sm-10 col-md-10">
+            <h2 class="cheading">Products List</h2>
+		</div>
+     </div>
+<br/>
+
+<ViewProductsComponent OnSearchProducts="OnSearchProducts"></ViewProductsComponent>
+<br />
+
+@if (productsList != null)
+{
+    <table class="table">
+        <thead style="background-color: #232323">
+            <tr>
+                <th class="text-light">Name</th>
+                <th class="text-light">Quantity On Hand</th>
+                <th class="text-light"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var product in this.productsList)
+            {
+                <ProductItemComponent 
+                    Product="product"
+                    OnPageLoad="OnPageLoad"></ProductItemComponent>
+            }
+        </tbody>
+    </table>    
+}
+<br/>
+@*<button type="button" class="btn btn-primary" @onclick="OnBack">Back</button>
+*@
+
+</div>
+
+@code {
+    private List<Product>? productsList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProducts();
+    }
+
+    private void OnSearchProducts(List<Product> products)
+    {
+        this.productsList = products;
+    }
+
+    private void OnBack()
+    {
+        NavigationManager.NavigateTo("/Dashboard");
+    }
+
+    private async Task OnPageLoad()
+    {
+        await LoadProducts();
+    }
+
+}

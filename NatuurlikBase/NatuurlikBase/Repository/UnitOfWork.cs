@@ -27,6 +27,16 @@ namespace NatuurlikBase.Repository
             Brand = new ProductBrandRepository(_db);
             Category = new ProductCategoryRepository(_db);
             Supplier = new SupplierRepository(_db);
+            UserCart = new UserCartRepository(_db);
+            Order = new OrderRepository(_db);
+            OrderLine = new OrderLineRepository(_db);
+            Courier = new CourierRepository(_db);
+            OrderQuery = new OrderQueryRepository(_db);
+            QueryReason = new QueryReasonRepository(_db);
+            ReviewReason = new ReviewReasonRepository(_db);
+            OrderReview = new OrderReviewRepository(_db);
+            ReturnedProduct = new ReturnedProductRepository(_db);
+
 
         }
         public ICountryRepository Country { get; private set; }
@@ -39,6 +49,17 @@ namespace NatuurlikBase.Repository
         public IProductCategoryRepository Category { get; private set; }
         public ISupplierRepository Supplier { get; private set; }
 
+        public IUserCartRepository UserCart { get; private set; }
+        public IOrderRepository Order { get; private set; }
+        public IOrderLineRepository OrderLine { get; private set; }
+        public ICourierRepository Courier { get; private set; }
+        public IOrderQueryRepository OrderQuery { get; private set; }
+
+        public IQueryReasonRepository QueryReason { get; private set; }
+        public IReviewReasonRepository ReviewReason { get; private set; }
+        public IOrderReviewcs OrderReview { get; private set; }
+
+        public IReturnedProductRepository ReturnedProduct { get; private set; }
 
         public void Save()
         {

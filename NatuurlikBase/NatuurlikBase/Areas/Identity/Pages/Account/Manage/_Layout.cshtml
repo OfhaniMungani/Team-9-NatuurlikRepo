@@ -13,14 +13,16 @@
     <link href="@Url.Content("~/css/account.css")" rel="stylesheet" type="text/css" />
 }
 
-<div class="container" id="under">
+<div class="container-fluid" id="under">
     <h2 class="acc">My Account</h2>
         <div class="row">
             <div class="col-md-3">
                 <partial name="_ManageNav" />
             </div>
             <div class="col-md-9">
-                @RenderBody()
+                <div class="card sideprofile">
+                    @RenderBody()
+                </div>  
             </div>
         </div>
 </div>

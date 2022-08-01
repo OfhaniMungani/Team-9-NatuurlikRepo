@@ -35,17 +35,16 @@ namespace NatuurlikBase.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,InventoryItemName,InventoryTypeId,QuantityOnHand")] InventoryItem inventoryItem)
+        public IActionResult Create([Bind("Id,InventoryItemName,InventoryTypeId,QuantityOnHand,ThresholdValue")] InventoryItem inventoryItem)
         {
             if (ModelState.IsValid)
 
             {
 
-                if (db.InventoryItem.Any(c => c.InventoryItemName == inventoryItem.InventoryItemName && c.InventoryTypeId == inventoryItem.InventoryTypeId && c.QuantityOnHand == inventoryItem.QuantityOnHand))
+                if (db.InventoryItem.Any(c => c.InventoryItemName == inventoryItem.InventoryItemName && c.InventoryTypeId == inventoryItem.InventoryTypeId && c.QuantityOnHand == inventoryItem.QuantityOnHand
+                && c.ThresholdValue == inventoryItem.ThresholdValue))
                 {
                     ViewBag.Error = "Inventory Type Already exist in the database.";
-
-
                 }
                 else
                 {
@@ -54,7 +53,7 @@ namespace NatuurlikBase.Controllers
                     ViewBag.CountryConfirmation = "Are you sure you want to add a return reason.";
                     db.SaveChanges();
 
-                    TempData["success"] = "Inventory Type successfully added.";
+                    TempData["success"] = "Inventory Item successfully added.";
                     return RedirectToAction("Index");
                 }
 
@@ -84,22 +83,21 @@ namespace NatuurlikBase.Controllers
    
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([Bind("Id,InventoryItemName,InventoryTypeId,QuantityOnHand")] InventoryItem inventoryItem)
+        public IActionResult Edit([Bind("Id,InventoryItemName,InventoryTypeId,QuantityOnHand,ThresholdValue")] InventoryItem inventoryItem)
         {
             if (ModelState.IsValid)
 
             {
-               
-
-                    if (db.InventoryItem.Any(c => c.InventoryItemName==inventoryItem.InventoryItemName &&c.InventoryTypeId==inventoryItem.InventoryTypeId && c.QuantityOnHand==inventoryItem.QuantityOnHand))
+                    if (db.InventoryItem.Any(c => c.InventoryItemName==inventoryItem.InventoryItemName &&c.InventoryTypeId==inventoryItem.InventoryTypeId && c.QuantityOnHand==inventoryItem.QuantityOnHand
+                    && c.ThresholdValue == inventoryItem.ThresholdValue))
                 {
-                    ViewBag.Error = "Return Reason Already exist in the database.";
+                    ViewBag.Error = "Already exist in the database.";
 
                 }
                 else
                 {
                     db.Entry(inventoryItem).State = EntityState.Modified;
-                    TempData["success"] = "Inventory Type Successfully Edited.";
+                    TempData["success"] = "Inventory Item Successfully Updated.";
                     ViewBag.ReturnReasonConfirmation = "Are you sure with your return reason changes.";
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -136,7 +134,7 @@ namespace NatuurlikBase.Controllers
             InventoryItem inventoryItem = db.InventoryItem.Find(id);
             db.InventoryItem.Remove(inventoryItem);
             ViewBag.CountryConfirmation = "Are you sure you want to delete a country.";
-            TempData["success"] = "Inventory Type Successfully Deleted.";
+            TempData["success"] = "Inventory Item Successfully Deleted.";
             db.SaveChanges();
             return RedirectToAction("Index");
         }
