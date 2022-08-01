@@ -83,11 +83,11 @@
                                     </div>
                                     <div class="card-body">        
                                         <div class="row">
-                                            <div class="col-md-6 smaller">
+                                            <div class="col-md-5 smaller">
                                                 <h2 id="light">Order Status: <strong>@Model.Order.OrderStatus</strong></h2>
                                                 <p id="paydue"><strong>@Model.Order.OrderPaymentStatus</strong></p>
                                             </div>
-                                            <div class="col-md-6 rights">
+                                            <div class="col-md-7 rights">
                                                  @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
                                                  {
                                                     <a asp-controller="Order" asp-action="LogQuery" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Query Order">Query Order</a>

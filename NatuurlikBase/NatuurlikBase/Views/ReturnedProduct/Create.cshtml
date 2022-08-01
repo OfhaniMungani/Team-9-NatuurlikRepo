@@ -21,26 +21,29 @@
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                              <div class="form-group">
                              <label asp-for="OrderId" class="control-label">Order Number</label>
-                             <input asp-for="OrderId" class="form-control col-md-10" readonly>
+                             <input asp-for="OrderId" class="form-control col-md-6" readonly>
                              </div> 
 
                             <div class="form-group">
                                <label asp-for="ProductId">Select Returned Product</label>
-                               <select asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId">
+                               <select asp-for="ProductId" class ="form-control col-md-6" asp-items="ViewBag.ProductId">
                                         <option disabled selected>- Select Product -</option>
                                     </select>
                             </div>
                             <div class="form-group">
                                 <label asp-for="QuantityReceived" class="control-label">Quantity Received</label>
-                                <input asp-for="QuantityReceived" class="form-control" />
+                                <input asp-for="QuantityReceived" class="form-control col-md-6" />
                                 <span asp-validation-for="QuantityReceived" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="ReturnReasonId" class="control-label">Reason for Return</label>
-                                <select asp-for="ReturnReasonId" class ="form-control col-md-10" asp-items="ViewBag.ReturnReasonId">
+                                <select asp-for="ReturnReasonId" class ="form-control col-md-6" asp-items="ViewBag.ReturnReasonId">
                                      <option disabled selected>- Select Reason -</option>
                                 </select>
                             </div>
+
+                            <br/>
+
                             <button type="button" class="btn btn-success" style="width:150px" data-toggle="modal" data-target="#exampleModal">Log Return</button>
                             <a asp-controller="ReturnedProduct" asp-action="Index" class="btn btn-outline-dark" style="width:150px">
                                 Cancel

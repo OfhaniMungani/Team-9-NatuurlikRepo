@@ -16,7 +16,18 @@
     }
 }
 
-<h3>Suppliers List:</h3>
+<style>
+    table{
+        border-bottom: 1px solid black;
+    }
+</style>
+
+ <div class="container-fluid">
+     <div class="row justify-content-start">
+            <div class="col-10 col-sm-10 col-md-10">
+            <h2 class="cheading">Suppliers List:</h2>
+		</div>
+     </div>
 <br/>
 
 <ViewSuppliersComponent OnSearchSuppliers="OnSearchSupplier"></ViewSuppliersComponent>
@@ -25,11 +36,11 @@
 @if (suppliersList != null)
 {
     <table class="table">
-        <thead>
+        <thead style="background-color: #232323">
             <tr>
-                <th>Name</th>
-                <th>Supplier Email</th>
-                <th>Contact Number</th>
+                <th class="text-light">Name</th>
+                <th class="text-light">Supplier Email</th>
+                <th class="text-light">Contact Number</th>
                 <th></th>
             </tr>
         </thead>
@@ -46,6 +57,7 @@
 <br/>
 @*<button type="button" class="btn btn-primary" @onclick="OnBack">Back</button>
 *@
+</div>
 
 @code {
     private List<Supplier>? suppliersList;

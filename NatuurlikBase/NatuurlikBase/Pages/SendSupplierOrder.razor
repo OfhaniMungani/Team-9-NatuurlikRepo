@@ -17,24 +17,27 @@
 
 
     <SuccessMessageComponent SuccessMessage="@supplierOrderSent"></SuccessMessageComponent>
-<h1 style="text-align: center;"> Supplier Order Details:</h1>
-<br/>
+<div class="card">
+    <div class="card-header" style="background-color: #F2F2F2">
+        <h5>Supplier Order Details:</h5>
+    </div>
+        <div class="card-body">
 @if (this.supplier != null)
-{
-    <EditForm Model="supplier" OnValidSubmit="OnValidSubmit">
-        <DataAnnotationsValidator></DataAnnotationsValidator>
+        {
+            <EditForm Model="supplier" OnValidSubmit="OnValidSubmit">
+                <DataAnnotationsValidator></DataAnnotationsValidator>
         <ValidationSummary></ValidationSummary>
 
-        <label class="pl-4">Supplier:</label>
+        <label class="">Supplier:</label>
      
-            <InputText class="pl-4 form-control" disabled id="name"  @bind-Value="supplier.CompanyName"></InputText>
+            <InputText class="form-control" disabled id="name"  @bind-Value="supplier.CompanyName"></InputText>
          <br>
-        <label class="pl-4">Email Address:</label>
+        <label class="">Email Address:</label>
       
-            <InputText class="pl-4 form-control" disabled id="name"  @bind-Value="supplier.EmailAddress"></InputText>
+            <InputText class="form-control" disabled id="name"  @bind-Value="supplier.EmailAddress"></InputText>
         <br>
-        <label class="pl-4">Contact Number:</label>
-        <InputText class="pl-4 form-control" disabled id="name"  @bind-Value="supplier.PhoneNumber"></InputText>
+        <label class="">Contact Number:</label>
+            <InputText class="form-control" disabled id="name"  @bind-Value="supplier.PhoneNumber"></InputText>
         <br>
         @*<label class="pl-4">Email Subject:</label>
 
@@ -52,15 +55,16 @@
             </SupplierOrderInventoriesComponent>
         </div>
         
-
         <br/>
-        <button type="button"  @onclick="@(()=> OnBack())" class="btn btn-primary">Cancel</button>
-        <button type="submit"  @onclick="@(()=> SendSupplierOrderEmail(supplier.SupplierInventory))"    class="btn btn-primary" style="border-color: white;color: white;
-                                                                       background-color: blue;
-                                                                       text-decoration: none;">Send Email</button>
+        <button type="submit"  @onclick="@(()=> SendSupplierOrderEmail(supplier.SupplierInventory))" class="btn btn-success" style="width:150px">Send Email</button>
+        <button type="button"  @onclick="@(()=> OnBack())" class="btn btn-outline-dark" style="width:150px">Cancel</button>
+        
 
     </EditForm>
 
+    }
+        </div>
+</div>
     @code {
     //Code Behind
 
@@ -162,4 +166,4 @@
 }
 
     
-}
+

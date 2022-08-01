@@ -7,6 +7,15 @@
         OnSelectInventory="OnSelectInventory"
     ></ViewInventoriesComponent>
 </div>
+
+<style>
+    .qty{
+        width: 150px;
+    }
+
+</style>
+
+
 @if (SupplierOrderInventories != null && SupplierOrderInventories.Count > 0)
 {   
      <table class="table" style="justify-content:center">   
@@ -30,7 +39,7 @@
                      </td>*@
              
                       <td>                         
-                        <input type="number" min="1" 
+                        <input type="number" min="1" class="form-control qty"
                             @bind-value="orderInv.InventoryItemQuantity"
                             @bind-value:event="oninput"
                         >
