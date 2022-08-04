@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Title = "report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div id="page-content-wrapper">
+<div class="formGroup">
+    <div style="width: 750px; height: 750px; margin:auto">
+        <canvas id="chart" width="1920" height="1080"></canvas>
+    </div>
+      <button class="btn btn-primary" onclick="downloadPDF()">Download Chart as PDF</button>
+      <div style="width: 750px; height: 750px; margin:auto">
+        <canvas id="chart1" width="1920" height="1080"></canvas>
+    </div>
+      <button class="btn btn-primary" onclick="downloadPDF1()">Download Chart as PDF</button>
+</div>
+
+</div>
+@section Scripts {
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+<script src="https://unpkg.com/jspdf-autotable@3.5.13/dist/jspdf.plugin.autotable.js"></script>
+    <script>
+        $(document).ready(() => {
+            $.get({
+                url: "@Url.Action("GetOrderData", "report")",
+                method: "GET",
+                success: (data, status) => {
+                    console.log(data);
+                    console.log(status);
+
+                    let inData = JSON.parse(data);
+                    console.log(inData);
+
+                    let chartLabel = [];
+                    let chartData = [];
+
+                    $(inData).each((i, v) => {
+                        chartLabel.push(v.Name);
+                        chartData.push(v.Amount);
+                    });
+
+                    RenderChart(chartLabel, chartData);
+                }
+            });
+
+            function RenderChart(labels, data) {
+                let ctx = $("#chart");
+                let chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels ,
+                        datasets: [{
+                            label: 'Rand Value of Sales',
+                            data: data,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(255, 205, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(201, 203, 207, 0.2)'
+                            ],
+                             hoverOffset: 5
+                        }]
+                    }
+                });
+             }
+        });
+  
+    </script>
+    <script>
+          $(document).ready(() => {
+            $.get({
+                url: "@Url.Action("GetProductOrderData", "report")",
+                method: "GET",
+                success: (data, status) => {
+                    console.log(data);
+                    console.log(status);
+
+                    let inData = JSON.parse(data);
+                    console.log(inData);
+
+                    let chartLabel = [];
+                    let chartData = [];
+
+                    $(inData).each((i, v) => {
+                        chartLabel.push(v.Name);
+                        chartData.push(v.Amount);
+                    });
+
+                    RenderChart(chartLabel, chartData);
+                }
+            });
+
+            function RenderChart(labels, data) {
+                let ctx = $("#chart1");
+                let chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels ,
+                        datasets: [{
+                            label: 'Rand Value of Sales',
+                            data: data,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(255, 205, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(201, 203, 207, 0.2)'
+                            ],
+                             hoverOffset: 5
+                        }]
+                    }
+                });
+             }
+        });
+        </script>
+}
+    <script>
+    
+                   
+    
+         function downloadPDF() {
+        var newCanvas = document.querySelector('#chart');
+
+        //create image from dummy canvas
+        var newCanvasImg = newCanvas.toDataURL("image/png", 1.0);
+
+        //creates PDF from img
+        var doc = new jsPDF('landscape');
+        doc.setFontSize(20);
+        doc.text(15, 15, "Product Chart");
+        doc.addImage(newCanvasImg, 'JPEG', 10, 10, 280, 150);
+        doc.save('BarReport.pdf');}
+        function downloadPDF1() {
+        var newCanvas = document.querySelector('#chart1');
+
+        //create image from dummy canvas
+        var newCanvasImg = newCanvas.toDataURL("image/png", 1.0);
+
+        //creates PDF from img
+        var doc = new jsPDF('landscape');
+        doc.setFontSize(20);
+        doc.text(15, 15, "Product Chart");
+        doc.addImage(newCanvasImg, 'JPEG', 10, 10, 280, 150);
+        doc.save('PieReport.pdf');}
+
+    
+    </script>
+
