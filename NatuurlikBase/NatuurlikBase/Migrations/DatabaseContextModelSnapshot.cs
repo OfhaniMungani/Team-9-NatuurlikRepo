@@ -845,13 +845,13 @@ namespace NatuurlikBase.Migrations
                     b.ToTable("ProductInventory");
                 });
 
-            modelBuilder.Entity("NatuurlikBase.Models.ProductTransaction", b =>
+            modelBuilder.Entity("NatuurlikBase.Models.ProductionTransaction", b =>
                 {
-                    b.Property<int>("ProductTransactionId")
+                    b.Property<int>("ProductionTransactionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductTransactionId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductionTransactionId"), 1L, 1);
 
                     b.Property<int>("ActivityType")
                         .HasColumnType("int");
@@ -872,11 +872,11 @@ namespace NatuurlikBase.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ProductTransactionId");
+                    b.HasKey("ProductionTransactionId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductTransaction");
+                    b.ToTable("ProductionTransaction");
                 });
 
             modelBuilder.Entity("NatuurlikBase.Models.Province", b =>
@@ -1529,7 +1529,7 @@ namespace NatuurlikBase.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("NatuurlikBase.Models.ProductTransaction", b =>
+            modelBuilder.Entity("NatuurlikBase.Models.ProductionTransaction", b =>
                 {
                     b.HasOne("NatuurlikBase.Models.Product", "Product")
                         .WithMany()
