@@ -21,6 +21,9 @@
 
     <img src="~/images/company.png" id="head" hidden>
     <label for="count">Total Customers: @ViewBag.count</label>
+    <input id="actor" type="text" value="@ViewBag.ActorName" hidden>
+    <input id="surname" type="text" value="@ViewBag.Surname" hidden>
+    <input id="countCustomer" type="text" value="@ViewBag.count" hidden>
 
 <table class="table" id="tblData" >
     <thead style="background-color: #232323">
@@ -84,9 +87,12 @@
         doc.setFontSize(8);
         var date = new Date().toLocaleDateString();
         var printedby = "Nomusa Vumisa"; //USER NAME AND SURNAME
-        doc.text(13, 66, "PRINTED BY: " + printedby);
+        var actorName = $("#actor").val();
+        var custcount = $("#countCustomer").val();
+        var actorSurname = $("#surname").val();
+        doc.text(13, 66, "PRINTED BY: " + actorName+' '+actorSurname);
         doc.text(160, 66, "DATE PRINTED: " + date);
-        doc.text(170, 80, "Total Customers: *"); //PRINT COUNT
+        doc.text(170, 80, "Total Customers: " + custcount); //PRINT COUNT
         //TABLE 
         doc.autoTable( { html: '#tblData', startY:82, headStyles: { fillColor: [35, 35, 35]} });      
         
