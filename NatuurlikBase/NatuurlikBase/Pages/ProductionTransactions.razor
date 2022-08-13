@@ -4,10 +4,22 @@
 @inject ISearchProductionTransactionsRepository SearchProductTransactionsUseCase
 @inject IJSRuntime JSRuntime
 
-<h3>Production Report</h3>
-<br/>
 
-<div id="printarea">
+ 
+    <div class="container-fluid">
+     <div class="row justify-content-start">
+            <div class="col-10 col-sm-10 col-md-10">
+            <h2 class="cheading">Production Report</h2>
+		</div>
+        <div class="col-md-9 col-lg-8">
+            <button class="btn btn-success" @onclick="ExportReport" >
+               <i class="bi bi-download"></i> Export
+			</button>
+		</div>
+	</div>
+    <br /><br />
+   <img src="/images/company.png" id="head" hidden>
+
 <div class="row">
    
     <div class="col">
@@ -19,28 +31,37 @@
         <input type="date" id="dt" class="form-control" @bind-value="dateTo" />
     </div>
 
-     <div class="col">
-        <label for="inv">Search By Product Name</label>
-        <input type="text" id="inv" class="form-control" @bind-value="prodName" />
+    <div class="col">
+        <AllProductsComponent 
+                OnSelectProduct="OnSelectProduct"
+                DisplaySearchResult="true">
+        </AllProductsComponent>
+
     </div>
+
+     <div class="col">
+        <label for="inv">Product To Filter By</label>
+        <input type="text" id="inv" class="form-control" @bind-value="prodName" readonly/>
+    </div>
+
+     
 
     <div class="col">
         <label>&nbsp;</label>
-        <button type="button" class="btn btn-success form-control" @onclick="SearchProducts">Generate Report</button>
+        <button type="button" class="btn btn-success form-control" @onclick="GenerateReport">Generate Report</button>
     </div>
 </div>
-
-<br/>
+<br />
 @if (productTransactions != null)
 {
-    <table class="table">
-        <thead>
+    <table class="table pt-3" id="tblData">
+        <thead style="background-color: #232323">
             <tr>
-                <th>Product Produced</th>
-                <th>Qty Before</th>
-                <th>Qty Produced</th>
-                <th>Qty After</th> 
-                <th>Transaction Date</th>
+                <th class="text-light">Product Produced</th>
+                <th class="text-light">Qty Before</th>
+                <th class="text-light">Qty Produced</th>
+                <th class="text-light">Qty After</th> 
+                <th class="text-light">Transaction Date</th>
                 
             </tr>
         </thead>
@@ -62,6 +83,7 @@
 }
 </div>
 
+
 @code {
     private string prodName;
     private DateTime? dateFrom;
@@ -69,7 +91,12 @@
     private int activityTypeId = 0;
     private IEnumerable<ProductionTransaction> productTransactions;
 
-    private async Task SearchProducts()
+
+      public void OnSelectProduct(Product product)
+    {
+        prodName = product.Name;
+    }
+    private async Task GenerateReport()
     {
         ProductTransactionType? productTransactionType = null;
         if (activityTypeId != 0) productTransactionType = (ProductTransactionType)activityTypeId;
@@ -80,4 +107,12 @@
             dateTo,
             productTransactionType);    
     }
+
+     async private void ExportReport()
+    {
+       await JSRuntime.InvokeVoidAsync("downloadPDF");
+    }
+
+   
 }
+
