@@ -70,17 +70,14 @@
 
 
     <script>
-
         function downloadPDF() {    
         var header = document.querySelector('#head'); 
         // var total = document.querySelector('[for="count"]'); TAKE COUNT FROM LABEL?? USED ID BUT...
-
         var doc = new jsPDF();
         //HEADER
         var width = doc.internal.pageSize.getWidth();
         var height = doc.internal.pageSize.getHeight();
         doc.addImage(header, 'png', 0, 8, width, height-250)
-
         //TITLE, DATE, PRINTED BY AND COUNT
         doc.setFontSize(18);
         doc.text(13, 60, "CUSTOMER REPORT");
@@ -90,7 +87,6 @@
         doc.text(13, 66, "PRINTED BY: " + printedby);
         doc.text(160, 66, "DATE PRINTED: " + date);
         doc.text(170, 80, "Total Customers: *"); //PRINT COUNT
-
         //TABLE 
         doc.autoTable( { html: '#tblData', startY:82, headStyles: { fillColor: [35, 35, 35]} });      
         
@@ -99,8 +95,7 @@
         let finalY = doc.autoTable.previous.finalY;
         doc.text(88, finalY+20, "***END OF REPORT***");    
         doc.save('CustomerReport.pdf');}
-
     </script>
 
 
-}
+} 

@@ -90,9 +90,9 @@
         doc.setFontSize(8);
         var date = new Date().toLocaleDateString();
         var printedby = "Nomusa Vumisa"; //USER NAME AND SURNAME
-        doc.text(13, 66, "PRINTED BY: " + printedby);
         doc.text(160, 66, "DATE PRINTED: " + date);
-        doc.text(172, 80, "Total Resellers: *"); //PRINT COUNT
+        doc.text(170, 80, "Total Customers: *"); //PRINT COUNT
+   
 
         //TABLE 
         doc.autoTable( { html: '#tblData', startY:82, headStyles: { fillColor: [35, 35, 35]} });      
