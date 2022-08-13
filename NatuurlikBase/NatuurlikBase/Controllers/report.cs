@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using NatuurlikBase.Models;
 using NatuurlikBase.ViewModels;
 using System.Globalization;
-
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers
 {
@@ -12,15 +12,23 @@ namespace NatuurlikBase.Controllers
     {
 
         private DatabaseContext db;
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public report(DatabaseContext _db)
         {
             db = _db;
         }
+        public IActionResult Index()
+        {
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+
+            var actorName = db.Users.Where(x => x.Id == claim.Value).FirstOrDefault();
+
+            ViewBag.ActorName = actorName.FirstName;
+            ViewBag.Surname = actorName.Surname;
+            return View();
+        }
+
+       
 
         //User Sales Bar Graph againist orderTotal minus deliveryFees  
         public string GetOrderData()
@@ -46,7 +54,7 @@ namespace NatuurlikBase.Controllers
             {
                 //double Pamount = obj.Sum(o => o.ProductAmount);
                 double Samount = obj.Sum(o => o.Amount);
-                list.Add(new { Amount = Math.Round(userOrder.Amount), Name = userOrder.Name + " " + userOrder.Surname, sales = Samount, Fname = userOrder.Name, lName = userOrder.Surname });
+                list.Add(new { Amount = Math.Round(userOrder.Amount,2), Name = userOrder.Name + " " + userOrder.Surname, sales = Math.Round(Samount,2), Fname = userOrder.Name, lName = userOrder.Surname });
             }
 
             return JsonConvert.SerializeObject(list);
@@ -77,8 +85,8 @@ namespace NatuurlikBase.Controllers
             //render chart data
             foreach (var monthlyOrder in obj)
             {
-                double Samount = obj.Sum(o => o.Amount);
-                list.Add(new { Amount = Math.Round(monthlyOrder.Amount), Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthlyOrder.Month) + " " + monthlyOrder.Year, month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthlyOrder.Month), year = monthlyOrder.Year, sales = Samount });
+                decimal Samount = Math.Round((decimal)obj.Sum(o => o.Amount), 2);
+                list.Add(new { Amount = Math.Round(monthlyOrder.Amount,2), Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthlyOrder.Month) + " " + monthlyOrder.Year, month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthlyOrder.Month), year = monthlyOrder.Year, sales = Math.Round(Samount,2) });
             }
 
             return JsonConvert.SerializeObject(list);
@@ -95,7 +103,7 @@ namespace NatuurlikBase.Controllers
             List<Productsales> obj = db.OrderLine.Select(o => new Productsales
             {
 
-                salesAmount = Math.Round((double)o.Price * o.Count),
+                salesAmount = Math.Round((double)o.Price * o.Count,2),
                 ProductAmount = Math.Round((double)o.Count),
                 Product = o.ProductId
 
@@ -111,7 +119,7 @@ namespace NatuurlikBase.Controllers
                 double Samount = obj.Sum(o => o.salesAmount);
 
 
-                list.Add(new { salesAmount = Math.Round(SALESamount), ProductAmount = Math.Round(PRODUCTamount), Name = product.Name, amount = Pamount, Samount = Samount, });
+                list.Add(new { salesAmount = Math.Round(SALESamount,2), ProductAmount = Math.Round(PRODUCTamount,2), Name = product.Name, amount = Math.Round(Pamount,2), Samount = Math.Round(Samount,2), });
             }
 
             return JsonConvert.SerializeObject(list);
@@ -133,7 +141,7 @@ namespace NatuurlikBase.Controllers
             foreach (Product product in db.Products.ToList())
             {
                 double amount = obj.Where(o => o.OrderID == product.Id).Sum(o => o.Amount);
-                list.Add(new { Amount = Math.Round(amount), Name = product.Name });
+                list.Add(new { Amount = Math.Round(amount,2), Name = product.Name });
             }
 
             return JsonConvert.SerializeObject(list);
