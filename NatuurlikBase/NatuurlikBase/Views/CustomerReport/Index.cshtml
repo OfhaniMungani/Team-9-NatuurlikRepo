@@ -84,12 +84,12 @@
         doc.setFontSize(18);
         doc.text(13, 60, "CUSTOMER LIST REPORT");
         doc.setFontSize(8);
-        var date = new Date().toLocaleDateString();
+        var date = new Date().toLocaleString();
         var actorName = $("#actor").val();
         var custcount = $("#countCustomer").val();
         var actorSurname = $("#surname").val();
         doc.text(13, 66, "PRINTED BY: " + actorName+' '+actorSurname);
-        doc.text(160, 66, "DATE PRINTED: " + date);
+        doc.text(143, 66, "DATE PRINTED: " + date);
         doc.text(170, 80, "Total Customers: " + custcount); //PRINT COUNT
         //TABLE 
         doc.autoTable( { html: '#tblData', startY:82, headStyles: { fillColor: [35, 35, 35]} });             

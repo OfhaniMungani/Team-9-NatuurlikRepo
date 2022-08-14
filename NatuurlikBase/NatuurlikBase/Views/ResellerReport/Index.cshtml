@@ -86,12 +86,12 @@
         doc.setFontSize(18);
         doc.text(13, 60, "RESELLER LIST REPORT");
         doc.setFontSize(8);
-        var date = new Date().toLocaleDateString();
+        var date = new Date().toLocaleString();
         var actorName = $("#actor").val();
         var rescount = $("#countReseller").val();
         var actorSurname = $("#surname").val();
         doc.text(13, 66, "PRINTED BY: " + actorName+' '+actorSurname);
-        doc.text(160, 66, "DATE PRINTED: " + date);
+        doc.text(143, 66, "DATE PRINTED: " + date);
         doc.text(173, 80, "Total Resellers: " + rescount); //PRINT COUNT
         //TABLE
         doc.autoTable( { html: '#tblData', startY:82, headStyles: { fillColor: [35, 35, 35]} });             

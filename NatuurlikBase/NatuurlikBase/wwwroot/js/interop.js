@@ -15,10 +15,10 @@ function downloadPDF() {
     doc.setFontSize(18);
     doc.text(13, 60, "PRODUCTION REPORT");
     doc.setFontSize(8);
-    var date = new Date().toLocaleDateString();
-    var printedby = "Kyle van Eeden";
+    var date = new Date().toLocaleString();
+    var printedby = "Jannes Janse van Rensburg";
     doc.text(13, 66, "PRINTED BY: " + printedby);
-    doc.text(160, 66, "DATE PRINTED: " + date);
+    doc.text(143, 66, "DATE PRINTED: " + date);
     
     //TABLE 
     doc.autoTable( {html: '#tblData', startY:82, headStyles: {fillColor: [35, 35, 35]} });
