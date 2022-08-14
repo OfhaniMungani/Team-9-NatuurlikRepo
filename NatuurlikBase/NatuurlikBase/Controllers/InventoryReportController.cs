@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,12 @@ namespace NatuurlikBase.Controllers
         }
         public IActionResult Index()
         {
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var actorName = db.Users.Where(x => x.Id == claim.Value).FirstOrDefault();
+
+            ViewBag.ActorName = actorName.FirstName;
+            ViewBag.Surname = actorName.Surname;
 
             IEnumerable<InventoryItem> inventoryItems = db.InventoryItem.Include(b => b.InventoryType).ToList();
             ViewBag.total = inventoryItems.Sum(o => o.QuantityOnHand);

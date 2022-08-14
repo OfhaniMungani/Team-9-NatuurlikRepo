@@ -20,13 +20,10 @@ namespace NatuurlikBase.Controllers
             //retrieve authenticated user's details
             var claimsId = (ClaimsIdentity)User.Identity;
             var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
-
             var actorName = _context.Users.Where(x => x.Id == claim.Value).FirstOrDefault();
 
             ViewBag.ActorName = actorName.FirstName;
             ViewBag.Surname = actorName.Surname;
-
-
 
             IEnumerable<ApplicationUser> users = (from user in _context.Users
                                                   join userRole in _context.UserRoles on user.Id equals userRole.UserId

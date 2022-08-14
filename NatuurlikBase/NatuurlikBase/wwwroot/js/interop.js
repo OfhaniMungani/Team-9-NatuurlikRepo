@@ -26,6 +26,11 @@ function downloadPDF() {
     //FOOTER, NEED TO ADD PAGE NUMBERS
     doc.setFontSize(10);
     let finalY = doc.autoTable.previous.finalY;
-    doc.text(88, finalY+20, "***END OF REPORT***");    
+    doc.text(88, finalY + 20, "***END OF REPORT***");
+    const pageCount = doc.internal.getNumberOfPages();
+    for (var i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.text('Page ' + String(i) + ' of ' + String(pageCount), 200, 290, null, null, "right");
+    }
         doc.save('NatuurlikProductionReport.pdf');
     }
