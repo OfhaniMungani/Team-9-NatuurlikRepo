@@ -13,7 +13,7 @@ function downloadPDF() {
     doc.addImage(header, 'png', 0, 8, width, height - 250)
     //TITLE, DATE, PRINTED BY AND COUNT
     doc.setFontSize(18);
-    doc.text(13, 60, "PRODUCTION REPORT");
+    doc.text(13, 60, "PRODUCED PRODUCTS REPORT");
     doc.setFontSize(8);
     var date = new Date().toLocaleString();
     var printedby = "Jannes Janse van Rensburg";
@@ -32,5 +32,5 @@ function downloadPDF() {
         doc.setPage(i);
         doc.text('Page ' + String(i) + ' of ' + String(pageCount), 200, 290, null, null, "right");
     }
-        doc.save('NatuurlikProductionReport.pdf');
+        doc.save('ProducedProductsReport.pdf');
     }
