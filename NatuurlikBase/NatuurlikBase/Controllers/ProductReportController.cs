@@ -8,10 +8,8 @@ namespace NatuurlikBase.Controllers
 {
     public class ProductReportController : Controller
     {
-        public class ProductReportControllercs : Controller
-        {
             private readonly DatabaseContext db;
-            public ProductReportControllercs(DatabaseContext _db)
+            public ProductReportController(DatabaseContext _db)
             {
                 db = _db;
             }
@@ -34,4 +32,3 @@ namespace NatuurlikBase.Controllers
         
         }
     }
-}
