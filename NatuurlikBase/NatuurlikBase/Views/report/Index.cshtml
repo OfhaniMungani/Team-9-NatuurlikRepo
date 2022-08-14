@@ -4,11 +4,17 @@
 }
 <div id="page-content-wrapper">
     <div id ="reportPage">
+          <div class="row justify-content-start">
+            <div class="col-10 col-sm-10 col-md-10">
+            <h2 class="cheading">Sales Report</h2>
+		</div>
         <div class="col-md-9 col-lg-8">
-            <button id="exportButton" class="btn btn-success">
+            <button  id="exportButton" class="btn btn-success">
                <i class="bi bi-download"></i> Export
 			</button>
 		</div>
+	</div>
+     
     <div class="chartsContainer" id ="x">
            <input id="actor" type="text" value="@ViewBag.ActorName" hidden>
     <input id="surname" type="text" value="@ViewBag.Surname" hidden>
