@@ -142,19 +142,25 @@
                     <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-card-list"> &nbsp;</i>Reports</a>
                     <ul class="collapse list-unstyled" id="reportSubmenu">
                         <li>
-                            <a asp-area="" asp-controller="Dashboard" asp-action="Index">Sales Report</a>
+                            <a asp-area="" asp-controller="report" asp-action="Index">Sales Report</a>
                         </li>
                         <li>
-                            <a asp-area="" asp-controller="Dashboard" asp-action="Index">Product Report</a>
+                            <a asp-area="" asp-controller="CustomerReport" asp-action="Index">Customer Report</a>
                         </li>
                         <li>
-                            <a asp-area="" asp-controller="Dashboard" asp-action="Index">Customer Report</a>
+                            <a asp-area="" asp-controller="ResellerReport" asp-action="Index">Reseller Report</a>
                         </li>
                         <li>
-                            <a asp-area="" asp-controller="Dashboard" asp-action="Index">Inventory Report</a>
+                            <a asp-area="" asp-controller="InventoryReport" asp-action="Index">Inventory List Report</a>
                         </li>
                         <li>
                             <a asp-area="" asp-controller="Dashboard" asp-action="Index">Orders Report</a>
+                        </li>
+                         <li>
+                            <a asp-area="" asp-controller="ProductionReport" asp-action="Index">Produced Products Report</a>
+                        </li>
+                         <li>
+                            <a asp-area="" asp-controller="ProductReport" asp-action="Index">Product Report</a>
                         </li>
                     </ul>
                 </li>               

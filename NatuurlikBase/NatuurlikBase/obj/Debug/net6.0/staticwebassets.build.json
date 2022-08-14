@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "g02vzrr7K4OAJgmRhy8zw2RFzbL3SZmI5wsBsDaEdyg=",
+  "Hash": "pr/A/H8Li8f1FHmLovQUnMVgLYDl5oSPwoZbCIzBVIU=",
   "Source": "NatuurlikBase",
   "BasePath": "_content/NatuurlikBase",
   "Mode": "Default",
@@ -2006,6 +2006,23 @@
       "OriginalItemSpec": "wwwroot\\images\\coffee.png"
     },
     {
+      "Identity": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\images\\company.png",
+      "SourceId": "NatuurlikBase",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\",
+      "BasePath": "_content/NatuurlikBase",
+      "RelativePath": "images/company.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\company.png"
+    },
+    {
       "Identity": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\images\\confirm.png",
       "SourceId": "NatuurlikBase",
       "SourceType": "Discovered",
@@ -2652,6 +2669,23 @@
       "OriginalItemSpec": "wwwroot\\images\\products\\bf8b5da1-cf71-4bbd-94e0-9983330191d7.png"
     },
     {
+      "Identity": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\images\\products\\de3ea25d-7a44-4ffe-b9f5-2ce03fffbce2.png",
+      "SourceId": "NatuurlikBase",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\",
+      "BasePath": "_content/NatuurlikBase",
+      "RelativePath": "images/products/de3ea25d-7a44-4ffe-b9f5-2ce03fffbce2.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\products\\de3ea25d-7a44-4ffe-b9f5-2ce03fffbce2.png"
+    },
+    {
       "Identity": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\images\\products\\f2f04aa7-a2d2-4128-9129-d2c63f697efb.png",
       "SourceId": "NatuurlikBase",
       "SourceType": "Discovered",
@@ -2803,6 +2837,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\country.js"
+    },
+    {
+      "Identity": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\js\\interop.js",
+      "SourceId": "NatuurlikBase",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\",
+      "BasePath": "_content/NatuurlikBase",
+      "RelativePath": "js/interop.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\interop.js"
     },
     {
       "Identity": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\js\\notifications.js",

@@ -1,0 +1,33 @@
+﻿<Properties StartupConfiguration="{4F63A478-DD09-4BD3-B45F-D83FA043FF02}|Default">
+  <MonoDevelop.Ide.ItemProperties.NatuurlikBase PreferredExecutionTarget="/Applications/Safari.app" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="NatuurlikBase/Controllers/ProvinceController.cs">
+    <Files>
+      <File FileName="NatuurlikBase/Views/InventoryReport/Index.cshtml" Line="1" Column="1" />
+      <File FileName="NatuurlikBase/Controllers/InventoryReportController.cs" Line="1" Column="1" />
+      <File FileName="NatuurlikBase/Views/Shared/_AdminLayout.cshtml" Line="157" Column="75" />
+      <File FileName="NatuurlikBase/Controllers/ProductionReportController.cs" Line="1" Column="1" />
+      <File FileName="NatuurlikBase/Controllers/ProductReportController.cs" Line="1" Column="1" />
+      <File FileName="NatuurlikBase/Controllers/ProvinceController.cs" Line="5" Column="28" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="NatuurlikBase" expanded="True">
+            <Node name="NatuurlikBase" expanded="True">
+              <Node name="Controllers" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

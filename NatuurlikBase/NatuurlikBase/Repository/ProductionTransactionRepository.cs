@@ -5,18 +5,18 @@ using NatuurlikBase.Repository.IRepository;
 
 namespace NatuurlikBase.Repository
 {
-    public class ProductTransactionRepository : IProductTransactionRepository
+    public class ProductionTransactionRepository : IProductionTransactionRepository
     {
         private readonly DatabaseContext _db;
         private readonly IProductInventoryRepository _productInventoryRepository;
 
-        public ProductTransactionRepository(DatabaseContext db, IProductInventoryRepository productInventoryRepository)
+        public ProductionTransactionRepository(DatabaseContext db, IProductInventoryRepository productInventoryRepository)
         {
             _productInventoryRepository = productInventoryRepository;
             _db = db;
         }
 
-        public async Task<IEnumerable<ProductTransaction>> GetProductTransactionsAsync(
+        public async Task<IEnumerable<ProductionTransaction>> GetProductionTransactionsAsync(
             string productName,
             DateTime? dateFromFilter,
             DateTime? dateToFilter,
@@ -26,7 +26,7 @@ namespace NatuurlikBase.Repository
             
         {
             if (dateToFilter.HasValue) dateToFilter = dateToFilter.Value.AddDays(1);
-            var query = from p in _db.ProductTransaction
+            var query = from p in _db.ProductionTransaction
                         join prod in _db.Products on p.ProductId equals prod.Id
                         where 
                             (string.IsNullOrWhiteSpace(productName) || prod.Name.ToLower().IndexOf(productName.ToLower()) >= 0) &&
@@ -65,7 +65,7 @@ namespace NatuurlikBase.Repository
                 }
             }            
 
-            _db.ProductTransaction.Add(new ProductTransaction
+            _db.ProductionTransaction.Add(new ProductionTransaction
             {
                 ProductId = product.Id,
                 QuantityBefore = product.QuantityOnHand,
@@ -77,27 +77,10 @@ namespace NatuurlikBase.Repository
             await _db.SaveChangesAsync();
         }
 
-        public async Task PackageOrderAsync(Product product, int prodQty, string actor)
-        {
-            _db.ProductTransaction.Add(new ProductTransaction
-            {
-                ProductId = product.Id,
-                ActivityType = ProductTransactionType.PackageProduct,
-                QuantityBefore = product.QuantityOnHand,
-                QuantityAfter =- prodQty,
-                TransactionDate = DateTime.Now,
-                Actor = actor
-                
-            });
-            await _db.SaveChangesAsync();
-        }
-
-
-        //Product Transactions Index
-        public async Task<IEnumerable<ProductTransaction>> ProductTransactions(string prodName, ProductTransactionType? transactionType, DateTime? dateFromValue, DateTime? dateToValue)
+        public async Task<IEnumerable<ProductionTransaction>> ProductionTransactions(string prodName, DateTime? dateFromValue, DateTime? dateToValue, ProductTransactionType? transactionType)
         {
             if (dateToValue.HasValue) dateToValue = dateToValue.Value.AddDays(1);
-            var query = from pt in _db.ProductTransaction
+            var query = from pt in _db.ProductionTransaction
                         join prod in _db.Products on pt.ProductId equals prod.Id
                         where
                             (string.IsNullOrWhiteSpace(prodName) || prod.Name.ToLower().IndexOf(prodName.ToLower()) >= 0) &&

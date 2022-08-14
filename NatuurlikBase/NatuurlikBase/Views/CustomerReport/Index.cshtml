@@ -1,0 +1,109 @@
+﻿@model IEnumerable<ApplicationUser>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div id="page-content-wrapper">
+
+ <div class="container-fluid">
+     <div class="row justify-content-start">
+            <div class="col-10 col-sm-10 col-md-10">
+            <h2 class="cheading">Customer List Report</h2>
+		</div>
+        <div class="col-md-9 col-lg-8">
+            <button onclick="downloadPDF()" class="btn btn-success">
+               <i class="bi bi-download"></i> Export
+			</button>
+		</div>
+	</div>
+    <br /><br />
+
+    <img src="~/images/company.png" id="head" hidden>
+    <label for="count">Total Customers: @ViewBag.count</label>
+    <input id="actor" type="text" value="@ViewBag.ActorName" hidden>
+    <input id="surname" type="text" value="@ViewBag.Surname" hidden>
+    <input id="countCustomer" type="text" value="@ViewBag.count" hidden>
+
+<table class="table" id="tblData" >
+    <thead style="background-color: #232323">
+        <tr>
+            <th class="text-light">
+                First Name
+			</th>
+             <th class="text-light">
+                Surname
+			</th>
+             <th class="text-light">
+                Phone Number
+			</th>
+             <th class="text-light">
+                Email Address
+			</th>
+		</tr>
+	</thead>
+    <tbody>
+        @foreach(var obj in Model)
+        {
+            <tr>
+                <td>
+                    @obj.FirstName                                       
+				</td>
+                <td>
+                    @obj.Surname
+                </td>
+                <td>
+                    @obj.PhoneNumber
+                </td>
+                <td>
+                    @obj.Email
+                </td>
+			</tr>
+        }
+    </tbody>
+
+</table>
+</div>
+</div>
+@section Scripts {
+    <script src="~/js/notifications.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+
+
+    <script>
+        function downloadPDF() {    
+        var header = document.querySelector('#head'); 
+        var doc = new jsPDF();
+        //HEADER
+        var width = doc.internal.pageSize.getWidth();
+        var height = doc.internal.pageSize.getHeight();
+        doc.addImage(header, 'png', 0, 8, width, height-250)
+        //TITLE, DATE, PRINTED BY AND COUNT
+        doc.setFontSize(18);
+        doc.text(13, 60, "CUSTOMER LIST REPORT");
+        doc.setFontSize(8);
+        var date = new Date().toLocaleString();
+        var actorName = $("#actor").val();
+        var custcount = $("#countCustomer").val();
+        var actorSurname = $("#surname").val();
+        doc.text(13, 66, "PRINTED BY: " + actorName+' '+actorSurname);
+        doc.text(143, 66, "DATE PRINTED: " + date);
+        doc.text(170, 80, "Total Customers: " + custcount); //PRINT COUNT
+        //TABLE 
+        doc.autoTable( { html: '#tblData', startY:82, headStyles: { fillColor: [35, 35, 35]} });             
+        //FOOTER, NEED TO ADD PAGE NUMBERS
+        doc.setFontSize(10);
+        let finalY = doc.autoTable.previous.finalY;
+        doc.text(88, finalY+20, "***END OF REPORT***");  
+        const pageCount = doc.internal.getNumberOfPages();
+        for(var i = 1; i <= pageCount; i++) {   
+            doc.setPage(i);
+            doc.text('Page ' + String(i) + ' of ' + String(pageCount),200,290,null,null,"right");
+        }
+        doc.save('CustomerListReport.pdf');}
+    </script>
+
+
+} 

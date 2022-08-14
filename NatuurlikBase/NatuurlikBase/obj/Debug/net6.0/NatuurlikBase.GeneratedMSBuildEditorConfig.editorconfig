@@ -19,6 +19,10 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Components/AllProductsComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBbGxQcm9kdWN0c0NvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Components/ConfigurationDetailsSavedComponent.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb25maWd1cmF0aW9uRGV0YWlsc1NhdmVkQ29tcG9uZW50LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
@@ -65,6 +69,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Pages/ProduceFinishedProduct.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjZUZpbmlzaGVkUHJvZHVjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Pages/ProductionTransactions.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdGlvblRyYW5zYWN0aW9ucy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Pages/ProductList.razor]
@@ -247,6 +255,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cmllclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/CustomerReport/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJSZXBvcnRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/Dashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -285,6 +297,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/InventoryProcured/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5UHJvY3VyZWRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/InventoryReport/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5UmVwb3J0XEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/InventoryType/Create.cshtml]
@@ -403,6 +419,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdGlvbkNhcGFjaXR5XEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/ProductionReport/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdGlvblJlcG9ydFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/ProductReport/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFJlcG9ydFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/ProductWriteOff/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFdyaXRlT2ZmXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -453,6 +477,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/QueryReason/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUXVlcnlSZWFzb25cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/report/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NccmVwb3J0XEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/ResellerReport/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZWxsZXJSZXBvcnRcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Users/vumis/Desktop/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/ReturnedProduct/Create.cshtml]

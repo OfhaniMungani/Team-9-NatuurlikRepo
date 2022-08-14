@@ -1,0 +1,124 @@
+﻿@page "/productionreport"
+@using NatuurlikBase.Repository.IRepository
+
+@inject ISearchProductionTransactionsRepository SearchProductTransactionsUseCase
+@inject IJSRuntime JSRuntime
+
+
+<style>
+    .search{
+        margin-top:33px;
+    }
+</style>
+
+ 
+    <div class="container-fluid">
+     <div class="row justify-content-start">
+            <div class="col-10 col-sm-10 col-md-10">
+            <h2 class="cheading">Produced Products Report</h2>
+		</div>
+        <div class="col-md-9 col-lg-8">
+            <button class="btn btn-success" @onclick="ExportReport" >
+               <i class="bi bi-download"></i> Export
+			</button>
+		</div>
+	</div>
+    <br /><br />
+   <img src="/images/company.png" id="head" hidden>
+
+<div class="row">
+   
+    <div class="col-2">
+        <label for="df">Date From</label>
+        <input type="date" id="df" class="form-control" @bind-value="dateFrom" />
+    </div>
+    <div class="col-2">
+        <label for="dt">Date To</label>
+        <input type="date" id="dt" class="form-control" @bind-value="dateTo" />
+    </div>
+
+    <div class="col-3 search">
+        <AllProductsComponent 
+                OnSelectProduct="OnSelectProduct"
+                DisplaySearchResult="true">
+        </AllProductsComponent>
+
+    </div>
+
+     <div class="col-3">
+        <label for="inv">Product To Filter By</label>
+        <input type="text" id="inv" class="form-control" @bind-value="prodName" readonly/>
+    </div>
+
+     
+
+    <div class="col-2">
+        <label>&nbsp;</label>
+        <button type="button" class="btn btn-success form-control" @onclick="GenerateReport">Generate Report</button>
+    </div>
+</div>
+<br />
+@if (productTransactions != null)
+{
+    <table class="table pt-3" id="tblData">
+        <thead style="background-color: #232323">
+            <tr>
+                <th class="text-light">Product Produced</th>
+                <th class="text-light">Qty Before</th>
+                <th class="text-light">Qty Produced</th>
+                <th class="text-light">Qty After</th> 
+                <th class="text-light">Transaction Date</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var pt in productTransactions)
+            {
+                    var quantityProduced = pt.QuantityAfter - pt.QuantityBefore;
+                    <tr>
+                    
+                    <td>@pt.Product.Name</td>
+                    <td>@pt.QuantityBefore</td>
+                    <td>@quantityProduced</td>
+                    <td>@pt.QuantityAfter</td>
+                    <td>@pt.TransactionDate.ToString("MM/dd/yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+</div>
+
+
+@code {
+    private string prodName;
+    private DateTime? dateFrom;
+    private DateTime? dateTo;
+    private int activityTypeId = 0;
+    private IEnumerable<ProductionTransaction> productTransactions;
+
+
+      public void OnSelectProduct(Product product)
+    {
+        prodName = product.Name;
+    }
+    private async Task GenerateReport()
+    {
+        ProductTransactionType? productTransactionType = null;
+        if (activityTypeId != 0) productTransactionType = (ProductTransactionType)activityTypeId;
+
+        productTransactions = await SearchProductTransactionsUseCase.ExecuteAsync(
+            prodName,
+            dateFrom,
+            dateTo,
+            productTransactionType);    
+    }
+
+     async private void ExportReport()
+    {
+       await JSRuntime.InvokeVoidAsync("downloadPDF");
+    }
+
+   
+}
+

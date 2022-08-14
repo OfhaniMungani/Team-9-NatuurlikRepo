@@ -11,7 +11,7 @@ namespace NatuurlikBase.Repository
     public class ProduceFinishedProduct : IProduceFinishedProduct
     {
         private readonly IProductInventoryRepository _productRepository;
-        private readonly IProductTransactionRepository _productTransactionRepository;
+        private readonly IProductionTransactionRepository _productTransactionRepository;
         private readonly IInventoryItemRepository _inventoryItemRepository;
         private readonly IInventoryItemTransactionRepository _inventoryItemTransactionRepository;
 
@@ -20,7 +20,7 @@ namespace NatuurlikBase.Repository
             IInventoryItemRepository inventoryRepository,
             IProductInventoryRepository productRepository,
             IInventoryItemTransactionRepository inventoryTransactionRepository,
-            IProductTransactionRepository productTransactionRepository)
+            IProductionTransactionRepository productTransactionRepository)
         {
             _productRepository = productRepository;
             _productTransactionRepository = productTransactionRepository;

@@ -1,0 +1,400 @@
+﻿@{
+    ViewBag.Title = "report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div id="page-content-wrapper">
+    <div class="container-fluid">
+    <div id ="reportPage">
+          <div class="row justify-content-start">
+            <div class="col-10 col-sm-10 col-md-10">
+            <h2 class="cheading">Sales Report</h2>
+		</div>
+        <div class="col-md-9 col-lg-8">
+            <button  id="exportButton" class="btn btn-success">
+               <i class="bi bi-download"></i> Export
+			</button>
+		</div>
+	</div>
+
+    <img src="~/images/company.png" id="head" hidden>
+     
+    <div class="chartsContainer" id ="x">
+        <input id="actor" type="text" value="@ViewBag.ActorName" hidden>
+        <input id="surname" type="text" value="@ViewBag.Surname" hidden>
+  
+        <div style="width: 60%; padding-bottom: 50px; padding-top: 30px; margin:auto">       
+           <div> <canvas id="chart"></canvas></div>    
+        </div>
+        <table class="table" id="sales">
+            <thead style="background-color: #232323">
+                <tr>
+                    <th class="text-light">First Name</th>
+                    <th class="text-light">Last Name</th>
+                    <th class="text-light">Sales Value (ZAR)</th> 
+                </tr>
+            </thead>
+            <tbody id ="table-body1"></tbody>
+             <tfoot  id ="table-foot1"></tfoot>
+        </table>
+ 
+        @*SALES BY PRODUCT REPORT*@
+        <div style="width: 60%; padding-bottom: 50px; padding-top: 50px; margin:auto">     
+            <canvas id="chart1"></canvas>
+        </div>  
+
+         <table class="table" id="prodSales">
+            <thead style="background-color: #232323">
+                <tr>
+                    <th class="text-light">Product Name</th>
+                    <th class="text-light">Product Quantity</th>
+                    <th class="text-light">Sales Value (ZAR)</th> 
+                </tr>
+            </thead>
+            <tbody id ="table-body"></tbody>
+            <tfoot  id ="table-foot"></tfoot>
+         </table>
+		
+        @*MONTHLY SALES REPORT*@
+        <div style="width: 60%; padding-bottom: 50px; padding-top: 50px; margin:auto">               
+            <canvas id="chart2"></canvas>
+        </div>  
+        
+        <table class="table" id="months">
+        <thead style="background-color: #232323">
+            <tr>
+                <th class="text-light">Month</th>
+                <th class="text-light">Year</th>
+                <th class="text-light">Sales Value (ZAR)</th> 
+            </tr>
+        </thead>
+        <tbody id ="table-body2"></tbody>
+        <tfoot  id ="table-foot2"> </tfoot>
+        </table>
+   
+</div> 
+    </div> 
+    </div>  
+   </div>  
+
+@section Scripts {
+
+ <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+ <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+
+
+<script>
+
+    
+$("#exportButton").click(function(){
+    
+        var doc = new jsPDF();
+
+        //HEADER
+        var header = document.querySelector('#head'); 
+        doc.addImage(header, 'png', 0, 8, 208, 50)
+
+        //TITLE
+        doc.setFontSize(18);
+        doc.text(13, 60, "SALES REPORT");
+
+        //DATE, PRINTED BY
+        doc.setFontSize(8);
+        var date = new Date().toLocaleString();
+        var actorName = $("#actor").val();
+        var actorSurname = $("#surname").val();
+        doc.text(13, 66, "PRINTED BY: " + actorName+' '+actorSurname);
+        doc.text(143, 66, "DATE PRINTED: " + date);
+
+        //SALES GRAPH
+        var chart1 = document.querySelector('#chart'); 
+        doc.addImage(chart1, 'png', 35, 80, 140, 90)
+        doc.autoTable( { html: '#sales', startY:190, headStyles: { fillColor: [222, 222, 222] , textColor: [0, 0, 0]  }  });       
+
+        //PRODUCT GRAPH
+        doc.addPage();
+        var chart2 = document.querySelector('#chart1'); 
+        doc.addImage(chart2, 'png', 35, 20, 140, 90)
+        doc.autoTable( { html: '#prodSales', startY:130, headStyles: { fillColor: [222, 222, 222] , textColor: [0, 0, 0]  }  });
+
+        //MONTHS GRAPH
+        doc.addPage();
+        var chart3 = document.querySelector('#chart2'); 
+        doc.addImage(chart3, 'png', 35, 20, 140, 90)
+        doc.autoTable( { html: '#months', startY:130, headStyles: { fillColor: [222, 222, 222] , textColor: [0, 0, 0]  } });
+
+        //FOOTER AND PAGE NUMBERS
+        doc.setFontSize(10);
+        let finalY = doc.autoTable.previous.finalY;
+        doc.text(88, finalY+20, "***END OF REPORT***");  
+        const pageCount = doc.internal.getNumberOfPages();
+        for(var i = 1; i <= pageCount; i++) {   
+            doc.setPage(i);
+            doc.text('Page ' + String(i) + ' of ' + String(pageCount),200,290,null,null,"right");
+        } 
+
+        doc.save("SalesReport.pdf");
+
+});
+
+
+
+        $(document).ready(() => {
+            $.get({
+                url: "@Url.Action("GetOrderData", "report")",
+                method: "GET",
+               
+                success: (data, status) => {
+                    console.log(data);
+                    console.log(status);
+
+                    let inData = JSON.parse(data);
+                    console.log(inData);
+                    let table = $("#table-body1");
+                        let foot = $("#table-foot1");
+                 var total =0;
+                 var salesTotal = 0;
+                        table.empty();
+
+                        console.log(inData);
+
+                        if (inData.length > 0) {
+                            $(inData).each((i, v) => {
+                                table.append(`<tr><td>${v.Fname}</td><td>${v.lName}</td><td> R ${v.Amount}</td>/tr>`);
+                              
+                               salesTotal =v.sales;
+                                console.log("row inserted")
+                                 
+                            });
+                                foot.append(`<tr><td  Style="font-weight: bold;">Total</td><td>  </td><td  Style="font-weight: bold;"> R ${salesTotal}</td>/tr>`); 
+                        } 
+                    let chartLabel = [];
+                    let chartData = [];
+
+                    $(inData).each((i, v) => {
+                        chartLabel.push(v.Name);
+                        chartData.push(v.Amount);
+                    });
+
+                    RenderChart(chartLabel, chartData);
+                }
+            });
+
+           function RenderChart(labels, data) {
+                let ctx = $("#chart");
+
+                let chart = new Chart(ctx, {
+                    type: 'bar',
+             
+                    data: {
+                         
+         indexLabelPlacement: "outside",  
+         indexLabelOrientation: "horizontal",
+                        labels: labels ,
+                        datasets: [{
+                            label: 'Rand Value of Sales',
+                             indexLabel:data,
+                            data: data,
+                            backgroundColor: [
+                                'rgba(7, 107, 173, 0.2)',
+                                'rgba(48, 51, 175, 0.2)',
+                                'rgba(104, 7, 173, 0.2)',
+                                'rgba(7, 121, 173, 0.2)',
+                                'rgba(7, 162, 235, 0.2)',
+                                'rgba(7, 102, 255, 0.2)',
+                                'rgba(7, 203, 207, 0.2)'
+                            ],
+        
+                        }]
+           
+                    },
+                    options: {
+    title: {
+      display: true,
+      text: "Top Five(5) Sales By Client Report",
+       fontSize: 25
+    },
+   scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+                    }
+                 });
+
+             }
+
+        });
+
+    </script>
+    <script>
+          $(document).ready(() => {
+            $.get({
+                url: "@Url.Action("GetProductOrderData", "report")",
+                method: "GET",
+                success: (data, status) => {
+                    console.log(data);
+                    console.log(status);
+
+                    let inData = JSON.parse(data);
+                    console.log(inData);
+                    
+                    let chartLabel = [];
+                    let chartData = [];
+
+                    $(inData).each((i, v) => {
+                        chartLabel.push(v.Name);
+                        chartData.push(v.Amount);
+                    });
+
+                    RenderChart(chartLabel, chartData);
+                }
+            });
+
+           function RenderChart(labels, data) {
+                let ctx = $("#chart1");
+                let chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels ,
+                        datasets: [{
+                            label: 'Rand Value of Sales',
+                            data: data,
+                            backgroundColor: [
+                                 'rgba(7, 51, 175, 0.2)',
+                                'rgba(48, 7, 173, 0.2)',
+                                'rgba(104, 7, 173, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(201, 203, 207, 0.2)'
+                            ],
+                             hoverOffset: 5
+                        }]
+                    },
+                    options: {
+    title: {
+      display: true,
+      text: "Sales By Product Report",
+      fontSize: 25
+    }
+  }
+                });
+
+             }
+        });
+  
+        </script>  <script>
+          $(document).ready(() => {
+            $.get({
+                url: "@Url.Action("GetOrderDataByDate", "report")",
+                method: "GET",
+                success: (data, status) => {
+                    console.log(data);
+                    console.log(status);
+
+                    let inData = JSON.parse(data);
+                    console.log(inData);
+                      let table = $("#table-body2");
+                        let foot = $("#table-foot2");
+                
+                 var salesTotal = 0;
+                        table.empty();
+
+                        console.log(inData);
+
+                        if (inData.length > 0) {
+                            $(inData).each((i, v) => {
+                                table.append(`<tr><td>${v.month}</td><td>${v.year}</td><td> R ${v.Amount}</td>/tr>`);
+                              
+                               salesTotal =v.sales;
+                                console.log("row inserted")
+                                 
+                            });
+                                foot.append(`<tr><td Style="font-weight: bold;">Total</td><td>  </td><td  Style="font-weight: bold;"> R ${salesTotal}</td><br/>/tr>`); 
+                        } 
+                    let chartLabel = [];
+                    let chartData = [];
+
+                    $(inData).each((i, v) => {
+                        chartLabel.push(v.Name);
+                        chartData.push(v.Amount);
+                    });
+
+                    RenderChart(chartLabel, chartData);
+                    RenderChart.Update();
+                }
+            });
+
+            function RenderChart(labels, data) {
+                let ctx = $("#chart2");
+                let chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels ,
+                        datasets: [{
+                            label: 'Rand Value of Sales',
+                            data: data,
+                            backgroundColor: [
+                                 'rgba(7, 107, 173, 0.2)',
+                                'rgba(48, 7, 173, 0.2)',
+                                'rgba(104, 7, 173, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(201, 203, 207, 0.2)'
+                            ],
+                             hoverOffset: 5
+                        }]
+                    },
+                     options: {
+    title: {
+      display: true,
+      text: "Monthly Sales Report",
+      fontSize: 25
+    }
+  }
+                });
+             }
+        });
+        </script>
+
+    <script>
+     
+               $(document).ready(() => {
+            $.get({
+                url: "@Url.Action("GetProductales", "report")",
+                method: "GET",
+                success: (data, status) => {
+                    console.log(data);
+                    console.log(status);
+
+                    let inData = JSON.parse(data);
+                    console.log(inData);
+                        let table = $("#table-body");
+                        let foot = $("#table-foot");
+                 var total =0;
+                 var salesTotal = 0;
+                        table.empty();
+
+                        console.log(inData);
+
+                        if (inData.length > 0) {
+                            $(inData).each((i, v) => {
+                                table.append(`<tr><td>${v.Name}</td><td>${v.ProductAmount}</td><td> R ${v.salesAmount}</td>/tr>`);
+                               total=v.amount;
+                               salesTotal =v.Samount;
+                                console.log("row inserted")
+                                 
+                            });
+                                foot.append(`<tr><td  Style="font-weight: bold;">Total</td><td Style="font-weight: bold;">  ${total}</td><td  Style="font-weight: bold;"> R ${salesTotal}</td>/tr><br/>`); 
+                        } 
+                          }
+        });});
+    </script>
+}

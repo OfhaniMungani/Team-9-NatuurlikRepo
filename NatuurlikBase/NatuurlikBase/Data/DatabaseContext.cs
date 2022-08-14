@@ -31,7 +31,7 @@ public class DatabaseContext : IdentityDbContext<ApplicationUser>
     public DbSet<ReviewReason> ReviewReason { get; set; }
     public DbSet<InventoryProcured> InventoryProcured { get; set; }
     public DbSet<InventoryItemTransaction> InventoryItemTransaction { get; set; }
-    public DbSet<ProductTransaction> ProductTransaction { get; set; }
+    public DbSet<ProductionTransaction> ProductionTransaction { get; set; }
     public DbSet<WriteOffInventory> InventoryWriteOff { get; set; } 
     public DbSet<WriteOffProduct> ProductWriteOff { get; set; }
     public DbSet<Cart> UserCart { get; set; }
