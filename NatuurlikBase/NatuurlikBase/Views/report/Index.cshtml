@@ -12,11 +12,11 @@
     <div class="chartsContainer" id ="x">
            <input id="actor" type="text" value="@ViewBag.ActorName" hidden>
     <input id="surname" type="text" value="@ViewBag.Surname" hidden>
-    <input id="countCustomer" type="text" value="@ViewBag.count" hidden>
-      <div style="width: 750px; height: 750px; margin:auto">
+  
+      <div style="width: 800px; height: 800px; margin:auto">
         
-        <canvas id="chart"></canvas>
-         <div class="mt-3 mb-3">
+       <div> <canvas id="chart"></canvas></div>
+     
     <table class="table table-striped" id="0">
         <thead style="background-color: #232323">
             <tr>
@@ -31,13 +31,12 @@
         </tfoot>
 
     </table>
-
-</div>
-    </div>
-      <div style="width: 750px; height: 750px; margin:auto">
-        <canvas id="chart1"></canvas>
-        <div class="mt-3 mb-3">
-    <table class="table table-striped" id="1">
+  </div>
+    <div style="width: 1320px; height: 1320px; margin:auto">
+ <div class="row">
+  <div class="column" style="float: left; width: 50%; padding: 25px;"> <canvas id="chart1"></canvas>
+    
+     <table class="table table-striped" id="y">
         <thead style="background-color: #232323">
             <tr>
                 <th class="text-light">Product Name</th>
@@ -49,14 +48,10 @@
          <tfoot  id ="table-foot">
             
         </tfoot>
-
-    </table>
-
-</div>
-     </div>
-   <div style="width: 750px; height: 750px; margin:auto">
-        <canvas id="chart2"></canvas>
-             <div class="mt-3 mb-3">
+        </table>
+		</div>
+          <div class="column"  style="float: left; width: 50%; padding: 25px;"> <canvas id="chart2"></canvas>
+             
     <table class="table table-striped" >
         <thead style="background-color: #232323">
             <tr>
@@ -69,11 +64,14 @@
          <tfoot  id ="table-foot2">
             
         </tfoot>
-
-    </table>
-
-</div>
+        </table>
+   
+</div> 
+    </div> 
     </div>
+   
+    
+  
 
    </div>  
 </div>
@@ -91,6 +89,7 @@
 
 
     <script>
+
     
  date = new Date();
 year = date.getFullYear();
@@ -120,18 +119,18 @@ $("#exportButton").click(function(){
      var actorSurname = $("#surname").val();
     pdf.text(20, 63,"PRINTED BY: "+actorName+" "+actorSurname);
     pdf.addImage(src, 'PNG', 5, 3, 210, 57);//addImage(image, format, x-coordinate, y-coordinate, width, height240, 210, 57)
-    const imgWidth = 350;
+    const imgWidth = 250;
   const pageHeight = 300;
   const imgHeight = (canvas.height * imgWidth) / canvas.width;
   let heightLeft = imgHeight;
   let position = 55;
   heightLeft -= pageHeight;
-   
-  pdf.addImage(dataURL, 'PNG', -60, position, imgWidth, imgHeight, '', 'FAST');
+  
+  pdf.addImage(dataURL, 'PNG', -15, position, imgWidth, imgHeight, '', 'FAST');
   while (heightLeft >= 0) {
-    position = heightLeft - imgHeight +55;
+    position = heightLeft - imgHeight +60;
     pdf.addPage();
-    pdf.addImage(dataURL, 'PNG', -60, position, imgWidth, imgHeight, '', 'FAST');
+    pdf.addImage(dataURL, 'PNG', -15, position, imgWidth, imgHeight, '', 'FAST');
     heightLeft -= pageHeight;
      const pageCount = pdf.internal.getNumberOfPages();
 
@@ -139,7 +138,7 @@ for(var i = 1; i <= pageCount; i++) {
     
     pdf.setPage(i);
 
-     pdf.text('Page ' + String(i) + ' of ' + String(pageCount),205,290,null,null,"right");
+     pdf.text('Page ' + String(i),10,290,null,null,"right");
 }
     
   }  pdf.setFontSize(12);
@@ -219,7 +218,7 @@ for(var i = 1; i <= pageCount; i++) {
                     options: {
     title: {
       display: true,
-      text: "Sales Client Report",
+      text: "Top Five(5) Sales By Client Report",
        fontSize: 50
     },
    scales: {
@@ -321,7 +320,7 @@ for(var i = 1; i <= pageCount; i++) {
                                 console.log("row inserted")
                                  
                             });
-                                foot.append(`<tr><td Style="font-weight: bold;">Total</td><td>  </td><td  Style="font-weight: bold;"> R ${salesTotal}</td>/tr>`); 
+                                foot.append(`<tr><td Style="font-weight: bold;">Total</td><td>  </td><td  Style="font-weight: bold;"> R ${salesTotal}</td><br/>/tr>`); 
                         } 
                     let chartLabel = [];
                     let chartData = [];
@@ -332,6 +331,7 @@ for(var i = 1; i <= pageCount; i++) {
                     });
 
                     RenderChart(chartLabel, chartData);
+                    RenderChart.Update();
                 }
             });
 
@@ -396,7 +396,7 @@ for(var i = 1; i <= pageCount; i++) {
                                 console.log("row inserted")
                                  
                             });
-                                foot.append(`<tr><td  Style="font-weight: bold;">Total</td><td Style="font-weight: bold;">  ${total}</td><td  Style="font-weight: bold;"> R ${salesTotal}</td>/tr>`); 
+                                foot.append(`<tr><td  Style="font-weight: bold;">Total</td><td Style="font-weight: bold;">  ${total}</td><td  Style="font-weight: bold;"> R ${salesTotal}</td>/tr><br/>`); 
                         } 
                           }
         });});

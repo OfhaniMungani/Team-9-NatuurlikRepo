@@ -48,7 +48,7 @@ namespace NatuurlikBase.Controllers
                 Surname = o.Key.Surname,
                 Amount = Math.Round((double)o.Sum(p => p.OrderTotal - p.DeliveryFee), 2),
 
-            }).ToList();
+            }).Take(5).ToList();
 
             foreach (var userOrder in obj)
             {
