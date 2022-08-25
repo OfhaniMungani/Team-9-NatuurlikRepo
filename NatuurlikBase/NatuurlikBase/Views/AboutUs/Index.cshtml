@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<Video>
+
   <div class="container about-cont">
       <h1 id="about"> ABOUT <strong> US </strong></h1>
           <div class="row justify-content-center">
@@ -72,17 +73,19 @@
 
   <div class="stone">
     <h1 id="nat"> WHY  <strong> NATUURLIK </strong></h1>
-      <div class="container">
+    @foreach (var video in Model)
+    {
+         <div class="container">
         <div class="row justify-content-around">
             <div class="col-3">
                 <div class="card" style="width: 18rem;">
-                  <iframe src="https://www.youtube.com/embed/nUnJQWO4YJY" title="The diet that helps fight climate change" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  <iframe src="@video.VideoUrl" title="@video.Title" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                   <div class="card-body">
-                    <p class="card-text video">The diet that helps fight climate chang</p>
+                    <p class="card-text video">@video.Title</p>
                   </div>
                 </div>
             </div>
-            <div class="col-3">
+            @*<div class="col-3">
                 <div class="card" style="width: 18rem;">
                   <iframe src="https://www.youtube.com/embed/WeoIsjYBQH0" title="FAO Policy Series: Sustainable Food and Agriculture" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                   <div class="card-body">
@@ -97,7 +100,9 @@
                     <p class="card-text video">Food Sustainability Basics</p>
                   </div>
                 </div>
-            </div>
+            </div>*@
         </div>
       </div>
+    }
+ 
   </div>

@@ -66,10 +66,15 @@
                        
                       @if(User.IsInRole(SR.Role_Admin))
                     {
+                       @* <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">MANAGE STORE</a>
+                        </li> *@
+                    }
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">MANAGE STORE</a>
                         </li> 
-                    }
+
                                                                                           
                     </ul>
                    <partial name="_loginPartial"/>           
