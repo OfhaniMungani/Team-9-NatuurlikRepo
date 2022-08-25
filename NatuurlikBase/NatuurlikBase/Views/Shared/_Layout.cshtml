@@ -14,10 +14,12 @@
     <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/fonts.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/catalogue.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/aboutus.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/order.css" asp-append-version="true" />
     <link href="@Url.Content("~/css/orderfilters.css")" rel="stylesheet" type="text/css" />
     @RenderSection("Styles", false)
     @RenderSection("fonts", false)
+    @RenderSection("aboutus", false)
     @RenderSection("home", false)
     @RenderSection("site", false)
     @RenderSection("account", false)
@@ -49,7 +51,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between id="navbarSupportedContent"">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">ABOUT US</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="AboutUs" asp-action="Index">ABOUT US</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ProductCatalogue" asp-action="Index">PRODUCTS</a>

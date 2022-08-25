@@ -1,0 +1,88 @@
+﻿#about {
+    text-align: center;
+    padding-bottom: 4%;
+    padding-top: 6%;
+    /* background-image: url("../images/annie.png");*/
+}
+
+.stone {
+    background-image: url("../images/august.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding-bottom: 7%;
+}
+
+.video {
+    height: 50px;
+}
+
+.about-cont {
+    padding-bottom: 5%;
+}
+
+
+
+#logo {
+    height: 350px;
+}
+
+p, .card-body, #our, h1 {
+    font-family: Montserrat-Regular;
+}
+
+.teams {
+    background-image: url("../images/spratt.png");
+    justify-content: space-around;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+#our {
+    text-align: center;
+    padding-bottom: 4%;
+    color: white;
+}
+
+#nat {
+    color: black;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    text-align: center;
+}
+
+.team-title {
+    margin-top: 5%;
+    font-family: Montserrat-SemiBold;
+    color: white;
+    font-size: 17px
+}
+
+.team {
+    background-color: transparent;
+    border: none;
+    color: white;
+    width: 250px;
+    margin: auto;
+    margin-bottom: 40px;
+}
+
+.team-text {
+    margin-top: 5%;
+    color: white;
+    font-size: 16px
+}
+
+.team-img {
+    margin-bottom: 30px;
+    width: 250px;
+}
+
+.position {
+    font-family: Montserrat-Medium;
+    font-size: small;
+    color: #9F9F9F;
+}
