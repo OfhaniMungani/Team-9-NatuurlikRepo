@@ -483,6 +483,9 @@ namespace NatuurlikBase.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("BackOrderDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("CityId")
                         .IsRequired()
                         .HasColumnType("int");

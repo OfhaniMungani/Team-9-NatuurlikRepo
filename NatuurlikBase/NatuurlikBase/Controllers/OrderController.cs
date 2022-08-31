@@ -128,6 +128,51 @@ namespace NatuurlikBase.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public IActionResult BacklogOrder()
+        {
+            //Retrieve Order details from the db
+            var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
+            //Update order status to approved state and save changes to db.
+            _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.OrderDelayed);
+            orderRetrieved.BackOrderDate = DateTime.Now;
+            _uow.Save();
+            TempData["Success"] = "Order added to orders backlog successfully.";
+            return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
+
+        }
+
+        //Reseller accepts delayed order.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmOrder()
+        {
+            //Retrieve Order details from the db
+            var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
+            //Update order status to approved state and save changes to db.
+            _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.ProcessingOrder);
+            _uow.Save();
+            TempData["Success"] = "Your order has been confirmed successfully.";
+            return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
+
+        }
+
+        //Reseller rejects delayed order.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RejectOrder()
+        {
+            //Retrieve Order details from the db
+            var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
+            //Update order status to approved state and save changes to db.
+            _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.RejectDelayedOrder);
+            _uow.Save();
+            TempData["Success"] = "Your order has been rejected successfully.";
+            return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ProcessOrder()
         {
             //Retrieve Order details from the db
@@ -494,6 +539,10 @@ namespace NatuurlikBase.Controllers
 
                 case "refunded":
                     orders = orders.Where(o => o.OrderStatus == SR.OrderRefunded);
+                    break;
+
+                case "delayed":
+                    orders = orders.Where(o => o.OrderStatus == SR.OrderDelayed);
                     break;
 
                 default:

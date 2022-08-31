@@ -10,6 +10,7 @@ namespace NatuurlikBase.Models
         public string InvoiceNo { get; set; }
 
         [RegularExpression("(^[0-9]*$)", ErrorMessage = "This value cannot be negative")]
+        [Display(Name = "Quantity Received")]
         public int QuantityReceived { get; set; }
         public DateTime DateLogged { get; set; } = DateTime.Now;
 

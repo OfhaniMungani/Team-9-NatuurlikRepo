@@ -49,6 +49,8 @@ namespace NatuurlikBase.Models
         public DateTime PaymentDueDate { get; set; }
         public DateTime DispatchedDate { get; set; }
 
+        public DateTime BackOrderDate { get; set; }
+
         //Transaction via payment processing gateway - Stripe as POC until deployed and can fully integrate with Payfast.
         public string? SessionId { get; set; }
 

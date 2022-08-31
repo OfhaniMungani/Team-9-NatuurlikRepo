@@ -8,16 +8,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
+using NatuurlikBase.Repository.IRepository;
 
 namespace NatuurlikBase.Controllers
 {
     public class SuburbsController : Controller
     {
         private readonly DatabaseContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public SuburbsController(DatabaseContext context)
+        public SuburbsController(DatabaseContext context, IUnitOfWork unitOfWork)
         {
             _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: Suburbs
@@ -170,9 +173,39 @@ namespace NatuurlikBase.Controllers
             var suburb = await _context.Suburb.FindAsync(id);
             _context.Suburb.Remove(suburb);
 
-            TempData["success"] = "Suburb Deleted Successfully";
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //Check if Suburb is associated with an Order
+            var orderFK = _unitOfWork.Order.GetAll().Any(x => x.SuburbId == id);
+
+            //Check if Suburb is associated with a User
+            var userFK = _unitOfWork.User.GetAll().Any(x => x.SuburbId == id);
+
+            //Check if Suburb is associated with a Supplier
+            var supplierFK = _unitOfWork.Supplier.GetAll().Any(x => x.SuburbId == id);
+
+            if(orderFK)
+            {
+                TempData["Delete"] = "Suburb cannot be deleted since it is associated to an Order";
+                return RedirectToAction("Index");
+            }
+
+            if (userFK)
+            {
+                TempData["Delete"] = "Suburb cannot be deleted since it is associated to a User";
+                return RedirectToAction("Index");
+            }
+
+            if (supplierFK)
+            {
+                TempData["Delete"] = "Suburb cannot be deleted since it is associated to a Supplier";
+                return RedirectToAction("Index");
+            }
+
+            else
+            {
+                TempData["success"] = "Suburb Deleted Successfully";
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private bool SuburbExists(int id)

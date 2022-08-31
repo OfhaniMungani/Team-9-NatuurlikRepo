@@ -75,6 +75,7 @@ else
         var cancelled = "text-primary";
         var refundpending = "text-primary";
         var refunded = "text-primary";
+        var delayed = "text-primary";
         var all = "text-primary";
 
         //switch statement to filter orders list by status conditionally
@@ -102,6 +103,10 @@ else
                 break;
 
             case "refunded":
+                refunded = "active text-white";
+                break;
+
+            case "delayed":
                 refunded = "active text-white";
                 break;
 
@@ -226,7 +231,8 @@ else
                                     <li class="" @pending><a class="btn btn-info" role="button"  asp-controller="Order" asp-action="Index" asp-route-status="pending">Pending</a></li>                                 
                                     <li class="" @processing><a class="btn btn-info"  asp-controller="Order" asp-action="Index" asp-route-status="processing">Processing</a></li>               
                                     <li class="" @dispatched><a class="btn btn-info" asp-controller="Order" asp-action="Index" asp-route-status="dispatched">Dispatched</a></li>               
-                                    <li class="" @cancelled><a class="btn btn-info" asp-controller="Order" asp-action="Index" asp-route-status="cancelled">Cancelled </a></li>                            
+                                    <li class="" @cancelled><a class="btn btn-info" asp-controller="Order" asp-action="Index" asp-route-status="cancelled">Cancelled </a></li>  
+                                    <li class="" @delayed><a class="btn btn-info"  asp-controller="Order" asp-action="Index" asp-route-status="delayed">Delayed</a></li>
                                     <li class="" @all><a class="btn btn-secondary" style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="all">Clear Filter</a></li>
                 
                                 </ul>

@@ -22,6 +22,8 @@
         public const string OrderCancelled = "Cancelled";
         public const string OrderRefundPending = "Pending Return";
         public const string OrderRefunded = "Refunded";
+        public const string OrderDelayed = "Delayed";
+        public const string RejectDelayedOrder = "Rejected Delayed Order";
 
         //Order Payment Status
         public const string OrderPaymentApproved = "Paid";
