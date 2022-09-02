@@ -19,7 +19,7 @@
 		@*<div asp-validation-summary="All"></div>*@
 		<div class="col">
 			<label asp-for="Product.Name"></label>
-			<input asp-for="Product.Name" class="form-control" />
+			<input asp-for="Product.Name" class="form-control" placeholder = "Natuurlik Coffee Beans"/>
 			<span asp-validation-for="Product.Name" class="text-danger"></span>
 		</div>
 		<br />
@@ -30,20 +30,20 @@
 		<br />
 		<div class="col">
 			<label asp-for="Product.Description"></label>
-			<textarea asp-for="Product.Description" rows="3" class="form-control"></textarea>
+			<textarea asp-for="Product.Description" rows="3" class="form-control" placeholder = "1kg, May contain nuts"></textarea>
 			<span asp-validation-for="Product.Description" class="text-danger"></span>
 		</div>
 		<br />
 		<div class="row col">
 			<div class="col-6 col">
 				<label asp-for="Product.CustomerPrice"></label>
-				<input asp-for="Product.CustomerPrice" class="form-control" />
+				<input asp-for="Product.CustomerPrice" class="form-control" placeholder = "300"/>
 				<span asp-validation-for="Product.CustomerPrice" class="text-danger"></span>
 			</div>
 
 			<div class="col-6 col">
 				<label asp-for="Product.ResellerPrice">Reseller Price</label>
-				<input asp-for="Product.ResellerPrice" class="form-control" />
+				<input asp-for="Product.ResellerPrice" class="form-control" placeholder = "200" />
 				<span asp-validation-for="Product.ResellerPrice" class="text-danger"></span>
 			</div>
 		</div>
@@ -73,7 +73,7 @@
 
           <div class="col-6"> 
            <label asp-for="Product.ThresholdValue"></label>
-			<input asp-for="Product.ThresholdValue" class="form-control" />
+			<input asp-for="Product.ThresholdValue" class="form-control" placeholder = "50"/>
 			<span asp-validation-for="Product.ThresholdValue" class="text-danger"></span>
            </div>
 
