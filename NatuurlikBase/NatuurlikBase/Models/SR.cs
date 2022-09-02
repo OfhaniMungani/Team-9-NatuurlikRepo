@@ -36,6 +36,9 @@
         //Returned Product
         public const string ReturnedProduct = "Includes Returned Product(s)";
 
+        //Delivered
+        public const string Delivered = "Delivered";
+
 
 
     }
