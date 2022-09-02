@@ -133,25 +133,32 @@ namespace NatuurlikBase.Controllers
 
         public IActionResult Delete(int? id)
         {
-            var obj = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id);
-            if (obj == null)
+            
+            var ForeignKey = _unitOfWork.OrderLine.GetAll().Any(x => x.ProductId == id);
+            if (ForeignKey)
             {
-                return Json(new { success = false, message = "Error while deleting" });
+                return Json(new { success = false, message = "Product cannot be deleted since it has an association with order" });
             }
-
-            var oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, obj.PictureUrl.TrimStart('\\'));
-            if (System.IO.File.Exists(oldImagePath))
+            else
             {
-                System.IO.File.Delete(oldImagePath);
+                var obj = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id);
+                if (obj == null)
+                {
+                    return Json(new { success = false, message = "Error while deleting" });
+                }
+
+                var oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, obj.PictureUrl.TrimStart('\\'));
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+
+                _unitOfWork.Product.Remove(obj);
+
+                _unitOfWork.Save();
+          
+                return Json(new { success = true, message = "Delete Successful" });
             }
-
-            _unitOfWork.Product.Remove(obj);
-       
-            _unitOfWork.Save();
-            //keeps callling Product Created successfully not deleted...
-           // TempData["success"] = "Product Deleted successfully";
-
-            return Json(new { success = true, message = "Delete Successful" });
 
         }
         #endregion

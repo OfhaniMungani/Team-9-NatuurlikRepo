@@ -136,10 +136,29 @@ namespace NatuurlikBase.Controllers
         {
             Courier courier = _context.Courier.Find(id);
             _context.Courier.Remove(courier);
+
             ViewBag.CourierConfirmation = "Are you sure you want to delete this courier";
-            TempData["success"] = "Courier Deleted Successfully";
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+
+            var ForeignKey = _context.Order.Any(x => x.CourierId == id);
+            if(!ForeignKey)
+            {
+                var obj = _context.Order.FirstOrDefault(x => x.CourierId == id);
+                if (obj == null)
+                {
+                    TempData["AlertMessage"] = "Oops! This courier cannot be deleted!";
+                }
+                _context.Courier.Remove(courier);
+                TempData["success"] = "Courier Deleted Successfully";
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["Delete"] = "Courier cannot be deleted since it has an Order associated";
+                return RedirectToAction("Index");
+            }
+            
+        
         }
 
         protected override void Dispose(bool disposing)
