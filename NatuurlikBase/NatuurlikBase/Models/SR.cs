@@ -11,7 +11,7 @@
         public const string Role_Admin = "Admin";
 
         //Order Management
-
+        public const string OrderDelivered = "Delivered";
         //Reseller placed order
         public const string OrderPending = "Pending";
         public const string OrderApproved = "Approved";

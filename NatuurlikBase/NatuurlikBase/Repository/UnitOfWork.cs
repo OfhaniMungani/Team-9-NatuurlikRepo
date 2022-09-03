@@ -36,6 +36,7 @@ namespace NatuurlikBase.Repository
             ReviewReason = new ReviewReasonRepository(_db);
             OrderReview = new OrderReviewRepository(_db);
             ReturnedProduct = new ReturnedProductRepository(_db);
+            Delivery=new DeliveryRepository(_db);
 
 
         }
@@ -60,6 +61,7 @@ namespace NatuurlikBase.Repository
         public IOrderReviewcs OrderReview { get; private set; }
 
         public IReturnedProductRepository ReturnedProduct { get; private set; }
+        public IDeliveryRepository Delivery { get; private set; }
 
         public void Save()
         {

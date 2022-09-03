@@ -30,6 +30,7 @@ namespace NatuurlikBase.Repository.IRepository
         IOrderReviewcs OrderReview { get; }
 
         IReturnedProductRepository ReturnedProduct { get; }
+        IDeliveryRepository Delivery { get; }
 
         void Save();
     }

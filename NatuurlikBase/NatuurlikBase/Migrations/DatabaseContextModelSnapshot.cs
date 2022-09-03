@@ -354,6 +354,29 @@ namespace NatuurlikBase.Migrations
                     b.ToTable("Courier");
                 });
 
+            modelBuilder.Entity("NatuurlikBase.Models.Delivery", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("date")
+                        .HasColumnName("date");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Delivery");
+                });
+
             modelBuilder.Entity("NatuurlikBase.Models.InventoryItem", b =>
                 {
                     b.Property<int>("Id")
@@ -1334,6 +1357,17 @@ namespace NatuurlikBase.Migrations
                         .IsRequired();
 
                     b.Navigation("Province");
+                });
+
+            modelBuilder.Entity("NatuurlikBase.Models.Delivery", b =>
+                {
+                    b.HasOne("NatuurlikBase.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("NatuurlikBase.Models.InventoryItem", b =>

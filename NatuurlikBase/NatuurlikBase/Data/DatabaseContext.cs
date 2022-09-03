@@ -44,6 +44,7 @@ public class DatabaseContext : IdentityDbContext<ApplicationUser>
     public DbSet<OrderReview> OrderReview { get; set; }
     public DbSet<ReturnedProduct> ReturnedProduct { get; set; }
     public DbSet<Video> Video { get; set; }
+    public DbSet<Delivery> Delivery { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
