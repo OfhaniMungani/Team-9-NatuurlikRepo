@@ -110,32 +110,54 @@ namespace NatuurlikBase.Controllers
         }
 
 
-        public IActionResult Delete(int? id)
+        // GET: ReviewReason/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-
                 return NotFound();
             }
-            ReviewReason ReviewReason = db.ReviewReason.Find(id);
+
+            var ReviewReason = await db.ReviewReason
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (ReviewReason == null)
             {
                 return NotFound();
             }
-            return View(ReviewReason);
 
+            return View(ReviewReason);
         }
 
+        // POST: WriteOffReason/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
             ReviewReason ReviewReason = db.ReviewReason.Find(id);
             db.ReviewReason.Remove(ReviewReason);
-            ViewBag.ReviewReasonConfirmation = "Are you sure you want to delete this Review reason?";
-            TempData["AlertMessage"] = "Review Reason Deleted Successfully";
-            db.SaveChanges();
-            return RedirectToAction("Index");
+
+            ViewBag.ReviewReasonConfirmation = "Are you sure you want to delete this Review Reason";
+
+            var ForeignKey = db.OrderReview.Any(x => x.ReviewReasonId == id);
+            if (!ForeignKey)
+            {
+                var obj = db.OrderReview.FirstOrDefault(x => x.ReviewReasonId == id);
+                if (obj == null)
+                {
+                    TempData["AlertMessage"] = "Oops! This ReviewReason cannot be deleted!";
+                }
+                db.ReviewReason.Remove(ReviewReason);
+                TempData["success"] = "Review Reason Deleted Successfully";
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["Delete"] = "ReviewReason cannot be deleted since it has an Order Review associated";
+                return RedirectToAction("Index");
+            }
+
+
         }
 
         protected override void Dispose(bool disposing)
