@@ -282,7 +282,7 @@
             </div>
                                                          }
                                                          //Returned product button
-                                                         @if (Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
+                                                         @if (Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered || Model.Order.OrderStatus == SR.ReturnedProduct)
                                                          {
                                                              <a asp-controller="ReturnedProduct" asp-action="Create" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:250px" value="Returned Product">Log Returned Product</a>
                                                          }
