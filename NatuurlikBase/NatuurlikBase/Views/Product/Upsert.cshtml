@@ -8,6 +8,7 @@
 <form method="post" asp-action="Upsert" enctype="multipart/form-data">
 	<input asp-for="Product.Id" hidden />
 	<input asp-for="Product.PictureUrl" hidden />
+	<input asp-for="Product.QuantityOnHand" hidden/>
 	 @if(ViewBag.Error==null){
 	<div class="row">
 		<div class="col-10">
@@ -23,11 +24,7 @@
 			<span asp-validation-for="Product.Name" class="text-danger"></span>
 		</div>
 		<br />
-		@*<div class="col">
-			<label asp-for="Product.QuantityOnHand"></label>
-			<input asp-for="Product.QuantityOnHand" class="form-control"/>
-		</div>*@
-		<br />
+	<br />
 		<div class="col">
 			<label asp-for="Product.Description"></label>
 			<textarea asp-for="Product.Description" rows="3" class="form-control" placeholder = "1kg, May contain nuts"></textarea>
