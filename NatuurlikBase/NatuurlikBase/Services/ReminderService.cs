@@ -23,6 +23,7 @@ namespace NatuurlikBase.Services
                 && !stoppingToken.IsCancellationRequested)
             {
                 await PaymentReminder();
+                await ConfirmationReminder();
             }
         }
 
@@ -77,5 +78,62 @@ namespace NatuurlikBase.Services
                 await Task.Delay(500);
             }
         }
+
+        public async Task ConfirmationReminder()
+        {
+            var orderprsn = _db.Order.Where(z => z.OrderStatus == "Delayed").ToList();
+
+            if (orderprsn != null)
+            {
+                foreach (var psn in orderprsn)
+                {
+                    var fullTime = _db.ConfirmationReminder.FirstOrDefault(x => x.Id == psn.ConfirmationReminderId).Value;
+                    var modifiedDate = psn.BackOrderDate.Date;
+                    var threshold = modifiedDate.AddDays(fullTime);
+                    var cancelOrderDate = threshold.AddDays(1);
+                    var user = _db.User.Where(z => z.Id == psn.ApplicationUserId).FirstOrDefault();
+                    string email = user.Email;
+                    string name = user.FirstName;
+                    string number = psn.Id.ToString();
+                    string date = DateTime.Now.ToString("M");
+                    string fullDate = threshold.ToString("D");
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+
+
+                    if (threshold == DateTime.Today.Date)
+                    {
+                        var template = File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\confRemTemp.html"));
+                        template = template.Replace("[NAME]", name).Replace("[DUE]", fullDate)
+                            .Replace("[ID]", number).Replace("[DATE]", date);
+                        string message = template;
+                        await _emailSender.SendEmailAsync(
+                            email,
+                            "Order Confirmation Reminder",
+                            message);
+                    }
+
+                    if (cancelOrderDate == DateTime.Today.Date)
+                    {
+                        psn.OrderStatus = "Cancelled";
+                        _db.SaveChanges();
+
+                        var template = File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\canResOrderTemp.html"));
+                        template = template.Replace("[NAME]", name)
+                            .Replace("[ID]", number).Replace("[DATE]", date);
+                        string message = template;
+
+                        await _emailSender.SendEmailAsync(
+                        email,
+                        "Order Cancelled",
+                        message);
+
+                    }
+
+                }
+
+                await Task.Delay(500);
+            }
+        }
+
     }
 }

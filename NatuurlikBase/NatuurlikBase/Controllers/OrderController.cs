@@ -136,6 +136,30 @@ namespace NatuurlikBase.Controllers
             _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.OrderDelayed);
             orderRetrieved.BackOrderDate = DateTime.Now;
             _uow.Save();
+
+            var user = _db.User.Where(z => z.Id == orderRetrieved.ApplicationUserId).FirstOrDefault();
+            var fullTime = _db.ConfirmationReminder.FirstOrDefault(x => x.Id == orderRetrieved.ConfirmationReminderId).Value;
+            var orderDate = orderRetrieved.BackOrderDate.Date;
+            var threshold = orderDate.AddDays(fullTime);
+            string email = user.Email;
+            string name = user.FirstName;
+            string number = orderRetrieved.Id.ToString();
+            string date = DateTime.Now.ToString("M");
+            string fullDate = threshold.ToString("D");
+            string status = orderRetrieved.OrderPaymentStatus.ToString();
+            var callbackUrl = Url.Action("Index", "Order", values: null, protocol: Request.Scheme);
+
+            string wwwRootPath = _hostEnvironment.WebRootPath;
+            var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\modOrdTemp.html"));
+            template = template.Replace("[NAME]", name).Replace("[STATUS]", status).Replace("[DUE]", fullDate)
+                .Replace("[ID]", number).Replace("[DATE]", date).Replace("[URL]", callbackUrl);
+            string message = template;
+
+            _emailSender.SendEmailAsync(
+            email,
+            "Order Delayed - Pending Confirmation",
+            message);
+
             TempData["Success"] = "Order added to orders backlog successfully.";
             return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
 
@@ -151,6 +175,26 @@ namespace NatuurlikBase.Controllers
             //Update order status to approved state and save changes to db.
             _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.ProcessingOrder);
             _uow.Save();
+
+            var user = _db.User.Where(z => z.Id == orderRetrieved.ApplicationUserId).FirstOrDefault();
+            string email = user.Email;
+            string name = user.FirstName;
+            string number = orderRetrieved.Id.ToString();
+            string date = orderRetrieved.CreatedDate.ToString("M");
+            string status = orderRetrieved.OrderPaymentStatus.ToString();
+            var callbackUrl = Url.Action("Index", "Order", values: null, protocol: Request.Scheme);
+
+            string wwwRootPath = _hostEnvironment.WebRootPath;
+            var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\ordConfTemp.html"));
+            template = template.Replace("[NAME]", name).Replace("[STATUS]", status)
+                .Replace("[ID]", number).Replace("[DATE]", date).Replace("[URL]", callbackUrl);
+            string message = template;
+
+            _emailSender.SendEmailAsync(
+            email,
+            "Order Confirmed",
+            message);
+
             TempData["Success"] = "Your order has been confirmed successfully.";
             return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
 

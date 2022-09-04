@@ -103,5 +103,9 @@ namespace NatuurlikBase.Models
         [ValidateNever]
         public PaymentReminder PaymentReminder { get; set; }
 
+        public int? ConfirmationReminderId { get; set; }
+        [ValidateNever]
+        public ConfirmationReminder ConfirmationReminder { get; set; }
+
     }
 }

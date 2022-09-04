@@ -45,6 +45,7 @@ public class DatabaseContext : IdentityDbContext<ApplicationUser>
     public DbSet<ReturnedProduct> ReturnedProduct { get; set; }
     public DbSet<Video> Video { get; set; }
     public DbSet<Delivery> Delivery { get; set; }
+    public DbSet<ConfirmationReminder> ConfirmationReminder { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
