@@ -30,8 +30,10 @@
                                     <div class="row">
                                         <ul id="myUL" style="list-style-type:none; padding-left:0px">
                                             @foreach (var product in Model)
-                                            {                   
-                                            @if (User.IsInRole(SR.Role_Reseller))
+                                            {   
+                                                @if(product.DisplayProduct == "Yes")
+                                                {
+                                                     @if (User.IsInRole(SR.Role_Reseller))
                                             {  
                                                 
                                                 <li style="float:left;">
@@ -92,6 +94,8 @@
                                                                                                   
                                                 }
                                             }
+                                                }
+                                           
                                             </ul>   
                                    </div>
  
