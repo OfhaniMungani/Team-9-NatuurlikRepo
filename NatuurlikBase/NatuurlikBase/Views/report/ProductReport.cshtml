@@ -11,11 +11,21 @@
                 <a href="" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
             </h2>
 		</div>
-        <div class="col-md-9 col-lg-8">
+     <div class="col-md-9 col-lg-8">
+            <a asp-controller="report" asp-action="Index" class="btn btn-dark">
+               <i class="bi bi-arrow-left-circle"></i> &nbsp; Sales Dashboard
+			</a>
+		</div>
+      
+         <div class="row justify-content-start">
+        <div class="col-10 col-sm-10 col-md-10">
+           
+
             <button  id="exportButton" class="btn btn-success">
                <i class="bi bi-download"></i> Export
 			</button>
 		</div>
+        </div>
 	</div>
 
     <img src="~/images/company.png" id="head" hidden>
