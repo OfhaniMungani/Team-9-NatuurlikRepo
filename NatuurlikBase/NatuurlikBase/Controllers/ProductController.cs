@@ -124,8 +124,8 @@ namespace NatuurlikBase.Controllers
 
 
 
-        #region API CALLS
-        [HttpGet]
+       #region API CALLS
+       [HttpGet]
         public IActionResult GetAll()
         {
             var productList = _unitOfWork.Product.GetAll(includeProperties: "Category,Brand");
@@ -135,11 +135,14 @@ namespace NatuurlikBase.Controllers
 
         public IActionResult Delete(int? id)
         {
-            
+           
+
             var ForeignKey = _unitOfWork.OrderLine.GetAll().Any(x => x.ProductId == id);
             if (ForeignKey)
             {
-                return Json(new { success = false, message = "Product cannot be deleted since it has an association with order" });
+                TempData["Delete"] = "Product cannot be deleted since it has an association with order";
+                
+                 return Json(new { success = false, message = "Product cannot be deleted since it has an association with order" });
             }
             else
             {
@@ -158,10 +161,10 @@ namespace NatuurlikBase.Controllers
                 _unitOfWork.Product.Remove(obj);
 
                 _unitOfWork.Save();
-          
+                TempData["successDelete"] = "Product deleted successfully";
                 return Json(new { success = true, message = "Delete Successful" });
             }
-
+           
         }
         #endregion
     }

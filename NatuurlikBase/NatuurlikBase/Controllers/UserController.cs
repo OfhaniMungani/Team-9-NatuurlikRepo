@@ -142,7 +142,7 @@ namespace NatuurlikBase.Controllers
 
             if(hasFk)
             {
-                //Struggling to get this to display. Will have a look at this.
+                TempData["Delete"] = "User cannot be deleted since their profile is associate with an Order";
                 return Json(new { success = false, message = "User cannot be deleted since their profile is associate with an Order" });
             }
             else
@@ -153,6 +153,7 @@ namespace NatuurlikBase.Controllers
                     return Json(new { success = false, message = "An error occured while deleting" });
                 }
                 _unitOfWork.User.Remove(obj);
+                TempData["successDelete"] = "Product deleted successfully";
                 _unitOfWork.Save();
                 return Json(new { success = true, message = "User Deleted Successfully" });
             }
