@@ -11,10 +11,11 @@ namespace NatuurlikBase.Controllers
     {
 
       private readonly DatabaseContext db;
-
-        public InventoryItemController(DatabaseContext context)
+        private readonly IUnitOfWork _unitOfWork;
+        public InventoryItemController(DatabaseContext context , IUnitOfWork unitOfWork)
         {
             db = context;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: Countries
@@ -134,9 +135,25 @@ namespace NatuurlikBase.Controllers
             InventoryItem inventoryItem = db.InventoryItem.Find(id);
             db.InventoryItem.Remove(inventoryItem);
             ViewBag.CountryConfirmation = "Are you sure you want to delete a country.";
-            TempData["success"] = "Inventory Item Successfully Deleted.";
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            var hasFk = _unitOfWork.InventoryProcured.GetAll().Any(x => x.Id == id);
+
+            if (!hasFk)
+            {
+                var obj = _unitOfWork.InventoryItem.GetFirstOrDefault(u => u.Id == id);
+                if (obj == null)
+                {
+                    TempData["AlertMessage"] = "Error occurred while attempting delete";
+                }
+                _unitOfWork.InventoryItem.Remove(obj);
+                _unitOfWork.Save();
+                TempData["success"] = "Inventory Item Successfully Deleted.";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["Delete"] = "Inventory Item cannot be deleted since it has a Procured Inventory associated";
+                return RedirectToAction("Index");
+            }
         }
 
         protected override void Dispose(bool disposing)

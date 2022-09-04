@@ -37,8 +37,10 @@ namespace NatuurlikBase.Repository
             OrderReview = new OrderReviewRepository(_db);
             ReturnedProduct = new ReturnedProductRepository(_db);
             Delivery=new DeliveryRepository(_db);
-
-
+            InventoryType = new InventoryTypeRepository(_db);
+            InventoryItem = new InventoryItemRepository(_db);
+            ReturnReason = new ReturnReasonRepository(_db);
+            InventoryProcured = new InventoryProcuredRepository(_db);   
         }
         public ICountryRepository Country { get; private set; }
         public IProvinceRepository Province { get; private set; }
@@ -62,7 +64,11 @@ namespace NatuurlikBase.Repository
 
         public IReturnedProductRepository ReturnedProduct { get; private set; }
         public IDeliveryRepository Delivery { get; private set; }
-
+         
+        public IInventoryType InventoryType { get; private set; }
+        public IInventoryItemRepository InventoryItem { get; private set; }
+        public  IReturnReason   ReturnReason { get; private set; }
+        public IInventoryProcured InventoryProcured { get; private set; }
         public void Save()
         {
             _db.SaveChanges();
