@@ -95,12 +95,62 @@
 
                                                      if (Model.Order.OrderStatus == SR.OrderPending && Model.Order.OrderPaymentStatus== SR.OrderPaymentApproved)
                                                      {
-                                                     <input type="submit" onclick="return validateInput()" asp-action="CancelOrder" class="btn btn-danger" style="width:150px" value="Cancel Order" />
+                                                     <input type="button" data-toggle="modal" data-target="#exampl12"  onclick="return validateInput()" class="btn btn-danger" style="width:150px" value="Cancel Order" />
+                                                      <div class="modal fade" id="exampl12">
+                                                   <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                        </div>
+                        <div class="modal-body">
+                            <h6 class="col-md-10"> 
+                           Are You Sure You Want To Cancel This Order
+                        </h6>
+                        </div>
+
+                        <div class="modal-footer border-0">
+                            <div class="form-actions no-color">
+                                <input type="submit" value="Confirm"  asp-action="CancelOrder" class="btn btn-success"style="width:150px;"/> 
+                                <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
                                                      }
                                                  }
                                                  @if(User.IsInRole(SR.Role_Reseller) && Model.Order.OrderStatus == SR.OrderPending)
                                                  {
-                                                    <input type="submit" onclick="return validateInput()" asp-action="CancelOrder" class="btn btn-danger" style="width:150px" value="Cancel Order" />
+                                                    <input type="button" onclick="return validateInput()"  data-toggle="modal" data-target="#exampleModal33"  class="btn btn-danger" style="width:150px" value="Cancel Order" />
+                                                     <div class="modal fade" id="exampleModal33">
+                                                   <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                        </div>
+                        <div class="modal-body">
+                            <h6 class="col-md-10"> 
+                           Are You Sure You Want To Cancel This Order
+                        </h6>
+                        </div>
+
+                        <div class="modal-footer border-0">
+                            <div class="form-actions no-color">
+                                <input type="submit" value="Confirm"  asp-action="CancelOrder" class="btn btn-success" style="width:150px;"/> 
+                                <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
                                                  }
                                                   @if (User.IsInRole(SR.Role_Reseller) && Model.Order.OrderStatus == SR.OrderDelayed)
                                         {
