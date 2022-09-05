@@ -29,16 +29,7 @@
  
 
 }
-@if (TempData["NextCreation"] != null)
-{
-   
-    <div class="alert alert-info alert-dismissible d-flex align-items-center fade show">
-        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
-        <strong>&nbsp Suggestion - &nbsp </strong>  Click &nbsp<a  asp-controller="Province" asp-action="Create" class="alert-link"> Here</a>&nbsp to add a new Province
-        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
-    </div>
 
-}
 @if (TempData["Delete"] != null)
 {
     <div class="alert alert-warning  alert-dismissible fade show" role="alert" id="success-alert">
@@ -54,7 +45,9 @@
 <div class="container-fluid">
      <div class="row justify-content-start">
             <div class="col-10 col-sm-10 col-md-10">
-            <h2 class="cheading">Courier List</h2>
+            <h2 class="cheading">Courier List
+                <a href="~/helpDocs/Couriers.pdf" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
+            </h2>
 		</div>
         <div class="col-md-9 col-lg-8">
             <a asp-controller="Courier" asp-action="Create" class="btn btn-success">

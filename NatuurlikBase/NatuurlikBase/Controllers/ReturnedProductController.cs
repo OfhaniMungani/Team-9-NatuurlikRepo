@@ -74,7 +74,7 @@ namespace NatuurlikBase.Controllers
 
                 if (returnedCount == null)
                 {
-                    if (orderLine.Count != returnedProduct.QuantityReceived)
+                    if (orderLine.Count < returnedProduct.QuantityReceived)
                     {
                         TempData["CountError"] = "Oops! You attempted to return more than what was ordered!";
                         return RedirectToAction("Index");

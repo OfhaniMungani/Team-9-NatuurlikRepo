@@ -110,32 +110,54 @@ namespace NatuurlikBase.Controllers
         }
 
 
-        public IActionResult Delete(int? id)
+         // GET: QueryReason/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-
                 return NotFound();
             }
-            QueryReason QueryReason = db.QueryReason.Find(id);
+
+            var QueryReason = await db.QueryReason
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (QueryReason == null)
             {
                 return NotFound();
             }
-            return View(QueryReason);
 
+            return View(QueryReason);
         }
 
+        // POST: WriteOffReason/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
             QueryReason queryReason = db.QueryReason.Find(id);
             db.QueryReason.Remove(queryReason);
-            ViewBag.QueryReasonConfirmation = "Are you sure you want to delete this query reason?";
-            TempData["AlertMessage"] = "Query Reason Deleted Successfully";
-            db.SaveChanges();
-            return RedirectToAction("Index");
+
+            ViewBag.QueryReasonConfirmation = "Are you sure you want to delete this Query Reason";
+
+            var ForeignKey = db.OrderQuery.Any(x => x.QueryReasonId == id);
+            if(!ForeignKey)
+            {
+                var obj = db.OrderQuery.FirstOrDefault(x => x.QueryReasonId == id);
+                if (obj == null)
+                {
+                    TempData["AlertMessage"] = "Oops! This Query Reason cannot be deleted!";
+                }
+                db.QueryReason.Remove(queryReason);
+                TempData["success"] = "Query Reason Deleted Successfully";
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["Delete"] = "QueryReason cannot be deleted since it has an Order Query associated";
+                return RedirectToAction("Index");
+            }
+            
+        
         }
 
         protected override void Dispose(bool disposing)

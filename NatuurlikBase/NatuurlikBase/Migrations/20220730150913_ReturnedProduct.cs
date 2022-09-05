@@ -35,13 +35,13 @@ namespace NatuurlikBase.Migrations
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_ReturnedProduct_ReturnReason_ReturnReasonId",
                         column: x => x.ReturnReasonId,
                         principalTable: "ReturnReason",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

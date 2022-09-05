@@ -46,7 +46,14 @@ builder.Services.AddTransient<ISearchProductionTransactionsRepository, SearchPro
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IEmailSender, SendGridEmailSender>();
 builder.Services.AddRazorPages();
-
+//configure mobile application cors 
+builder.Services.AddCors(options => options.AddDefaultPolicy(
+               builder =>
+               {
+                   builder.AllowAnyOrigin();
+                   builder.AllowAnyHeader();
+                   builder.AllowAnyMethod();
+               }));
 //Configure Application Cookies
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -81,7 +88,7 @@ app.UseAuthentication();;
 
 app.UseAuthorization();
 app.MapRazorPages();
-
+app.UseCors();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

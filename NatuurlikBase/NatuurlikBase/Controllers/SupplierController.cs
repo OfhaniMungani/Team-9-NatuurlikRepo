@@ -164,15 +164,26 @@ namespace NatuurlikBase.Controllers
         {
             ViewBag.CountryConfirmation = "Are you sure you want to delete this Supplier?";
 
-            var supplier = _unitOfWork.Supplier.GetFirstOrDefault(u => u.Id == id);
-            if (supplier == null)
+            var fK = _db.InventoryProcured.Any(m => m.SupplierId == id); 
+
+            if (!fK) 
             {
-                TempData["AlertMessage"] = "Error occurred while attempting delete";
+                var supplier = _unitOfWork.Supplier.GetFirstOrDefault(u => u.Id == id);
+                if (supplier == null)
+                {
+                    TempData["AlertMessage"] = "Error occurred while attempting delete";
+                }
+                _unitOfWork.Supplier.Remove(supplier);
+                _unitOfWork.Save();
+                TempData["success"] = "Supplier Deleted Successfully.";
+                return RedirectToAction("Index");
             }
-            _unitOfWork.Supplier.Remove(supplier);
-            _unitOfWork.Save();
-            TempData["success"] = "Supplier Deleted Successfully.";
-            return RedirectToAction("Index");
+
+            else 
+            {
+                TempData["Delete"] = "The Supplier cannot be deleted as it has an association with Inventory Procured.";
+                return RedirectToAction("Index");
+            }
 
         }
 

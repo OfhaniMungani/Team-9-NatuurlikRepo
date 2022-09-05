@@ -1,0 +1,237 @@
+﻿@{
+    ViewBag.Title = "report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div id="page-content-wrapper">
+    <div class="container-fluid">
+    <div id ="reportPage">
+          <div class="row justify-content-start">
+            <div class="col-10 col-sm-10 col-md-10">
+            <h2 class="cheading">Top Five Sales Report
+                <a href="" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
+            </h2>
+		</div>
+     
+           <div class="col-md-4 col-lg-4">
+            <a asp-controller="report" asp-action="Index" class="btn btn-dark">
+               <i class="bi bi-arrow-left-circle"></i> &nbsp; Sales Dashboard
+			</a>
+            <button  id="exportButton" class="btn btn-success">
+               <i class="bi bi-download"></i> Export
+			</button>
+		</div>
+	</div>
+
+    <img src="~/images/company.png" id="head" hidden>
+     
+    <div class="chartsContainer" id ="x">
+        <input id="actor" type="text" value="@ViewBag.ActorName" hidden>
+        <input id="surname" type="text" value="@ViewBag.Surname" hidden>
+  
+        <div id="rep"> <canvas id="chart"></canvas></div>  
+
+        <table class="table" id="sales">
+            <thead style="background-color: #232323">
+                <tr>
+                    <th class="text-light">First Name</th>
+                    <th class="text-light">Last Name</th>
+                    <th class="text-light">Sales Value (ZAR)</th> 
+                </tr>
+            </thead>
+            <tbody id ="table-body1"></tbody>
+             <tfoot  id ="table-foot1"></tfoot>
+        </table>
+
+</div> 
+    </div> 
+    </div>  
+   </div>  
+
+@section Scripts {
+
+ <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+ <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+
+
+<script>
+
+    
+$("#exportButton").click(function(){
+    
+        var doc = new jsPDF();
+
+        //HEADER
+        var header = document.querySelector('#head'); 
+        doc.addImage(header, 'png', 0, 8, 208, 50)
+
+        //TITLE
+        doc.setFontSize(18);
+        doc.text(13, 60, "SALES BY CLIENT REPORT");
+
+        //DATE, PRINTED BY
+        doc.setFontSize(8);
+        var date = new Date().toLocaleString();
+        var actorName = $("#actor").val();
+        var actorSurname = $("#surname").val();
+        doc.text(13, 66, "PRINTED BY: " + actorName+' '+actorSurname);
+        doc.text(143, 66, "DATE PRINTED: " + date);
+
+        //SALES GRAPH
+        var chart1 = document.querySelector('#chart'); 
+        doc.addImage(chart1, 'png', 35, 80, 140, 90)
+        doc.autoTable( { html: '#sales', startY:190, headStyles: { fillColor: [222, 222, 222] , textColor: [0, 0, 0]  }  });       
+
+     
+
+        //FOOTER AND PAGE NUMBERS
+        doc.setFontSize(10);
+        let finalY = doc.autoTable.previous.finalY;
+        doc.text(88, finalY+20, "***END OF REPORT***");  
+        const pageCount = doc.internal.getNumberOfPages();
+        for(var i = 1; i <= pageCount; i++) {   
+            doc.setPage(i);
+            doc.text('Page ' + String(i) + ' of ' + String(pageCount),200,290,null,null,"right");
+        } 
+
+        doc.save("ClientSalesReport.pdf");
+
+});
+
+
+
+        $(document).ready(() => {
+            $.get({
+                url: "@Url.Action("GetOrderData", "report")",
+                method: "GET",
+               
+                success: (data, status) => {
+                    console.log(data);
+                    console.log(status);
+
+                    let inData = JSON.parse(data);
+                    console.log(inData);
+                    let table = $("#table-body1");
+                        let foot = $("#table-foot1");
+                 var total =0;
+                 var salesTotal = 0;
+                        table.empty();
+
+                        console.log(inData);
+
+                        if (inData.length > 0) {
+                            $(inData).each((i, v) => {
+                                table.append(`<tr><td>${v.Fname}</td><td>${v.lName}</td><td>  ${v.tableAmount}</td>/tr>`);
+                              
+                               salesTotal =v.sales;
+                                console.log("row inserted")
+                                 
+                            });
+                                foot.append(`<tr><td  Style="font-weight: bold;">Total</td><td>  </td><td  Style="font-weight: bold;">  ${salesTotal}</td>/tr>`); 
+                        } 
+                    let chartLabel = [];
+                    let chartData = [];
+
+                    $(inData).each((i, v) => {
+                        chartLabel.push(v.Name);
+                        chartData.push(v.Amount);
+                    });
+
+                    RenderChart(chartLabel, chartData);
+                }
+            });
+
+           function RenderChart(labels, data) {
+                let ctx = $("#chart");
+
+                let chart = new Chart(ctx, {
+                    type: 'bar',
+             
+                    data: {
+                         
+         indexLabelPlacement: "outside",  
+         indexLabelOrientation: "horizontal",
+                        labels: labels ,
+                        datasets: [{
+                            label: 'Rand Value of Sales',
+                             indexLabel:data,
+                            data: data,
+                            backgroundColor: [
+                                'rgba(7, 107, 173, 0.2)',
+                                'rgba(48, 51, 175, 0.2)',
+                                'rgba(104, 7, 173, 0.2)',
+                                'rgba(7, 121, 173, 0.2)',
+                                'rgba(7, 162, 235, 0.2)',
+                                'rgba(7, 102, 255, 0.2)',
+                                'rgba(7, 203, 207, 0.2)'
+                            ],
+        
+                        }]
+           
+                    },
+                   options: {
+
+                          plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed.y !== null) {
+                            label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'ZAR' }).format(context.parsed.y);
+                        }
+                        return label;
+                    }
+                }
+                },
+                 title: {
+      display: true,
+      text: "Top Five(5) Sales By Client Report",
+       fontSize: 50
+    }
+                },
+   
+   scales: {
+         x: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Client`s Name and Surname',
+       
+          font: {
+       
+            lineHeight: 1.2,
+          },
+          padding: {top: 20, left: 0, right: 0, bottom: 0}
+        }
+      },
+      y: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Currency (ZAR)',
+      
+          font: {
+        
+            lineHeight: 1.2
+          },
+          padding: {top: 30, left: 0, right: 0, bottom: 0}
+     
+    }
+      }
+                    }
+                    }
+                 });
+
+             }
+
+        });
+
+    </script>
+    }

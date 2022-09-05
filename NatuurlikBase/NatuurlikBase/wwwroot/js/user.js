@@ -52,10 +52,11 @@ function Delete(url) {
                 type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
-                        dataTable.ajax.reload();
+                        location.reload();
                         toastr.success(data.message);
                     }
                     else {
+                        location.reload();
                         toastr.error(data.message);
                     }
                 }

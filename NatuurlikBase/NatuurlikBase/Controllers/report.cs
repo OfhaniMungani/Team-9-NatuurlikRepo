@@ -28,8 +28,39 @@ namespace NatuurlikBase.Controllers
             return View();
         }
 
-       
+        public IActionResult clientReport()
+        {
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
 
+            var actorName = db.Users.Where(x => x.Id == claim.Value).FirstOrDefault();
+
+            ViewBag.ActorName = actorName.FirstName;
+            ViewBag.Surname = actorName.Surname;
+            return View();
+        }
+        public IActionResult monthlyReport()
+        {
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+
+            var actorName = db.Users.Where(x => x.Id == claim.Value).FirstOrDefault();
+
+            ViewBag.ActorName = actorName.FirstName;
+            ViewBag.Surname = actorName.Surname;
+            return View();
+        }
+        public IActionResult ProductReport()
+        {
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+
+            var actorName = db.Users.Where(x => x.Id == claim.Value).FirstOrDefault();
+
+            ViewBag.ActorName = actorName.FirstName;
+            ViewBag.Surname = actorName.Surname;
+            return View();
+        }
         //User Sales Bar Graph againist orderTotal minus deliveryFees  
         public string GetOrderData()
         {
@@ -53,8 +84,8 @@ namespace NatuurlikBase.Controllers
             foreach (var userOrder in obj)
             {
                 //double Pamount = obj.Sum(o => o.ProductAmount);
-                double Samount = obj.Sum(o => o.Amount);
-                list.Add(new { Amount = Math.Round(userOrder.Amount,2), Name = userOrder.Name + " " + userOrder.Surname, sales = Math.Round(Samount,2), Fname = userOrder.Name, lName = userOrder.Surname });
+                string Samount = obj.Sum(o => o.Amount).ToString("C", CultureInfo.CurrentCulture);
+                list.Add(new { tableAmount = userOrder.Amount.ToString("C", CultureInfo.CurrentCulture), Amount = Math.Round(userOrder.Amount,2), Name = userOrder.Name + " " + userOrder.Surname, sales = Samount, Fname = userOrder.Name, lName = userOrder.Surname });
             }
 
             return JsonConvert.SerializeObject(list);
@@ -85,8 +116,8 @@ namespace NatuurlikBase.Controllers
             //render chart data
             foreach (var monthlyOrder in obj)
             {
-                decimal Samount = Math.Round((decimal)obj.Sum(o => o.Amount), 2);
-                list.Add(new { Amount = Math.Round(monthlyOrder.Amount,2), Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthlyOrder.Month) + " " + monthlyOrder.Year, month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthlyOrder.Month), year = monthlyOrder.Year, sales = Math.Round(Samount,2) });
+                string Samount = obj.Sum(o => o.Amount).ToString("C", CultureInfo.CurrentCulture);
+                list.Add(new { tableAmount = monthlyOrder.Amount.ToString("C", CultureInfo.CurrentCulture), Amount = Math.Round(monthlyOrder.Amount,2), Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthlyOrder.Month) + " " + monthlyOrder.Year, month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthlyOrder.Month), year = monthlyOrder.Year, sales =Samount });
             }
 
             return JsonConvert.SerializeObject(list);
@@ -116,10 +147,10 @@ namespace NatuurlikBase.Controllers
                 double SALESamount = obj.Where(o => o.Product == product.Id).Sum(o => o.salesAmount);
                 double PRODUCTamount = obj.Where(o => o.Product == product.Id).Sum(o => o.ProductAmount);
                 double Pamount = obj.Sum(o => o.ProductAmount);
-                double Samount = obj.Sum(o => o.salesAmount);
+                string Samount = obj.Sum(o => o.salesAmount).ToString("C", CultureInfo.CurrentCulture);
 
 
-                list.Add(new { salesAmount = Math.Round(SALESamount,2), ProductAmount = Math.Round(PRODUCTamount,2), Name = product.Name, amount = Math.Round(Pamount,2), Samount = Math.Round(Samount,2), });
+                list.Add(new { tableAmount = SALESamount.ToString("C", CultureInfo.CurrentCulture), salesAmount = Math.Round(SALESamount,2), ProductAmount = Math.Round(PRODUCTamount,2), Name = product.Name, amount = Math.Round(Pamount,2), Samount = Samount });
             }
 
             return JsonConvert.SerializeObject(list);
@@ -141,7 +172,7 @@ namespace NatuurlikBase.Controllers
             foreach (Product product in db.Products.ToList())
             {
                 double amount = obj.Where(o => o.OrderID == product.Id).Sum(o => o.Amount);
-                list.Add(new { Amount = Math.Round(amount,2), Name = product.Name });
+                list.Add(new { Amount =Math.Round(amount,2), Name = product.Name });
             }
 
             return JsonConvert.SerializeObject(list);
