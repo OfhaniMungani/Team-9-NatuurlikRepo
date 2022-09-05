@@ -8,7 +8,7 @@ namespace NatuurlikBase.Services
         private readonly DatabaseContext _db;
         private readonly IEmailSender _emailSender;
         private readonly IWebHostEnvironment _hostEnvironment;
-        private readonly PeriodicTimer _timer = new(TimeSpan.FromDays(1));
+        private readonly PeriodicTimer _timer = new(TimeSpan.FromMinutes(15));
 
         public ReminderService(IWebHostEnvironment hostEnvironment, IEmailSender emailSender,
             IServiceScopeFactory factory)
