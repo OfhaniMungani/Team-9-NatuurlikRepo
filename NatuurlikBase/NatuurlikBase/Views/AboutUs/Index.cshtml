@@ -3,10 +3,10 @@
   <div class="container about-cont">
       <h1 id="about"> ABOUT <strong> US </strong></h1>
           <div class="row justify-content-center">
-              <div class="col-4">
+              <div class="col-md-4">
                   <img src="~/images/logo.png" id="logo">
               </div>
-              <div class="col-4">
+              <div class="col-md-4">
                   <p>
                       Everything that we do, we believe 
                       in the preservation of our planet, 
@@ -31,7 +31,7 @@
     <h1 id="our"> OUR  <strong> TEAM </strong></h1>
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-4">
+          <div class="col-md-4">
             <div class="card team">
               <img class="card-img team-img" src="~/images/jannes.png"> 
               <br />
@@ -43,7 +43,7 @@
                 </p>                             
             </div>
           </div> 
-          <div class="col-4">
+          <div class="col-md-4">
             <div class="card team">
               <img class="card-img team-img" src="~/images/emile.png">    
               <br />
@@ -54,7 +54,7 @@
                 </p>               
             </div>
           </div> 
-          <div class="col-4">
+          <div class="col-md-4">
             <div class="card team">
               <img class="card-img team-img" src="~/images/hannes.png">      
               <br />
@@ -77,7 +77,7 @@
         <div class="row justify-content-around">
                 @foreach(var video in Model)
                 {
-                 <div class="col-3">
+                 <div class="col-md-3">
                 <div class="card" style="width: 18rem;">
                   <iframe src="@video.VideoUrl" title="@video.Title" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                   <div class="card-body">

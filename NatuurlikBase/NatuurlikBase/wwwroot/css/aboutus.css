@@ -86,3 +86,28 @@ p, .card-body, #our, h1 {
     font-size: small;
     color: #9F9F9F;
 }
+
+
+@media (max-width: 768px) {
+
+    #logo {
+        height: 250px;
+        padding-bottom: 10%;
+    }
+
+    .about-cont {
+        text-align: center;
+        padding-bottom: 4%;
+        padding-top: 6%;
+        /* background-image: url("../images/annie.png");*/
+    }
+
+    #our {
+        padding-top: 20px;
+        padding-bottom: 10%;
+    }
+
+    .video {
+        padding-bottom: 20px;
+    }
+}

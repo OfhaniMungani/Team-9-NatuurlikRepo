@@ -11,21 +11,15 @@
                 <a href="" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
             </h2>
 		</div>
-           <div class="col-md-9 col-lg-8">
+     
+           <div class="col-md-4 col-lg-4">
             <a asp-controller="report" asp-action="Index" class="btn btn-dark">
                <i class="bi bi-arrow-left-circle"></i> &nbsp; Sales Dashboard
 			</a>
-		</div>
-      
-         <div class="row justify-content-start">
-        <div class="col-10 col-sm-10 col-md-10">
-           
-
             <button  id="exportButton" class="btn btn-success">
                <i class="bi bi-download"></i> Export
 			</button>
 		</div>
-        </div>
 	</div>
 
     <img src="~/images/company.png" id="head" hidden>
@@ -34,9 +28,8 @@
         <input id="actor" type="text" value="@ViewBag.ActorName" hidden>
         <input id="surname" type="text" value="@ViewBag.Surname" hidden>
   
-        <div style="width: 60%; padding-bottom: 50px; padding-top: 30px; margin:auto">       
-           <div> <canvas id="chart"></canvas></div>    
-        </div>
+        <div id="rep"> <canvas id="chart"></canvas></div>  
+
         <table class="table" id="sales">
             <thead style="background-color: #232323">
                 <tr>

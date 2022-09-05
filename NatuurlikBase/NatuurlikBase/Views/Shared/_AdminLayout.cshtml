@@ -60,6 +60,10 @@
                         <li>
                             <a asp-area="" asp-controller="ProductWriteOff" asp-action="Index"> Product Write-Off Log</a>
                         </li>
+                        <li>
+                            <a asp-area="" asp-controller="ReturnedProduct" asp-action="Index">Returned Products</a>
+                        </li>
+
                     </ul>
                 </li>
                 <li>
@@ -170,7 +174,7 @@
                     <a asp-area="Admin" asp-controller="User" asp-action="Index"><i class="bi bi-person">&nbsp;</i> Users</a>
                 </li>
                                 <li>
-                    <a asp-area="Admin" asp-controller="Video" asp-action="Index"><i class="bi bi-person">&nbsp;</i> Videos</a>
+                    <a asp-area="Admin" asp-controller="Video" asp-action="Index"><i class="bi bi-camera-reels">&nbsp;</i> Videos</a>
                 </li>
 
                   <li>
@@ -210,50 +214,81 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="nav navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Services</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Blog</a>
+                            <a asp-area="" asp-controller="Home" asp-action="Index">Store</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Products</a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Products</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Product Types</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="ProductBrand" asp-action="Index">Product Brands</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="ProductCategory" asp-action="Index">Product Categories</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="ConfigureProduct" asp-action="Index">Product Configuration</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Produce" asp-action="Index">Produce Product</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Orders</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="" asp-controller="Order" asp-action="Index">Manage Orders</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="ConfirmationReminder" asp-action="Index">Order Confirmation Reminders</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="PaymentReminder" asp-action="Index">Payment Reminders</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="ReturnReason" asp-action="Index">Return Reasons</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="QueryReason" asp-action="Index">Query Reasons</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="ReviewReason" asp-action="Index">Review Reasons</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Courier" asp-action="Index">Couriers</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Order" asp-action="ViewReviews">View Order Reviews</a>
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Orders</a>
+                            <a class="nav-link" asp-area="" asp-controller="Supplier" asp-action="Index">Suppliers</a>
                         </li>
+
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Inventory</a>
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Inventory Management</a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Products</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">inventory Types </a>
-                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">inventory Levels</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="InventoryItem" asp-action="Index">Inventory Items</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="InventoryType" asp-action="Index">Inventory Types</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="WriteOffReason" asp-action="Index">Write-Off Reasons</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Dashboard" asp-action="Index">Inventory Levels</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="SupplierOrder" asp-action="Index"> Send Supplier Order</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="InventoryProcured" asp-action="Index">Capture Procured Inventory</a>    
                             </div>
                         </li>
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Locations</a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Suburbs</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Cities</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Provinces</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Country</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Suburbs" asp-action="Index">Suburbs</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Cities" asp-action="Index">Cities</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Province" asp-action="Index">Provinces</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Countries" asp-action="Index">Country</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Reports</a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Sales Report</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Customer Report</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Inventory Report</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Orders Report</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="report" asp-action="Index">Sales Report</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="CustomerReport" asp-action="Index">Customer Report</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="ResellerReport" asp-action="Index">Reseller Report</a>                    
+                                <a class="dropdown-item" asp-area="" asp-controller="InventoryReport" asp-action="Index">Inventory List Report</a>                      
+                                <a class="dropdown-item" asp-area="" asp-controller="Dashboard" asp-action="Index">Orders Report</a>                  
+                                <a class="dropdown-item" asp-area="" asp-controller="ProductionReport" asp-action="Index">Produced Products Report</a>                    
+                                <a class="dropdown-item" asp-area="" asp-controller="ProductReport" asp-action="Index">Product Report</a>                       
                             </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">Users</a>
                         </li>
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-controller="Video" asp-action="Index">Videos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-controller="VAT" asp-action="Index"> Manage VAT </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Help" asp-action="Index">Help</a>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link" id="logout"> Log Out &nbsp;<i class="bi bi-box-arrow-right"></i></a>
                         </li>

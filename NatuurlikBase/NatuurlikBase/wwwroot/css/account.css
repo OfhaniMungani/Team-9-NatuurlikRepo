@@ -172,3 +172,16 @@
         width: 300px;
     }
 }
+
+@media (max-width: 768px) {
+
+    #under {
+        padding-right: 10px;
+        padding-left: 10px;
+        margin-bottom: 50px;
+    }
+
+    .sideside {
+        width: 355px;
+    }
+}
