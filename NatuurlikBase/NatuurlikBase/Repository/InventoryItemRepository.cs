@@ -6,15 +6,18 @@ using NatuurlikBase.Repository.IRepository;
 
 namespace NatuurlikBase.Repository
 {
-    public class InventoryItemRepository : IInventoryItemRepository
+    public class InventoryItemRepository : Repository<InventoryItem>, IInventoryItemRepository
     {
         private readonly DatabaseContext _db;
 
-        public InventoryItemRepository(DatabaseContext db)
+        public InventoryItemRepository(DatabaseContext db) : base(db)
         {
             _db = db;
         }
-
+        public void Update(InventoryItem obj)
+        {
+            _db.InventoryItem.Update(obj);
+        }
         public async Task<IEnumerable<InventoryItem>> GetInventoriesByName(string name)
         {
             return await _db.InventoryItem.Where(x => x.InventoryItemName.ToLower().IndexOf(name.ToLower()) >= 0).ToListAsync();

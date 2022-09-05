@@ -137,17 +137,26 @@ namespace NatuurlikBase.Controllers
         public IActionResult Delete(string? id)
         {
 
-            //var obj = _db.ProductCategories.Find(id);
+            //Has order associated?
+            var hasFk = _unitOfWork.Order.GetAll().Any(x => x.ApplicationUserId == id);
 
-            var obj = _unitOfWork.User.GetFirstOrDefault(u => u.Id == id);
-            if (obj == null)
+            if(hasFk)
             {
-                return Json(new { success = false, message = "An error occured while deleting" });
+                TempData["Delete"] = "User cannot be deleted since their profile is associate with an Order";
+                return Json(new { success = false, message = "User cannot be deleted since their profile is associate with an Order" });
             }
-            _unitOfWork.User.Remove(obj);
-            _unitOfWork.Save();
-            return Json(new { success = true, message = "User Deleted Successfully" });
-
+            else
+            {
+                var obj = _unitOfWork.User.GetFirstOrDefault(u => u.Id == id);
+                if (obj == null)
+                {
+                    return Json(new { success = false, message = "An error occured while deleting" });
+                }
+                _unitOfWork.User.Remove(obj);
+                TempData["successDelete"] = "Product deleted successfully";
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "User Deleted Successfully" });
+            }
 
         }
         #endregion

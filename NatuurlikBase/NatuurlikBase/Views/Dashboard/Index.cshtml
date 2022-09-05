@@ -2,3 +2,14 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
+@if(User.IsInRole(SR.Role_Admin))
+{
+  <div id="page-content-wrapper">
+    <div class="container-fluid">
+    <h2 class="cheading">Natuurlik Dashboard Overview </h2>
+    <iframe title="Natuurlik BI" width="1400" height="800" src="https://app.powerbi.com/reportEmbed?reportId=3a5c32d6-62b7-4eb4-8fbd-084ec5f4b70d&autoAuth=true&ctid=e1fc63d3-8b95-49f3-bc53-e7a0790cb1d8" frameborder="0" allowFullScreen="true"></iframe>
+</div>
+</div>
+}
+

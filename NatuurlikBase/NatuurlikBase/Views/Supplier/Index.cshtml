@@ -42,19 +42,17 @@
 @if (TempData["Delete"] != null)
 {
     <div class="alert alert-warning  alert-dismissible fade show" role="alert" id="success-alert">
- 
          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
        &nbsp @TempData["Delete"]
-
     </div>
- 
-
 }
 
  <div class="container-fluid">
      <div class="row justify-content-start">
             <div class="col-10 col-sm-10 col-md-10">
-            <h2 class="cheading">Suppliers List</h2>
+            <h2 class="cheading">Suppliers List
+                <a href="~/helpDocs/Supplier.pdf" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
+            </h2>
 		</div>
         <div class="col-md-9 col-lg-8">
             <a asp-controller="Supplier" asp-action="Create" class="btn btn-success">

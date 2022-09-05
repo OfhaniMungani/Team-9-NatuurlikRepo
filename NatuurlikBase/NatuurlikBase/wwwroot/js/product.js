@@ -39,7 +39,7 @@ function loadDataTable() {
 function Delete(url) {
     Swal.fire({
         title: '',
-        text: "Are ypu sure you want to delete this?",
+        text: "Are you sure you want to delete this?",
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -51,10 +51,13 @@ function Delete(url) {
                 type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
-                        dataTable.ajax.reload();
+                        location.reload();
                         toastr.success(data.message);
+                        
+                        
                     }
                     else {
+                        location.reload();
                         toastr.error(data.message);
                     }
                 }

@@ -20,7 +20,7 @@ namespace NatuurlikBase.Models
         public string EmailAddress { get; set; }
 
         [Required]
-        [Display(Name = "PhoneNumber")]
+        [Display(Name = "Phone Number")]
         [MaxLength(10)]
         [RegularExpression(@"^(\d{10})$", ErrorMessage = "Please enter a valid Phone Number.")]
         public string PhoneNumber { get; set; }

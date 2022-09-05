@@ -50,6 +50,9 @@
 							 <th class="text-light col-2">
 								Quantity
 							</th>
+							<th class="text-light col-2">
+								Total
+							</th>
 							<th class="text-light col-1" id="come">
 								Remove
 							</th>
@@ -74,12 +77,12 @@
 									<td>
 										@if (User.IsInRole(SR.Role_Reseller))
 										{
-											<h6><strong>R @cartItem.Product.ResellerPrice.ToString("0.00")<span class="text-muted">&nbsp;x&nbsp;</span> @cartItem.Count </strong></h6>
+											<h6><strong>R @cartItem.Product.ResellerPrice.ToString("0.00")</strong></h6>
 										}
 
 										else
 										{
-											<h6><strong>R @cartItem.Product.CustomerPrice.ToString("0.00")<span class="text-muted">&nbsp;x&nbsp;</span> @cartItem.Count </strong></h6>
+											<h6><strong>R @cartItem.Product.CustomerPrice.ToString("0.00") </strong></h6>
 										}
 									</td>
 									<td>
@@ -96,6 +99,17 @@
 												</strong>
 											</a>
 										</div>
+									</td>
+									<td> 
+										@if(User.IsInRole(SR.Role_Reseller))
+										{
+											<h6><strong>R @(@cartItem.Product.ResellerPrice * @cartItem.Count)</strong></h6>
+										}
+										else
+										{
+											<h6><strong>R @(@cartItem.Product.CustomerPrice * @cartItem.Count)</strong></h6>
+										}
+
 									</td>
 									<td id="bin">
 										<a asp-action="remove" asp-route-cartId="@cartItem.Id" id="gone">

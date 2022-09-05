@@ -11,7 +11,7 @@
         public const string Role_Admin = "Admin";
 
         //Order Management
-
+        public const string OrderDelivered = "Delivered";
         //Reseller placed order
         public const string OrderPending = "Pending";
         public const string OrderApproved = "Approved";
@@ -22,6 +22,8 @@
         public const string OrderCancelled = "Cancelled";
         public const string OrderRefundPending = "Pending Return";
         public const string OrderRefunded = "Refunded";
+        public const string OrderDelayed = "Delayed";
+        public const string RejectDelayedOrder = "Rejected Delayed Order";
 
         //Order Payment Status
         public const string OrderPaymentApproved = "Paid";
@@ -33,6 +35,9 @@
 
         //Returned Product
         public const string ReturnedProduct = "Includes Returned Product(s)";
+
+        //Delivered
+        public const string Delivered = "Delivered";
 
 
 

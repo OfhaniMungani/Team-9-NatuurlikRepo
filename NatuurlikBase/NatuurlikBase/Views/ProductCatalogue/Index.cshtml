@@ -30,8 +30,10 @@
                                     <div class="row">
                                         <ul id="myUL" style="list-style-type:none; padding-left:0px">
                                             @foreach (var product in Model)
-                                            {                   
-                                            @if (User.IsInRole(SR.Role_Reseller))
+                                            {   
+                                                @if(product.DisplayProduct == "Yes")
+                                                {
+                                                     @if (User.IsInRole(SR.Role_Reseller))
                                             {  
                                                 
                                                 <li style="float:left;">
@@ -92,6 +94,8 @@
                                                                                                   
                                                 }
                                             }
+                                                }
+                                           
                                             </ul>   
                                    </div>
  
@@ -111,10 +115,11 @@
             ul = document.getElementById("myUL");
             li = ul.getElementsByTagName("li");
             for (i = 0; i < li.length; i++) {
-                a = li[i].getElementsByTagName("a")[1];
+                a = li[i].getElementsByTagName("a")[0];
                 txtValue = a.textContent || a.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
                     li[i].style.display = "";
+
                 } else {
                     li[i].style.display = "none";
                 }

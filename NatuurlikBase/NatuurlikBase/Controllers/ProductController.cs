@@ -69,7 +69,7 @@ namespace NatuurlikBase.Controllers
 
                 if (_context.Products.Any(c => c.Name==obj.Product.Name && c.CustomerPrice==obj.Product.CustomerPrice && c.ResellerPrice == obj.Product.ResellerPrice 
                 && c.Description == obj.Product.Description && c.CategoryId == obj.Product.CategoryId && c.ProductBrandId == obj.Product.ProductBrandId && 
-                c.PictureUrl == obj.Product.PictureUrl && c.ThresholdValue == obj.Product.ThresholdValue))
+                c.PictureUrl == obj.Product.PictureUrl && c.ThresholdValue == obj.Product.ThresholdValue && c.DisplayProduct == obj.Product.DisplayProduct))
            
                    
                 {
@@ -106,14 +106,16 @@ namespace NatuurlikBase.Controllers
                     if (obj.Product.Id == 0)
                     {
                         _unitOfWork.Product.Add(obj.Product);
-                      
+                        TempData["success"] = "Product created successfully";
+
                     }
                     else
                     {
                         _unitOfWork.Product.Update(obj.Product);
+                        TempData["success"] = "Product updated successfully";
                     }
                     _unitOfWork.Save();
-                    TempData["success"] = "Product created successfully";
+                    
                     return RedirectToAction("Index");
                 }
             }
@@ -122,8 +124,8 @@ namespace NatuurlikBase.Controllers
 
 
 
-        #region API CALLS
-        [HttpGet]
+       #region API CALLS
+       [HttpGet]
         public IActionResult GetAll()
         {
             var productList = _unitOfWork.Product.GetAll(includeProperties: "Category,Brand");
@@ -133,26 +135,36 @@ namespace NatuurlikBase.Controllers
 
         public IActionResult Delete(int? id)
         {
-            var obj = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id);
-            if (obj == null)
+           
+
+            var ForeignKey = _unitOfWork.OrderLine.GetAll().Any(x => x.ProductId == id);
+            if (ForeignKey)
             {
-                return Json(new { success = false, message = "Error while deleting" });
+                TempData["Delete"] = "Product cannot be deleted since it has an association with order";
+                
+                 return Json(new { success = false, message = "Product cannot be deleted since it has an association with order" });
             }
-
-            var oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, obj.PictureUrl.TrimStart('\\'));
-            if (System.IO.File.Exists(oldImagePath))
+            else
             {
-                System.IO.File.Delete(oldImagePath);
+                var obj = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id);
+                if (obj == null)
+                {
+                    return Json(new { success = false, message = "Error while deleting" });
+                }
+
+                var oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, obj.PictureUrl.TrimStart('\\'));
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+
+                _unitOfWork.Product.Remove(obj);
+
+                _unitOfWork.Save();
+                TempData["successDelete"] = "Product deleted successfully";
+                return Json(new { success = true, message = "Delete Successful" });
             }
-
-            _unitOfWork.Product.Remove(obj);
-       
-            _unitOfWork.Save();
-            //keeps callling Product Created successfully not deleted...
-           // TempData["success"] = "Product Deleted successfully";
-
-            return Json(new { success = true, message = "Delete Successful" });
-
+           
         }
         #endregion
     }

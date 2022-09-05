@@ -193,7 +193,7 @@ namespace NatuurlikBase.Controllers
             }
             else
             {
-                TempData["success"] = "City cannot be deleted since it has a Suburb associated";
+                TempData["Delete"] = "City cannot be deleted since it has a Suburb associated";
                 return RedirectToAction("Index");
             }
         }

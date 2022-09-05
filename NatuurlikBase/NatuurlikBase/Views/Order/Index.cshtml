@@ -44,16 +44,8 @@ else
  
 
 }
-@if (TempData["NextCreation"] != null)
-{
-   
-    <div class="alert alert-info alert-dismissible d-flex align-items-center fade show">
-        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
-        <strong>&nbsp Suggestion - &nbsp </strong>  Click &nbsp<a  asp-controller="Cities" asp-action="Create" class="alert-link"> Here</a>&nbsp to add a new city
-        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
-    </div>
 
-}
+
 @if (TempData["Delete"] != null)
 {
     <div class="alert alert-warning  alert-dismissible fade show" role="alert" id="success-alert">
@@ -75,6 +67,7 @@ else
         var cancelled = "text-primary";
         var refundpending = "text-primary";
         var refunded = "text-primary";
+        var delayed = "text-primary";
         var all = "text-primary";
 
         //switch statement to filter orders list by status conditionally
@@ -105,6 +98,10 @@ else
                 refunded = "active text-white";
                 break;
 
+            case "delayed":
+                refunded = "active text-white";
+                break;
+
             default:
                 all = "active text-white";
                 break;
@@ -131,7 +128,7 @@ else
                                 {
                                     <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="Index"><i class="bi bi-bag">&nbsp;</i> Orders</a></li>
                                     <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="ViewQueries"><i class="bi bi-question-circle">&nbsp;</i> Queries</a></li>
-                                    <li class="nav-item"><a class="nav-link man"><i class="bi bi-box-seam">&nbsp;</i> Returns</a></li>
+                                    
                                 }
                             </ul> 
                         </div>
@@ -142,7 +139,7 @@ else
                     <div class="card sideprofile"> 
                         <h3>My Orders</h3>
                         <br />
-                        <table class="table small" id="tblData" style="background-color: #232323">
+                        <table class="table-responsive small" id="tblData" style="background-color: #232323">
                             <thead>
                                 <tr>
                                     <th class="text-light">
@@ -216,7 +213,9 @@ else
      <div class="container-fluid">
          <div class="d-flex-column justify-content-between justify-content-start">
                 <div class="col-10 col-sm-10 col-md-10 p-2">
-                    <h2 class="cheading">Orders List</h2>           
+                    <h2 class="cheading">Orders List
+                        <a href="" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
+                    </h2>           
 		                </div>
                             <div class="p-2">
                                 <p>Filter Orders:</p>
@@ -224,7 +223,8 @@ else
                                     <li class="" @pending><a class="btn btn-info" role="button"  asp-controller="Order" asp-action="Index" asp-route-status="pending">Pending</a></li>                                 
                                     <li class="" @processing><a class="btn btn-info"  asp-controller="Order" asp-action="Index" asp-route-status="processing">Processing</a></li>               
                                     <li class="" @dispatched><a class="btn btn-info" asp-controller="Order" asp-action="Index" asp-route-status="dispatched">Dispatched</a></li>               
-                                    <li class="" @cancelled><a class="btn btn-info" asp-controller="Order" asp-action="Index" asp-route-status="cancelled">Cancelled </a></li>                            
+                                    <li class="" @cancelled><a class="btn btn-info" asp-controller="Order" asp-action="Index" asp-route-status="cancelled">Cancelled </a></li>  
+                                    <li class="" @delayed><a class="btn btn-info"  asp-controller="Order" asp-action="Index" asp-route-status="delayed">Delayed</a></li>
                                     <li class="" @all><a class="btn btn-secondary" style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="all">Clear Filter</a></li>
                 
                                 </ul>

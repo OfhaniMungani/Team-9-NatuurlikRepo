@@ -1,0 +1,109 @@
+﻿@model IEnumerable<Video>
+
+  <div class="container about-cont">
+      <h1 id="about"> ABOUT <strong> US </strong></h1>
+          <div class="row justify-content-center">
+              <div class="col-md-4">
+                  <img src="~/images/logo.png" id="logo">
+              </div>
+              <div class="col-md-4">
+                  <p>
+                      Everything that we do, we believe 
+                      in the preservation of our planet, 
+                      the human race & your body. 
+                      <br><br>
+                      By providing products to the community 
+                      that is environmentally sustainable, uses 
+                      only natural ingredients and materials, and 
+                      is ONLY beneficial to the human body.
+                      <br><br>
+                      Currently we are focusing on providing the 
+                      public TOP quality venison products that is 
+                      not only super healthy but incredibly 
+                      delicious.                                  
+                  </p>
+              </div>
+          </div>         
+  </div>  
+
+
+<div class="teams">
+    <h1 id="our"> OUR  <strong> TEAM </strong></h1>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-4">
+            <div class="card team">
+              <img class="card-img team-img" src="~/images/jannes.png"> 
+              <br />
+                <h6 class="card-title team-title">Jannes Janse van Rensburg</h6>
+                <p class="position">Founder, Managing Director and Co-Owner</p>
+                <p class="card-text">Jannes is a game farmer and hunter for the last 20 years. 
+                    Passion foe venison and the health benefits thereoff.
+                    Background in supply chain management and logistics.
+                </p>                             
+            </div>
+          </div> 
+          <div class="col-md-4">
+            <div class="card team">
+              <img class="card-img team-img" src="~/images/emile.png">    
+              <br />
+                <h6 class="card-title team-title">Emile Stoman</h6>
+                <p class="position">Product Manger and Co-Owner</p>
+                <p class="card-text team-text">Lorem ipsum dolor sit amet, consecte1tur adipiscing elit, 
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                </p>               
+            </div>
+          </div> 
+          <div class="col-md-4">
+            <div class="card team">
+              <img class="card-img team-img" src="~/images/hannes.png">      
+              <br />
+                <h6 class="card-title team-title">Hannes De Beer </h5>
+                <p class="position">Marketing Manger and Co-Owner</p>
+                <p class="card-text team-text">Hannes is an advertising art director currently working in Dubai 
+                    on International Blue Chip accounts. During his career he has received over 30 awards 
+                    including Cannes Advertising Festival, but his love for nature has sparked his entrepreneural 
+                    side to find solutions for a global crisis
+                </p>                
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="stone">
+    <h1 id="nat"> WHY  <strong> NATUURLIK </strong></h1>
+        <div class="container">
+        <div class="row justify-content-around">
+                @foreach(var video in Model)
+                {
+                 <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                  <iframe src="@video.VideoUrl" title="@video.Title" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  <div class="card-body">
+                    <p class="card-text video">@video.Title</p>
+                  </div>
+                </div>
+            </div>
+                }
+            @*<div class="col-3">
+                <div class="card" style="width: 18rem;">
+                  <iframe src="https://www.youtube.com/embed/WeoIsjYBQH0" title="FAO Policy Series: Sustainable Food and Agriculture" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  <div class="card-body">
+                    <p class="card-text video">FAO Policy Series: Sustainable Food and Agriculture</p>
+                  </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card" style="width: 18rem;">
+                  <iframe src="https://www.youtube.com/embed/luIQGJIo_Wc" title="Food Sustainability Basics" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  <div class="card-body ">
+                    <p class="card-text video">Food Sustainability Basics</p>
+                  </div>
+                </div>
+            </div>*@
+        </div>
+      </div>
+    }
+ 
+  </div>
