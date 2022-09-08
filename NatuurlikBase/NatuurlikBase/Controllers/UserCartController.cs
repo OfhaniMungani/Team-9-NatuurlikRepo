@@ -259,11 +259,19 @@ namespace NatuurlikBase.Controllers
             if (User.IsInRole(SR.Role_Reseller))
             {
 
+
                 UserCartVM.Order.OrderPaymentStatus = SR.ResellerDelayedPayment;
                 UserCartVM.Order.OrderStatus = SR.OrderPending;
                 foreach (var userCartItem in UserCartVM.CartList)
                 {
-                        userCartItem.CartItemPrice = GetCartItemPrices(userCartItem.Count, userCartItem.Product.ResellerPrice);
+
+                    var prod = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCartItem.ProductId);
+                    if (prod.QuantityOnHand <= userCartItem.Count)
+                    {
+                        TempData["success"] = "The requested quantity is unfortunately no longer available.";
+                        return RedirectToAction("Index");
+                    }
+                    userCartItem.CartItemPrice = GetCartItemPrices(userCartItem.Count, userCartItem.Product.ResellerPrice);
                         UserCartVM.Order.OrderTotal += (userCartItem.CartItemPrice * userCartItem.Count);
                         UserCartVM.Order.OrderTotal += UserCartVM.Order.DeliveryFee;
                         UserCartVM.Order.IsResellerOrder = true;
@@ -333,6 +341,20 @@ namespace NatuurlikBase.Controllers
 
             if (User.IsInRole(SR.Role_Reseller))
             {
+                foreach (var userCartItem in UserCartVM.CartList)
+                {
+                    OrderLine orderLine = new()
+                    {
+                        ProductId = userCartItem.ProductId,
+                        Count = userCartItem.Count
+                    };
+
+                    //Deduct Product Quantities as order is placed for Reseller users
+                    var prod = _db.Products.Where(c => c.Id == userCartItem.ProductId).FirstOrDefault();
+                    prod.QuantityOnHand -= userCartItem.Count;
+                    _unitOfWork.Save();
+
+                }
                 //Redirect to the Confirmation page.
                 return RedirectToAction("ResellerOrderConfirmation", "UserCart", new { id = UserCartVM.Order.Id });
             }
