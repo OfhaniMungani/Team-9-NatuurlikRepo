@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 
-namespace NatuurlikBase.Controllers
-{
-    public class CourierController : Controller
+namespace NatuurlikBase.Controllers;
+[Authorize(Roles = SR.Role_Admin)]
+public class CourierController : Controller
     {
         private readonly DatabaseContext _context;
 
@@ -170,4 +171,3 @@ namespace NatuurlikBase.Controllers
             base.Dispose(disposing);
         }
     }
-}
