@@ -22,7 +22,7 @@ namespace NatuurlikBase.Models
 
         [Display(Name = "Threshold Value")]
         public int ThresholdValue { get; set; }
-
+        [Display(Name = "Inventory Type")]
         public int InventoryTypeId { get; set; }
         [ValidateNever]
         [ForeignKey("InventoryTypeId")]

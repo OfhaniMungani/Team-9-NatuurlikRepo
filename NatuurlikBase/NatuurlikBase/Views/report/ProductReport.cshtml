@@ -131,36 +131,92 @@ $("#exportButton").click(function(){
                 }
             });
 
-           function RenderChart(labels, data) {
+      function RenderChart(labels, data) {
                 let ctx = $("#chart1");
+
                 let chart = new Chart(ctx, {
-                    type: 'pie',
+                    type: 'bar',
+             
                     data: {
+                         
+         indexLabelPlacement: "outside",  
+         indexLabelOrientation: "horizontal",
                         labels: labels ,
                         datasets: [{
                             label: 'Rand Value of Sales',
+                             indexLabel:data,
                             data: data,
                             backgroundColor: [
-                                 'rgba(7, 51, 175, 0.2)',
-                                'rgba(48, 7, 173, 0.2)',
+                                'rgba(7, 107, 173, 0.2)',
+                                'rgba(48, 51, 175, 0.2)',
                                 'rgba(104, 7, 173, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(201, 203, 207, 0.2)'
+                                'rgba(7, 121, 173, 0.2)',
+                                'rgba(7, 162, 235, 0.2)',
+                                'rgba(7, 102, 255, 0.2)',
+                                'rgba(7, 203, 207, 0.2)',
+                                'rgba(7, 203, 208, 0.2)',
+                                'rgba(103, 203, 207, 0.2)'
                             ],
-                             hoverOffset: 5
+        
                         }]
+           
                     },
-                    options: {
-        plugins: {
-            title: {
-                display: true,
-                text: 'Sales By Product'
-            }
-        }
+                   options: {
+
+                          plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed.y !== null) {
+                            label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'ZAR' }).format(context.parsed.y);
+                        }
+                        return label;
+                    }
+                }
+                },
+                 title: {
+      display: true,
+      text: " Sales By Product Report",
+       fontSize: 50
     }
-                });
+                },
+   
+   scales: {
+         x: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Product Name',
+       
+          font: {
+       
+            lineHeight: 1.2,
+          },
+          padding: {top: 20, left: 0, right: 0, bottom: 0}
+        }
+      },
+      y: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Currency (ZAR)',
+      
+          font: {
+        
+            lineHeight: 1.2
+          },
+          padding: {top: 30, left: 0, right: 0, bottom: 0}
+     
+    }
+      }
+                    }
+                    }
+                 });
 
              }
         });
