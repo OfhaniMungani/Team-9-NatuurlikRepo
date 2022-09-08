@@ -126,94 +126,94 @@ namespace NatuurlikBase.Controllers
 
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult BacklogOrder()
-        {
-            //Retrieve Order details from the db
-            var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
-            //Update order status to approved state and save changes to db.
-            _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.OrderDelayed);
-            orderRetrieved.BackOrderDate = DateTime.Now;
-            _uow.Save();
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult BacklogOrder()
+        //{
+        //    //Retrieve Order details from the db
+        //    var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
+        //    //Update order status to approved state and save changes to db.
+        //    _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.OrderDelayed);
+        //    orderRetrieved.BackOrderDate = DateTime.Now;
+        //    _uow.Save();
 
-            var user = _db.User.Where(z => z.Id == orderRetrieved.ApplicationUserId).FirstOrDefault();
-            var fullTime = _db.ConfirmationReminder.FirstOrDefault(x => x.Id == orderRetrieved.ConfirmationReminderId).Value;
-            var orderDate = orderRetrieved.BackOrderDate.Date;
-            var threshold = orderDate.AddDays(fullTime);
-            string email = user.Email;
-            string name = user.FirstName;
-            string number = orderRetrieved.Id.ToString();
-            string date = DateTime.Now.ToString("M");
-            string fullDate = threshold.ToString("D");
-            string status = orderRetrieved.OrderPaymentStatus.ToString();
-            var callbackUrl = Url.Action("Index", "Order", values: null, protocol: Request.Scheme);
+        //    var user = _db.User.Where(z => z.Id == orderRetrieved.ApplicationUserId).FirstOrDefault();
+        //    var fullTime = _db.ConfirmationReminder.FirstOrDefault(x => x.Id == orderRetrieved.ConfirmationReminderId).Value;
+        //    var orderDate = orderRetrieved.BackOrderDate.Date;
+        //    var threshold = orderDate.AddDays(fullTime);
+        //    string email = user.Email;
+        //    string name = user.FirstName;
+        //    string number = orderRetrieved.Id.ToString();
+        //    string date = DateTime.Now.ToString("M");
+        //    string fullDate = threshold.ToString("D");
+        //    string status = orderRetrieved.OrderPaymentStatus.ToString();
+        //    var callbackUrl = Url.Action("Index", "Order", values: null, protocol: Request.Scheme);
 
-            string wwwRootPath = _hostEnvironment.WebRootPath;
-            var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\modOrdTemp.html"));
-            template = template.Replace("[NAME]", name).Replace("[STATUS]", status).Replace("[DUE]", fullDate)
-                .Replace("[ID]", number).Replace("[DATE]", date).Replace("[URL]", callbackUrl);
-            string message = template;
+        //    string wwwRootPath = _hostEnvironment.WebRootPath;
+        //    var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\modOrdTemp.html"));
+        //    template = template.Replace("[NAME]", name).Replace("[STATUS]", status).Replace("[DUE]", fullDate)
+        //        .Replace("[ID]", number).Replace("[DATE]", date).Replace("[URL]", callbackUrl);
+        //    string message = template;
 
-            _emailSender.SendEmailAsync(
-            email,
-            "Order Delayed - Pending Confirmation",
-            message);
+        //    _emailSender.SendEmailAsync(
+        //    email,
+        //    "Order Delayed - Pending Confirmation",
+        //    message);
 
-            TempData["Success"] = "Order added to orders backlog successfully.";
-            return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
+        //    TempData["Success"] = "Order added to orders backlog successfully.";
+        //    return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
 
-        }
+        //}
 
         //Reseller accepts delayed order.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult ConfirmOrder()
-        {
-            //Retrieve Order details from the db
-            var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
-            //Update order status to approved state and save changes to db.
-            _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.ProcessingOrder);
-            _uow.Save();
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult ConfirmOrder()
+        //{
+        //    //Retrieve Order details from the db
+        //    var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
+        //    //Update order status to approved state and save changes to db.
+        //    _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.ProcessingOrder);
+        //    _uow.Save();
 
-            var user = _db.User.Where(z => z.Id == orderRetrieved.ApplicationUserId).FirstOrDefault();
-            string email = user.Email;
-            string name = user.FirstName;
-            string number = orderRetrieved.Id.ToString();
-            string date = orderRetrieved.CreatedDate.ToString("M");
-            string status = orderRetrieved.OrderPaymentStatus.ToString();
-            var callbackUrl = Url.Action("Index", "Order", values: null, protocol: Request.Scheme);
+        //    var user = _db.User.Where(z => z.Id == orderRetrieved.ApplicationUserId).FirstOrDefault();
+        //    string email = user.Email;
+        //    string name = user.FirstName;
+        //    string number = orderRetrieved.Id.ToString();
+        //    string date = orderRetrieved.CreatedDate.ToString("M");
+        //    string status = orderRetrieved.OrderPaymentStatus.ToString();
+        //    var callbackUrl = Url.Action("Index", "Order", values: null, protocol: Request.Scheme);
 
-            string wwwRootPath = _hostEnvironment.WebRootPath;
-            var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\ordConfTemp.html"));
-            template = template.Replace("[NAME]", name).Replace("[STATUS]", status)
-                .Replace("[ID]", number).Replace("[DATE]", date).Replace("[URL]", callbackUrl);
-            string message = template;
+        //    string wwwRootPath = _hostEnvironment.WebRootPath;
+        //    var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\ordConfTemp.html"));
+        //    template = template.Replace("[NAME]", name).Replace("[STATUS]", status)
+        //        .Replace("[ID]", number).Replace("[DATE]", date).Replace("[URL]", callbackUrl);
+        //    string message = template;
 
-            _emailSender.SendEmailAsync(
-            email,
-            "Order Confirmed",
-            message);
+        //    _emailSender.SendEmailAsync(
+        //    email,
+        //    "Order Confirmed",
+        //    message);
 
-            TempData["Success"] = "Your order has been confirmed successfully.";
-            return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
+        //    TempData["Success"] = "Your order has been confirmed successfully.";
+        //    return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
 
-        }
+        //}
 
         //Reseller rejects delayed order.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult RejectOrder()
-        {
-            //Retrieve Order details from the db
-            var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
-            //Update order status to approved state and save changes to db.
-            _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.RejectDelayedOrder);
-            _uow.Save();
-            TempData["Success"] = "Your order has been rejected successfully.";
-            return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult RejectOrder()
+        //{
+        //    //Retrieve Order details from the db
+        //    var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
+        //    //Update order status to approved state and save changes to db.
+        //    _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.RejectDelayedOrder);
+        //    _uow.Save();
+        //    TempData["Success"] = "Your order has been rejected successfully.";
+        //    return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
 
-        }
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -583,10 +583,6 @@ namespace NatuurlikBase.Controllers
 
                 case "refunded":
                     orders = orders.Where(o => o.OrderStatus == SR.OrderRefunded);
-                    break;
-
-                case "delayed":
-                    orders = orders.Where(o => o.OrderStatus == SR.OrderDelayed);
                     break;
 
                 default:
