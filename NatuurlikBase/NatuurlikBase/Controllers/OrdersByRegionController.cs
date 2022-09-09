@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using NatuurlikBase.Models;
 
-namespace NatuurlikBase.Controllers
+namespace NatuurlikBase.Controllers;
+[Authorize(Roles = SR.Role_Admin)]
+public class OrdersByRegionController : Controller
 {
-    public class OrdersByRegionController : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View();
     }
 }

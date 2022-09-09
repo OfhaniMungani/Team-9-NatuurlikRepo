@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +11,8 @@ using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 using NatuurlikBase.Repository.IRepository;
 
-namespace NatuurlikBase.Controllers
-{
+namespace NatuurlikBase.Controllers;
+    [Authorize(Roles = SR.Role_Admin)]
     public class CitiesController : Controller
     {
         private readonly DatabaseContext _context;
@@ -203,4 +204,3 @@ namespace NatuurlikBase.Controllers
             return _context.City.Any(e => e.Id == id);
         }
     }
-}

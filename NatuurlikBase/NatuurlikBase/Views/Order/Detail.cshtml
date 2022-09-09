@@ -151,64 +151,7 @@
                     </div>
                 </div>
             </div>
-                                                 }
-                                                  @if (User.IsInRole(SR.Role_Reseller) && Model.Order.OrderStatus == SR.OrderDelayed)
-                                        {
-                                                 <input type="button" data-toggle="modal" data-target="#exampleModal8" class="btn btn-success" value="Accept" style="width:150px"/>
-                                                 <input type="button" data-toggle="modal" data-target="#exampleModal7" class="btn btn-danger" value="Reject" style="width:150px"/>
-                                        }
-
-                                        <div class="modal fade" id="exampleModal8">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header border-0">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-
-                                    </div>
-                                    <div class="modal-body">
-                                        <h6 class="col-md-10"> 
-                                       Do you wish to accept this delayed order?
-                                    </h6>
-                                    </div>
-
-                                    <div class="modal-footer border-0">
-                                        <div class="form-actions no-color">
-                                            <input type="submit" value="Confirm"  onclick="return validateInput()" asp-action="ConfirmOrder" class="btn btn-success" style="width:150px;"/> 
-                                            <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            </div>
-
-                             <div class="modal fade" id="exampleModal7">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header border-0">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-
-                                    </div>
-                                    <div class="modal-body">
-                                        <h6 class="col-md-10"> 
-                                       Proceed to reject this delayed order?
-                                    </h6>
-                                    </div>
-
-                                    <div class="modal-footer border-0">
-                                        <div class="form-actions no-color">
-                                            <input type="submit" value="Confirm"  onclick="return validateInput()" asp-action="RejectOrder" class="btn btn-success" style="width:150px;"/> 
-                                            <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            </div>
+                     }
 
                                             </div>
                                         </div>                                                    
@@ -343,7 +286,6 @@
                                                          {
                                                                               <input type="button"  data-toggle="modal" data-target="#exampleModal"  class="btn btn-success" value="Approve" style="width:150px" />
                                         <input type="button" data-toggle="modal" data-target="#exampleModal2" class="btn btn-danger" value="Reject" style="width:150px"/>
-                                        <input type="button" data-toggle="modal" data-target="#exampleModal9" class="btn btn-warning" value="Backlog Order" style="width:150px"/>
                                         	     <div class="modal fade" id="exampleModal">
                                                    <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -395,31 +337,6 @@
                 </div>
             </div>
 
-             <div class="modal fade" id="exampleModal9">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header border-0">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-
-                                    </div>
-                                    <div class="modal-body">
-                                        <h6 class="col-md-10"> 
-                                       Are you sure you want to backlog this order?
-                                    </h6>
-                                    </div>
-
-                                    <div class="modal-footer border-0">
-                                        <div class="form-actions no-color">
-                                            <input type="submit" value="Confirm"  onclick="return validateInput()" asp-action="BacklogOrder" class="btn btn-success" style="width:150px;"/> 
-                                            <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
                                                          }
                                                          if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched)
                                                          {                 

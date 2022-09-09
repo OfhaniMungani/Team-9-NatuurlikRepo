@@ -47,32 +47,12 @@ namespace NatuurlikBase.Controllers
             var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
             userCart.ApplicationUserId = claim.Value;
 
-            Cart cart = _unitOfWork.UserCart.GetFirstOrDefault(u=> u.ProductId == userCart.ProductId && u.ApplicationUserId == claim.Value );
+            Cart cart = _unitOfWork.UserCart.GetFirstOrDefault(u => u.ProductId == userCart.ProductId && u.ApplicationUserId == claim.Value);
             var prods = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCart.ProductId);
 
-            if(User.IsInRole(SR.Role_Customer))
+            if (prods.QuantityOnHand >= userCart.Count)
             {
-                if (prods.QuantityOnHand >= userCart.Count)
-                {
-                    //check for existing cart
-                    if (cart == null)
-                    {
-                        _unitOfWork.UserCart.Add(userCart);
-                    }
-                    else
-                    {
-                        _unitOfWork.UserCart.increaseCount(cart, userCart.Count);
-                    }
-                }
-                else
-                {
-                    //DO Something
-                    TempData["success"] = "Requested quantity exceeds available stock on hand.";
-                }
-            }
-
-            else
-            {
+                //check for existing cart
                 if (cart == null)
                 {
                     _unitOfWork.UserCart.Add(userCart);
@@ -82,6 +62,12 @@ namespace NatuurlikBase.Controllers
                     _unitOfWork.UserCart.increaseCount(cart, userCart.Count);
                 }
             }
+            else
+            {
+                //DO Something
+                TempData["success"] = "Requested quantity exceeds available stock on hand.";
+            }
+
             //Save cart changes to database
             _unitOfWork.Save();
             //Redirect to Product Catalogue Index page if saved successfully.
