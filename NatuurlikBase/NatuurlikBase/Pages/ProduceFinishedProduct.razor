@@ -27,9 +27,9 @@
 
         <div class="form-group">
             <label for="inv">Select Product:</label>
-            <ViewProductsComponent 
+            <ViewConfiguredProducts 
                 OnSelectProduct="OnSelectProduct"
-                DisplaySearchResult="true"></ViewProductsComponent> 
+                DisplaySearchResult="true"></ViewConfiguredProducts> 
                 <br/>
              <label for="inv">Selected Product:</label>&nbsp;<label style="color:red">*</label>
             <InputText id="inv" class="form-control" style="width:625px" @bind-Value="produceVM.ProductName" disabled></InputText>            
@@ -115,11 +115,11 @@
         
     }
 
-    public void OnSelectProduct(Product product)
+    public void OnSelectProduct(ProductInventory product)
     {
-        this.selectedProduct = product;
-        produceVM.ProductId = product.Id;
-        produceVM.ProductName = product.Name;
+        this.selectedProduct = product.Product;
+        produceVM.ProductId = product.Product.Id;
+        produceVM.ProductName = product.Product.Name;
     }
 
 }
