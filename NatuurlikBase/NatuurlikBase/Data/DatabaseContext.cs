@@ -47,6 +47,8 @@ public class DatabaseContext : IdentityDbContext<ApplicationUser>
     public DbSet<Delivery> Delivery { get; set; }
     public DbSet<ConfirmationReminder> ConfirmationReminder { get; set; }
 
+    public DbSet<ProductInventory> ProductConfiguration { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         //Establish relationships for ProductInventory on creating the model.

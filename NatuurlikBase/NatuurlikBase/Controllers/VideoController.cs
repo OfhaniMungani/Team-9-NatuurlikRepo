@@ -6,7 +6,7 @@ using NatuurlikBase.Models;
 
 namespace NatuurlikBase.Controllers;
 
-[Authorize(Roles = SR.Role_Admin + "," + SR.Role_MD)]
+//[Authorize(Roles = SR.Role_Admin + "," + SR.Role_MD)]
 public class VideoController : Controller
 {
     private readonly DatabaseContext db;

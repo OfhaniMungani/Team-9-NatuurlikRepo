@@ -11,7 +11,7 @@ using NatuurlikBase.ViewModels;
 using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
-[Authorize(Roles = SR.Role_Admin + "," +SR.Role_SA)]
+//[Authorize(Roles = SR.Role_Admin + "," +SR.Role_SA)]
 public class PrepareOrderController : Controller
 {
     private readonly DatabaseContext _db;

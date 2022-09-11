@@ -8,7 +8,7 @@ using NatuurlikBase.Models.ViewModels;
 using NatuurlikBase.Repository.IRepository;
 
 namespace NatuurlikBase.Controllers;
-[Authorize(Roles = SR.Role_Admin)]
+//[Authorize(Roles = SR.Role_Admin)]
 public class ProductController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;

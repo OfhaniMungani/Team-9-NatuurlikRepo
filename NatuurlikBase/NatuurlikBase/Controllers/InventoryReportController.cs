@@ -13,7 +13,7 @@ using NatuurlikBase.Models;
 
 namespace NatuurlikBase.Controllers;
 
-[Authorize(Roles = SR.Role_Admin + "," + SR.Role_IM)]
+//[Authorize(Roles = SR.Role_Admin + "," + SR.Role_IM)]
 public class InventoryReportController : Controller
 {
     private readonly DatabaseContext db;
