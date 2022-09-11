@@ -22,7 +22,7 @@
 {
     <EditForm Model="produceVM" OnValidSubmit="OnValidSubmit">
         <DataAnnotationsValidator></DataAnnotationsValidator>
-        <ValidationSummary></ValidationSummary>
+        <ValidationSummary style="color:darkred"></ValidationSummary>
 
 
         <div class="form-group">
@@ -31,6 +31,7 @@
                 OnSelectProduct="OnSelectProduct"
                 DisplaySearchResult="true"></ViewProductsComponent> 
                 <br/>
+             <label for="inv">Selected Product:</label>&nbsp;<label style="color:red">*</label>
             <InputText id="inv" class="form-control" style="width:625px" @bind-Value="produceVM.ProductName" disabled></InputText>            
             <input type="hidden" value="@produceVM.ProductId" />  
             @if (selectedProduct != null)
@@ -45,7 +46,7 @@
         <div class="row">
             <div class="col-md-3 col">
                 <div class="form-group">
-                    <label for="qty">Quantity to Produce:</label>
+                    <label for="qty">Quantity to Produce:</label>&nbsp;<label style="color:red">*</label>
                     <InputNumber id="qty" @bind-Value="produceVM.QuantityToProduce" class="form-control"></InputNumber>
                 </div>
             </div>

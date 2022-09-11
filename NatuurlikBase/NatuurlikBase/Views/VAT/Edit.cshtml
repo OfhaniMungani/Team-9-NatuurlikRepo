@@ -23,7 +23,7 @@
 		</div>
 
         <div class="mb-3">
-			<label asp-for="VATStatus">VAT Status:</label>
+			<label asp-for="VATStatus">VAT Status:</label>&nbsp;<label style="color:red">*</label>
 			<select asp-for="VATStatus" class="form-control">
 				<option disabled selected>--Select a Status--</option>
 				<option> Active </option>
@@ -89,7 +89,7 @@
 </div>
 @section Scripts{
 	@{
-		<partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
 	}
       @if (ViewBag.Error != null)
     {
