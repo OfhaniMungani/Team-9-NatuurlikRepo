@@ -17,12 +17,12 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.FirstName">First Name</label>
+                                    <label class="small" asp-for="Order.FirstName">First Name</label>&nbsp;<label style="color:red">*</label>
                                     <input asp-for="Order.FirstName" class="form-control" />
                                     <span asp-validation-for="Order.FirstName" class="text-danger"></span>
                                 </div>
                                 <div class="col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.Surname">Surname</label>
+                                    <label class="small" asp-for="Order.Surname">Surname</label>&nbsp;<label style="color:red">*</label>
                                     <input asp-for="Order.Surname" class="form-control" />
                                     <span asp-validation-for="Order.Surname" class="text-danger"></span>
                                 </div>
@@ -30,7 +30,7 @@
 
                             <div class="row">
                                 <div class="col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.PhoneNumber">Phone Number</label>
+                                    <label class="small" asp-for="Order.PhoneNumber">Phone Number</label>&nbsp;<label style="color:red">*</label>
                                     <input asp-for="Order.PhoneNumber" class="form-control" />
                                     <span asp-validation-for="Order.PhoneNumber" class="text-danger"></span>
                                 </div>
@@ -38,7 +38,7 @@
 
                             <div class="row">
                                 <div class="col" id="formspace">
-                                    <label class="small" asp-for="Order.StreetAddress">Street Address</label>
+                                    <label class="small" asp-for="Order.StreetAddress">Street Address</label>&nbsp;<label style="color:red">*</label>
                                     <input asp-for="Order.StreetAddress" class="form-control" />
                                     <span asp-validation-for="Order.StreetAddress" class="text-danger"></span>
                                 </div>
@@ -46,14 +46,14 @@
 
                             <div class="row">
                                 <div class="form-floating col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.CountryId">Country</label>
+                                    <label class="small" asp-for="Order.CountryId">Country</label>&nbsp;<label style="color:red">*</label>
                                     <select asp-for="Order.CountryId" asp-items="@Model.CountryList" required class="form-control" onchange="onCountryChange()">
                                         <option disabled selected>- Select Country -</option>
                                     </select>
                                     <span asp-validation-for="Order.CountryId" class="text-danger"></span>
                                 </div>
                                 <div class="form-floating col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.ProvinceId">Province</label>
+                                    <label class="small" asp-for="Order.ProvinceId">Province</label>&nbsp;<label style="color:red">*</label>
                                     <select asp-for="Order.ProvinceId" asp-items="@Model.ProvinceList" required class="form-control" onchange="onProvinceChange()">
                                         <option disabled selected>- Select Province -</option>
                                     </select>
@@ -63,14 +63,14 @@
 
                             <div class="row">
                                 <div class="form-floating col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.CityId">City</label>
+                                    <label class="small" asp-for="Order.CityId">City</label>&nbsp;<label style="color:red">*</label>
                                     <select asp-for="Order.CityId" asp-items="@Model.CityList" required class="form-control" onchange="onCityChange()">
                                         <option disabled selected>- Select City -</option>
                                     </select>
                                     <span asp-validation-for="Order.CityId" class="text-danger"></span>
                                 </div>
                                 <div class="form-floating col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.SuburbId">Suburb</label>
+                                    <label class="small" asp-for="Order.SuburbId">Suburb</label>&nbsp;<label style="color:red">*</label>
                                     <select asp-for="Order.SuburbId" asp-items="@Model.SuburbList" required class="form-control">
                                         <option disabled selected>- Select Suburb -</option>
                                     </select>
@@ -78,7 +78,7 @@
                                 </div>
 
                                   <div class="form-floating col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.CourierId">Courier</label>
+                                    <label class="small" asp-for="Order.CourierId">Courier</label>&nbsp;<label style="color:red">*</label>
                                     <select asp-for="Order.CourierId" asp-items="@Model.CourierList" required class="form-control" onchange="getCourierFee()">
                                         <option disabled selected>- Select Courier -</option>
                                     </select>

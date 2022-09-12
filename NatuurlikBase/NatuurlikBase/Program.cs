@@ -31,6 +31,7 @@ builder.Services.AddTransient<IInventoryItemRepository, InventoryItemRepository>
 builder.Services.AddTransient<IProductionTransactionRepository, ProductionTransactionRepository>();
 builder.Services.AddTransient<IInventoryItemTransactionRepository, InventoryItemTransactionRepository>();
 builder.Services.AddTransient<IViewProductsByName, ViewProductsByName>();
+builder.Services.AddTransient<IViewConfiguredProductsByName, ViewConfiguredProductsByName>();
 builder.Services.AddTransient<IViewInventoriesByName, ViewInventoriesByName>();
 builder.Services.AddTransient<IViewInventoryById, ViewInventoryById>();
 builder.Services.AddTransient<IViewProductById, ViewProductById>();

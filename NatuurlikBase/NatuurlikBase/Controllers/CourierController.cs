@@ -5,7 +5,7 @@ using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 
 namespace NatuurlikBase.Controllers;
-[Authorize(Roles = SR.Role_Admin)]
+//[Authorize(Roles = SR.Role_Admin)]
 public class CourierController : Controller
     {
         private readonly DatabaseContext _context;

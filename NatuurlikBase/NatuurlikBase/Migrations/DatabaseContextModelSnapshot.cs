@@ -897,7 +897,7 @@ namespace NatuurlikBase.Migrations
 
                     b.HasIndex("InventoryItemId");
 
-                    b.ToTable("ProductInventory");
+                    b.ToTable("ProductConfiguration");
                 });
 
             modelBuilder.Entity("NatuurlikBase.Models.ProductionTransaction", b =>
