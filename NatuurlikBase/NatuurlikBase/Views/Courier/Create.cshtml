@@ -19,7 +19,7 @@
 		    @*<div asp-validation-summary="All"></div>*@
 
 		    <div class="col-md-10">
-			    <label asp-for="CourierName"></label>
+			    <label asp-for="CourierName" class="required"></label>
 			    <input asp-for="CourierName" class="form-control" placeholder = "PostNet"/>
 			    <span asp-validation-for="CourierName" class="text-danger"></span>
                 </div>
@@ -27,7 +27,7 @@
                 <br />
 
              <div class="col-md-10">
-			    <label asp-for="CourierFee"></label>
+			    <label asp-for="CourierFee" class="required"></label>
 			    <input asp-for="CourierFee" class="form-control" placeholder = "100.00"/>
 			    <span asp-validation-for="CourierFee" class="text-danger"></span>
                  </div>
@@ -35,7 +35,7 @@
                  <br />
 
                 <div class="col-md-10">
-			    <label asp-for="EstimatedDeliveryTime"></label> 
+			    <label asp-for="EstimatedDeliveryTime" class="required"></label> 
 			    <select asp-for="EstimatedDeliveryTime" class="form-control" >
                     <option disabled selected>--Select Estimated Delivery Time--</option>
                     <option> 1-3 Days </option>

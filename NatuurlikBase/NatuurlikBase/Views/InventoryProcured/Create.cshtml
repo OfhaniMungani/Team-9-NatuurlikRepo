@@ -22,7 +22,7 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <label asp-for="SupplierId">Supplier</label>
+                                <label asp-for="SupplierId" class="required">Supplier</label>
                                <select asp-for="SupplierId" class ="form-control" asp-items="ViewBag.SupplierId">
                                         <option disabled selected>- Select Supplier -</option>
                                     </select>
@@ -33,7 +33,7 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <label asp-for="InvoiceNo">Invoice Number</label>
+                                <label asp-for="InvoiceNo" class="required">Invoice Number</label>
                                 <input asp-for="InvoiceNo" class="form-control" placeholder = "#TAK236100"/>
                                 <span asp-validation-for="InvoiceNo" class="text-danger"></span>
                             </div>
@@ -52,7 +52,7 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <label asp-for="ItemID">Inventory Item</label>
+                                <label asp-for="ItemID" class="required">Inventory Item</label>
                                <select asp-for="ItemID" class ="form-control" asp-items="ViewBag.ItemID">
                                         <option disabled selected>- Select Inventory Item -</option>
                                     </select>
@@ -63,7 +63,7 @@
 
                           <div class="row">
                             <div class="col-md-6">
-                                <label asp-for="QuantityReceived"></label>
+                                <label asp-for="QuantityReceived" class="required"></label>
                                 <input asp-for="QuantityReceived" class="form-control" placeholder = "50"/>
                                 <span asp-validation-for="QuantityReceived" class="text-danger"></span>
                             </div>

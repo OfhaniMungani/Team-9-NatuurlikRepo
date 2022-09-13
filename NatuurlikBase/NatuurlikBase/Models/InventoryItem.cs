@@ -21,6 +21,7 @@ namespace NatuurlikBase.Models
         public int QuantityOnHand { get; set; }
 
         [Display(Name = "Threshold Value")]
+        [Range(0, 10000)]
         public int ThresholdValue { get; set; }
         [Display(Name = "Inventory Type")]
         public int InventoryTypeId { get; set; }

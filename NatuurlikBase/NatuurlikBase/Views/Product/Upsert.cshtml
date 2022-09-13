@@ -19,27 +19,27 @@
 		<div class="card-body">
 		@*<div asp-validation-summary="All"></div>*@
 		<div class="col">
-			<label asp-for="Product.Name"></label>
+			<label asp-for="Product.Name" class="required"></label>
 			<input asp-for="Product.Name" class="form-control" placeholder = "Natuurlik Coffee Beans"/>
 			<span asp-validation-for="Product.Name" class="text-danger"></span>
 		</div>
 		<br />
 	<br />
 		<div class="col">
-			<label asp-for="Product.Description"></label>
+			<label asp-for="Product.Description" class="required"></label>
 			<textarea asp-for="Product.Description" rows="3" class="form-control" placeholder = "1kg, May contain nuts"></textarea>
 			<span asp-validation-for="Product.Description" class="text-danger"></span>
 		</div>
 		<br />
 		<div class="row col">
 			<div class="col-6 col">
-				<label asp-for="Product.CustomerPrice">Customer Price</label>
+				<label asp-for="Product.CustomerPrice" class="required">Customer Price</label>
 				<input asp-for="Product.CustomerPrice" class="form-control" placeholder = "300"/>
 				<span asp-validation-for="Product.CustomerPrice" class="text-danger"></span>
 			</div>
 
 			<div class="col-6 col">
-				<label asp-for="Product.ResellerPrice">Reseller Price</label>
+				<label asp-for="Product.ResellerPrice" class="required">Reseller Price</label>
 				<input asp-for="Product.ResellerPrice" class="form-control" placeholder = "200" />
 				<span asp-validation-for="Product.ResellerPrice" class="text-danger"></span>
 			</div>
@@ -47,14 +47,14 @@
 		<br />
 		<div class="row col">
 			<div class="col-6 col">
-				<label asp-for="Product.CategoryId"></label>
+				<label asp-for="Product.CategoryId" class="required"></label>
 				<select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-control">
 					<option disabled selected>--Select Category--</option>
 				</select>
 				<span asp-validation-for="Product.CategoryId" class="text-danger"></span>
 			</div>
 			<div class="col-6 col">
-				<label asp-for="Product.ProductBrandId"></label>
+				<label asp-for="Product.ProductBrandId" class="required"></label>
 				<select asp-for="Product.ProductBrandId" asp-items="@Model.CoverTypeList" class="form-control">
 					<option disabled selected>--Select Brand--</option>
 				</select>
@@ -64,12 +64,12 @@
 		<br />
 		<div class="row col">
 			<div class="col-6 col">
-				<label asp-for="Product.PictureUrl"></label>
+				<label asp-for="Product.PictureUrl" class="required"></label>
 				<input type="file" id="uploadBox" name="file" class="form-control" />
 			</div>
 
           <div class="col-6"> 
-           <label asp-for="Product.ThresholdValue"></label>
+           <label asp-for="Product.ThresholdValue" class="required"></label>
 			<input asp-for="Product.ThresholdValue" class="form-control" placeholder = "50"/>
 			<span asp-validation-for="Product.ThresholdValue" class="text-danger"></span>
            </div>
@@ -77,7 +77,7 @@
 		</div>
 		<br />
 		<div class="col-4  col">
-			<label asp-for="Product.DisplayProduct"></label>
+			<label asp-for="Product.DisplayProduct" class="required">Display on product catalogue?</label>
 			<select asp-for="Product.DisplayProduct" class="form-control">
 				<option disabled selected>--Select Display Options--</option>
 				<option> Yes </option>

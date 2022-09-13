@@ -51,6 +51,7 @@ namespace NatuurlikBase.Models
         public List<ProductInventory>? ProductInventories { get; set; }
 
         [Display(Name = "Threshold Value")]
+        [Range(0, 10000)]
         public int ThresholdValue { get; set; }
     }
 }
