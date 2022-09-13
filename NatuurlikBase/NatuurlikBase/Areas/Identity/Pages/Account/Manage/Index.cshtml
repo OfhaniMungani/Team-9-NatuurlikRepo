@@ -16,12 +16,12 @@
             @if(User.IsInRole(SR.Role_Reseller))
             {
                  <div class="form-floating" id="formspace" hidden>
-                <label asp-for="Input.FirstName"></label>
+                <label asp-for="Input.FirstName" class="required"></label>
                 <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" />
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
             <div class="form-floating" id="formspace" hidden>
-                <label asp-for="Input.Surname"></label>
+                <label asp-for="Input.Surname" class="required"></label>
                 <input asp-for="Input.Surname" class="form-control" autocomplete="lastname" aria-required="true" />
                 <span asp-validation-for="Input.Surname" class="text-danger"></span>
                 </div>
@@ -29,13 +29,13 @@
             else
             {
                 <div class="form-floating" id="formspace">
-                <label asp-for="Input.FirstName"></label>
+                <label asp-for="Input.FirstName" class="required"></label>
                 <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" />
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
 
               <div class="form-floating" id="formspace">
-                <label asp-for="Input.Surname"></label>
+                <label asp-for="Input.Surname" class="required"></label>
                 <input asp-for="Input.Surname" class="form-control" autocomplete="lastname" aria-required="true" />
                 <span asp-validation-for="Input.Surname" class="text-danger"></span>
             </div>
@@ -48,19 +48,19 @@
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <div class="form-floating" id="formspace">
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                <label asp-for="Input.PhoneNumber" class="form-label required"></label>
                 <input asp-for="Input.PhoneNumber" class="form-control" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-floating" id="formspace">
-                <label asp-for="Input.StreetAddress"></label>
+                <label asp-for="Input.StreetAddress" class="required"></label>
                 <input asp-for="Input.StreetAddress" class="form-control" aria-required="true" />
                 <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
             </div>
 
             <div class="row">
                 <div class="form-floating col-md-6" id="formspace">
-			 <label asp-for="Input.Country">Country</label>
+			 <label asp-for="Input.Country" class="required">Country</label>
                         <select asp-for="Input.Country" asp-items="@Model.Input.CountryList" required class="form-control" onchange="onCountryChange()">
                             <option disabled selected>- Select Country -</option>
                         </select>
@@ -68,7 +68,7 @@
                 </div>
 
                 <div class="form-floating col-md-6" id="formspace">
-			 <label asp-for="Input.Province">Province</label>
+			 <label asp-for="Input.Province" class="required">Province</label>
                         <select asp-for="Input.Province" asp-items="@Model.Input.ProvinceList" required class="form-control" onchange="onProvinceChange()">
                             <option disabled selected>- Select Province -</option>
                         </select>
@@ -78,7 +78,7 @@
 
             <div class="row">
                 <div class="form-floating col-md-6" id="formspace">
-			 <label asp-for="Input.City">City</label>
+			 <label asp-for="Input.City" class="required">City</label>
                     <select asp-for="Input.City" asp-items="@Model.Input.CityList" required class="form-control" onchange="onCityChange()">
                         <option disabled selected>- Select City -</option>
                     </select>
@@ -86,7 +86,7 @@
                 </div>
 
                 <div class="form-floating col-md-6" id="formspace">
-			 <label asp-for="Input.Suburb">Suburb</label>
+			 <label asp-for="Input.Suburb" class="required">Suburb</label>
                     <select asp-for="Input.Suburb" asp-items="@Model.Input.SuburbList" required class="form-control">
                         <option disabled selected>- Select Suburb -</option>
                     </select>

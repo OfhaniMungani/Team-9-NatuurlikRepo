@@ -11,6 +11,11 @@
     padding-bottom: 50px;
 }
 
+.required:after {
+    content: " *";
+    color: red;
+}
+
 .crudheading {
     background-color: #232323;
     color: white;

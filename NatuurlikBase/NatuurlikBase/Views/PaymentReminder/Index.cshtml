@@ -45,7 +45,7 @@
                             <h5 class="control-label"><strong>Current Time: @Html.DisplayFor(model => model.Value) Days</strong></h5>
                             <br/>
                             <div class="form-group">
-                                <label asp-for="Id" class="control-label">Settlement Time Intervals</label>
+                                <label asp-for="Id" class="control-label required">Settlement Time Intervals</label>
                                 <select asp-for="Id" class ="form-control" asp-items="ViewBag.Reminder"></select>
                             </div>
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" style="width:150px">Update</button>                                        

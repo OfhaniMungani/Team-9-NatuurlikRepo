@@ -5,6 +5,11 @@
     border: 1px solid black;
 }
 
+.required:after {
+    content: " *";
+    color: red;
+}
+
     #registerSubmit:hover, #login-submit:hover, #reset:hover, #update-profile-button:hover {
         background-color: #DA3F48;
         border: 1px solid #DA3F48;
