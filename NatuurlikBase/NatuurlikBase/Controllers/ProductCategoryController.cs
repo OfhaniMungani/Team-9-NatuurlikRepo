@@ -54,7 +54,6 @@ public class ProductCategoryController : Controller
 
                 _unitOfWork.Category.Add(obj);
                 await _db.SaveChangesAsync(userName);
-                _unitOfWork.Save();
                 TempData["success"] = "Category created successfully";
                 TempData["NextCreation"] = "Hello World.";
                 return RedirectToAction("Index");
@@ -106,7 +105,6 @@ public class ProductCategoryController : Controller
 
                 _unitOfWork.Category.Update(obj);
                 await _db.SaveChangesAsync(userName);
-                _unitOfWork.Save();
                 TempData["success"] = "Category updated successfully";
                 return RedirectToAction("Index");
             }
@@ -157,7 +155,6 @@ public class ProductCategoryController : Controller
 
             _unitOfWork.Category.Remove(category);
             await _db.SaveChangesAsync(userName);
-            _unitOfWork.Save();
             TempData["success"] = "Product Category Successfully Deleted.";
             return RedirectToAction("Index");
         }

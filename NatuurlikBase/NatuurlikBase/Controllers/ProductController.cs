@@ -127,7 +127,7 @@ public class ProductController : Controller
                     var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
                     var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
                     var userName = fullName.ToString();
-                    await _db.SaveChangesAsync(userName);
+                    await _context.SaveChangesAsync(userName);
                 }
                 _unitOfWork.Save();
                 
