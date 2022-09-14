@@ -35,6 +35,8 @@ namespace NatuurlikBase.Repository.IRepository
         IInventoryType  InventoryType { get; }
         IReturnReason   ReturnReason { get; }
         IInventoryProcured InventoryProcured { get; }
+        IVATRepository VATRepository { get; }
+        IWriteOffReasonRepository WriteOffReason { get; }
         void Save();
     }
 }

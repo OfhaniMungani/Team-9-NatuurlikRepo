@@ -16,7 +16,11 @@ namespace NatuurlikBase.Repository
 
         public void Update(ProductCategory obj)
         {
-            _db.Categories.Update(obj);
+            var objFromDb = _db.Categories.FirstOrDefault(u => u.Id == obj.Id);
+            if (objFromDb != null)
+            {
+                objFromDb.Name = obj.Name;
+            }
         }
     }
 }

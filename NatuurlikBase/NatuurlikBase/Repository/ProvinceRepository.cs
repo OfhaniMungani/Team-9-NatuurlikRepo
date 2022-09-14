@@ -29,11 +29,5 @@ namespace NatuurlikBase.Repository
                 
             }
         }
-
-        //public IList<Province> getProvincesByCountry(int countryId)
-        //{
-        //    var provinceList = _db.Province.Where(x => countryId == x.CountryId).ToList();
-        //    return provinceList;
-        //}
     }
 }

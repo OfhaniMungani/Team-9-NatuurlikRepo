@@ -113,7 +113,8 @@ public class VATController : Controller
             {
                 var vatFactor = Convert.ToDecimal(vat.VATPercentage / 100.00);
                 vat.VATFactor = vatFactor;
-                db.Entry(vat).State = EntityState.Modified;
+                //db.Entry(vat).State = EntityState.Modified;
+                _uow.VATRepository.Update(vat);
                 TempData["success"] = "VAT Details Updated Successfully.";
                 ViewBag.Prompt = "Are you sure you wish to save the changes.";
                 var claimsId = (ClaimsIdentity)User.Identity;

@@ -15,7 +15,16 @@ namespace NatuurlikBase.Repository
 
         public void Update(InventoryProcured obj)
         {
-            _db.InventoryProcured.Update(obj);
+            var objFromDb = _db.InventoryProcured.FirstOrDefault(u => u.Id == obj.Id);
+            if (objFromDb != null)
+            {
+                objFromDb.InvoiceNo = obj.InvoiceNo;
+                objFromDb.InvoiceFile = obj.InvoiceFile;
+                objFromDb.SupplierId = obj.SupplierId;
+                objFromDb.DateLogged = obj.DateLogged;
+                objFromDb.ItemID = obj.ItemID;
+                objFromDb.QuantityReceived = obj.QuantityReceived;
+            }
         }
     
     }

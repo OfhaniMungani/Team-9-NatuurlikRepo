@@ -110,7 +110,8 @@ public class InventoryItemController : Controller
                 var fullName = user.FirstName + " " + user.Surname;
                 var userName = fullName.ToString();
 
-                db.Entry(inventoryItem).State = EntityState.Modified;
+                //db.Entry(inventoryItem).State = EntityState.Modified;
+                _unitOfWork.InventoryItem.Update(inventoryItem);
                 ViewBag.ReturnReasonConfirmation = "Are you sure with your return reason changes.";
                 await db.SaveChangesAsync(userName);
                 TempData["success"] = "Inventory Item Successfully Updated.";

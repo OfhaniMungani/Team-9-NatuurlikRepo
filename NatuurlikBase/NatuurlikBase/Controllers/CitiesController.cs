@@ -134,14 +134,12 @@ public class CitiesController : Controller
             {
                 try
                 {
-
+                    _unitOfWork.City.Update(city);
                     var claimsId = (ClaimsIdentity)User.Identity;
                     var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
                     var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
                     var fullName = user.FirstName + " " + user.Surname;
                     var userName = fullName.ToString();
-
-                    _context.Update(city);
                     TempData["success"] = "City Updated Successfully";
                     await _context.SaveChangesAsync(userName);
                 }

@@ -15,7 +15,18 @@ namespace NatuurlikBase.Repository
 
         public void Update(Supplier obj)
         {
-            _db.Suppliers.Update(obj);
+            var objFromDb = _db.Suppliers.FirstOrDefault(u => u.Id == obj.Id);
+            if (objFromDb != null)
+            {
+                objFromDb.CompanyName = obj.CompanyName;
+                objFromDb.PhoneNumber = obj.PhoneNumber;
+                objFromDb.EmailAddress = obj.EmailAddress;
+                objFromDb.StreetAddress = obj.StreetAddress;
+                objFromDb.CountryId = obj.CountryId;
+                objFromDb.ProvinceId = obj.ProvinceId;
+                objFromDb.CityId = obj.CityId;
+                objFromDb.SuburbId = obj.SuburbId;
+            }
 
         }
 

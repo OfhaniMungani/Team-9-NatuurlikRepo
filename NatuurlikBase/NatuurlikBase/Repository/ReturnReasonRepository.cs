@@ -15,8 +15,12 @@ namespace NatuurlikBase.Repository
 
         public void Update(ReturnReason obj)
         {
-            _db.ReturnReason.Update(obj);
+            var objFromDb = _db.ReturnReason.FirstOrDefault(u => u.Id == obj.Id);
+            if (objFromDb != null)
+            {
+                objFromDb.ReturnReasonName = obj.ReturnReasonName;
+            }
+
         }
-    
     }
 }

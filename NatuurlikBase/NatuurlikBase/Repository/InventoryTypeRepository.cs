@@ -14,7 +14,11 @@ namespace NatuurlikBase.Repository
 
         public void Update(InventoryType obj)
         {
-            _db.InventoryType.Update(obj);
+            var objFromDb = _db.InventoryType.FirstOrDefault(u => u.Id == obj.Id);
+            if (objFromDb != null)
+            {
+                objFromDb.InventoryTypeName = obj.InventoryTypeName;
+            }
         }
     }
 }

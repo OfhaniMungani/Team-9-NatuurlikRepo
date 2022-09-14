@@ -21,7 +21,11 @@ namespace NatuurlikBase.Repository
 
         public void Update(Country obj)
         {
-            _db.Country.Update(obj);
+            var objFromDb = _db.Country.FirstOrDefault(u => u.Id == obj.Id);
+            if (objFromDb != null)
+            {
+                objFromDb.CountryName = obj.CountryName;
+            }
         }
     }
 }

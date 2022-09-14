@@ -129,8 +129,7 @@ public class ProvinceController : Controller
             else { 
             
             {
-                    _db.Entry(province).State = EntityState.Modified;
-                    
+                    _unitOfWork.Province.Update(province);
                     TempData["success"] = "Province Updated Successfully";
                     var claimsId = (ClaimsIdentity)User.Identity;
                     var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);

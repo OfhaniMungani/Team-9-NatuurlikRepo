@@ -114,7 +114,8 @@ public class InventoryTypeController : Controller
                 var fullName = user.FirstName + " " + user.Surname;
                 var userName = fullName.ToString();
 
-                db.Entry(inventoryType).State = EntityState.Modified;
+                //db.Entry(inventoryType).State = EntityState.Modified;
+                _unitOfWork.InventoryType.Update(inventoryType);
                 ViewBag.ReturnReasonConfirmation = "Are you sure with your return reason changes.";
                 await db.SaveChangesAsync(userName);
                 TempData["success"] = "Inventory Type Successfully Updated.";

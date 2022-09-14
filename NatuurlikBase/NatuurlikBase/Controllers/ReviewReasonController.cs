@@ -109,7 +109,8 @@ public class ReviewReasonController : Controller
             }
             else
             {
-                db.Entry(ReviewReason).State = EntityState.Modified;
+                //db.Entry(ReviewReason).State = EntityState.Modified;
+                _uow.ReviewReason.Update(ReviewReason);
                 TempData["success"] = "Review Reason Successfully Edited.";
                 ViewBag.ReviewReasonConfirmation = "Are you sure with your Review reason changes.";
                 var claimsId = (ClaimsIdentity)User.Identity;

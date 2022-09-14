@@ -135,7 +135,8 @@ public class CountriesController : Controller
                 var fullName = user.FirstName + " " + user.Surname;
                 var userName = fullName.ToString();
 
-                db.Entry(country).State = EntityState.Modified;
+                //db.Entry(country).State = EntityState.Modified;
+                _unitOfWork.Country.Update(country);
                 TempData["success"] = "Country name successfully Edited.";
                 ViewBag.CountryConfirmation = "Are you sure with your country name changes.";
                 await db.SaveChangesAsync(userName);

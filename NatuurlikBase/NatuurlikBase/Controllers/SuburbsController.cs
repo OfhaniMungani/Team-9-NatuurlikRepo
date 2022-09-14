@@ -133,7 +133,7 @@ public class SuburbsController : Controller
             {
                 try
                 {
-                    _context.Update(suburb);
+                    _unitOfWork.Suburb.Update(suburb);
                     TempData["success"] = "Suburb Updated Successfully";
                     var claimsId = (ClaimsIdentity)User.Identity;
                     var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);

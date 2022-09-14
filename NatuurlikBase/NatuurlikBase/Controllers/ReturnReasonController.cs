@@ -127,7 +127,8 @@ public class ReturnReasonController : Controller
             }
             else
             {
-                db.Entry(returnReason).State = EntityState.Modified;
+                //db.Entry(returnReason).State = EntityState.Modified;
+                _unitOfWork.ReturnReason.Update(returnReason);
                 TempData["success"] = "Return reason successfully Updated.";
                 ViewBag.ReturnReasonConfirmation = "Are you sure with your return reason changes.";
                 var claimsId = (ClaimsIdentity)User.Identity;

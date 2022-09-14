@@ -16,7 +16,11 @@ namespace NatuurlikBase.Repository
 
         public void Update(ProductBrand obj)
         {
-            _db.Brands.Update(obj);
+            var objFromDb = _db.Brands.FirstOrDefault(u => u.Id == obj.Id);
+            if (objFromDb != null)
+            {
+                objFromDb.Name = obj.Name;
+            }
         }
     }
 }

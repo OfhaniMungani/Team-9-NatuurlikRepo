@@ -119,7 +119,8 @@ public class WriteOffReasonController : Controller
             }
             else
             {
-                _context.Entry(writeOffReason).State = EntityState.Modified;
+                //_context.Entry(writeOffReason).State = EntityState.Modified;
+                _unitOfWork.WriteOffReason.Update(writeOffReason);
                 TempData["success"] = "Write-Off Reason Updated Successfully";
                 ViewBag.WriteOffReasonConfirmation = "Please confirm your changes";
                 var claimsId = (ClaimsIdentity)User.Identity;

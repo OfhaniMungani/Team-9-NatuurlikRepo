@@ -26,7 +26,7 @@ namespace NatuurlikBase.Repository
             {
                 objFromDb.SuburbName = obj.SuburbName;
                 objFromDb.CityId = obj.CityId;
-                
+                objFromDb.PostalCode = obj.PostalCode;
             }
         }
     }

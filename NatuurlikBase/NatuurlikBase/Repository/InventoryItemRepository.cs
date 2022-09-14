@@ -16,7 +16,15 @@ namespace NatuurlikBase.Repository
         }
         public void Update(InventoryItem obj)
         {
-            _db.InventoryItem.Update(obj);
+            var objFromDb = _db.InventoryItem.FirstOrDefault(u => u.Id == obj.Id);
+            if (objFromDb != null)
+            {
+                objFromDb.InventoryItemName = obj.InventoryItemName;
+                objFromDb.InventoryTypeId = obj.InventoryTypeId;
+                objFromDb.QuantityOnHand = obj.QuantityOnHand;
+                objFromDb.ThresholdValue = obj.ThresholdValue;
+                
+            }
         }
         public async Task<IEnumerable<InventoryItem>> GetInventoriesByName(string name)
         {
