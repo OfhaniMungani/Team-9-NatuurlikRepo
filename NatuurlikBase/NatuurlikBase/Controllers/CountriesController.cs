@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -56,7 +57,7 @@ public class CountriesController : Controller
     // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("ID,CountryName")] Country country)
+    public async Task<IActionResult> Create([Bind("ID,CountryName")] Country country)
     {
         if (ModelState.IsValid)
 
@@ -69,11 +70,16 @@ public class CountriesController : Controller
             }
             else
             {
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = user.FirstName + " " + user.Surname;
+                var userName = fullName.ToString();
+
                 db.Country.Add(country);
-
+                
                 ViewBag.CountryConfirmation = "Are you sure you want to add a country.";
-                db.SaveChanges();
-
+                await db.SaveChangesAsync(userName);
                 TempData["success"] = "Country name successfully added.";
                 TempData["NextCreation"] = "Hello World.";
                 return RedirectToAction("Index");
@@ -91,7 +97,7 @@ public class CountriesController : Controller
     }
 
     // GET: Countries/Edit/5
-    public IActionResult Edit(int? id)
+    public async Task <IActionResult> Edit(int? id)
     {
         if (id == null)
         {
@@ -110,7 +116,7 @@ public class CountriesController : Controller
     // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit([Bind("Id,CountryName")] Country country)
+    public async Task<IActionResult> Edit([Bind("Id,CountryName")] Country country)
     {
         if (ModelState.IsValid)
 
@@ -123,10 +129,16 @@ public class CountriesController : Controller
             }
             else
             {
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = user.FirstName + " " + user.Surname;
+                var userName = fullName.ToString();
+
                 db.Entry(country).State = EntityState.Modified;
                 TempData["success"] = "Country name successfully Edited.";
                 ViewBag.CountryConfirmation = "Are you sure with your country name changes.";
-                db.SaveChanges();
+                await db.SaveChangesAsync(userName);
                 return RedirectToAction("Index");
             }
         }
@@ -153,7 +165,7 @@ public class CountriesController : Controller
     // POST: Countries/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public IActionResult DeleteConfirmed(int id)
+    public async Task <IActionResult> DeleteConfirmed(int id)
     {
 
         Country country = db.Country.Find(id);
@@ -169,8 +181,16 @@ public class CountriesController : Controller
             {
                 TempData["AlertMessage"] = "Error occurred while attempting delete";
             }
+
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = user.FirstName + " " + user.Surname;
+            var userName = fullName.ToString();
+
             _unitOfWork.Country.Remove(obj);
-            _unitOfWork.Save();
+            await db.SaveChangesAsync(userName);
+            
             TempData["success"] = "Country name successfully Deleted.";
             return RedirectToAction("Index");
         }

@@ -4,16 +4,19 @@ using Microsoft.EntityFrameworkCore;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 using NatuurlikBase.Repository.IRepository;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
 //[Authorize(Roles = SR.Role_Admin)]
 public class InventoryTypeController : Controller
 {
     private readonly DatabaseContext db;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public InventoryTypeController(DatabaseContext context)
+    public InventoryTypeController(DatabaseContext context, IUnitOfWork unitOfWork)
     {
         db = context;
+        _unitOfWork = unitOfWork;
     }
 
     // GET: Countries
@@ -34,7 +37,7 @@ public class InventoryTypeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("Id,InventoryTypeName")] InventoryType inventoryType)
+    public async Task<IActionResult> Create([Bind("Id,InventoryTypeName")] InventoryType inventoryType)
     {
         if (ModelState.IsValid)
 
@@ -47,10 +50,15 @@ public class InventoryTypeController : Controller
             }
             else
             {
-                db.InventoryType.Add(inventoryType);
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = user.FirstName + " " + user.Surname;
+                var userName = fullName.ToString();
 
+                db.InventoryType.Add(inventoryType);
+                await db.SaveChangesAsync(userName);
                 ViewBag.CountryConfirmation = "Are you sure you want to add a return reason.";
-                db.SaveChanges();
 
                 TempData["success"] = "Inventory Type successfully added.";
                 TempData["NextCreation"] = "Inventory Type Successfully Deleted.";
@@ -87,7 +95,7 @@ public class InventoryTypeController : Controller
   
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit([Bind("Id,InventoryTypeName")] InventoryType inventoryType)
+    public async Task<IActionResult> Edit([Bind("Id,InventoryTypeName")] InventoryType inventoryType)
     {
         if (ModelState.IsValid)
 
@@ -100,10 +108,16 @@ public class InventoryTypeController : Controller
             }
             else
             {
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = user.FirstName + " " + user.Surname;
+                var userName = fullName.ToString();
+
                 db.Entry(inventoryType).State = EntityState.Modified;
-                TempData["success"] = "Inventory Type Successfully Updated.";
                 ViewBag.ReturnReasonConfirmation = "Are you sure with your return reason changes.";
-                db.SaveChanges();
+                await db.SaveChangesAsync(userName);
+                TempData["success"] = "Inventory Type Successfully Updated.";
                 return RedirectToAction("Index");
             }
         }
@@ -129,7 +143,7 @@ public class InventoryTypeController : Controller
 
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public IActionResult DeleteConfirmed(int id)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
         InventoryType inventoryType = db.InventoryType.Find(id);
         db.InventoryType.Remove(inventoryType);
@@ -144,9 +158,16 @@ public class InventoryTypeController : Controller
             {
                 TempData["AlertMessage"] = "Error occurred while attempting delete";
             }
+
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = user.FirstName + " " + user.Surname;
+            var userName = fullName.ToString();
+
             db.InventoryType.Remove(obj);
+            await db.SaveChangesAsync(userName);
             TempData["success"] = "Inventory Type Successfully Deleted.";
-            db.SaveChanges();
             return RedirectToAction("Index");
         }
         else

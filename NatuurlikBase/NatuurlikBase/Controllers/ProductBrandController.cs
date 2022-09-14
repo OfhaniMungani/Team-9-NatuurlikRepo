@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 using NatuurlikBase.Repository.IRepository;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
 //[Authorize(Roles = SR.Role_Admin)]
@@ -31,7 +32,7 @@ public class ProductBrandController : Controller
     //POST
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create(ProductBrand obj)
+    public async Task<IActionResult> Create(ProductBrand obj)
     {
         if (ModelState.IsValid)
         {
@@ -42,12 +43,17 @@ public class ProductBrandController : Controller
 
             }
             else { 
-            _unitOfWork.Brand.Add(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "Product Brand created successfully";
+                _unitOfWork.Brand.Add(obj);
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await _db.SaveChangesAsync(userName);
+                TempData["success"] = "Product Brand created successfully";
                 TempData["NextCreation"] = "Hello World.";
                 return RedirectToAction("Index");
-            }
+                 }
         }
         return View(obj);
     }
@@ -72,7 +78,7 @@ public class ProductBrandController : Controller
     //POST
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit(ProductBrand obj)
+    public async Task<IActionResult> Edit(ProductBrand obj)
     {
 
         if (ModelState.IsValid)
@@ -85,8 +91,13 @@ public class ProductBrandController : Controller
             }
             else { 
             _unitOfWork.Brand.Update(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "Product Brand Updated Successfully";
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await _db.SaveChangesAsync(userName);
+                TempData["success"] = "Product Brand Updated Successfully";
             return RedirectToAction("Index");
             }
         }
@@ -112,7 +123,7 @@ public class ProductBrandController : Controller
     //POST
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public IActionResult DeletePOST(int? id)
+    public async Task<IActionResult> DeletePOST(int? id)
     {
         ViewBag.CountryConfirmation = "Are you sure you want to delete this Product Brand?";
 
@@ -126,7 +137,12 @@ public class ProductBrandController : Controller
                 TempData["AlertMessage"] = "Error occurred while attempting delete";
             }
             _unitOfWork.Brand.Remove(brand);
-            _unitOfWork.Save();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await _db.SaveChangesAsync(userName);
             TempData["success"] = "Product Brand Successfully Deleted.";
             return RedirectToAction("Index");
         }

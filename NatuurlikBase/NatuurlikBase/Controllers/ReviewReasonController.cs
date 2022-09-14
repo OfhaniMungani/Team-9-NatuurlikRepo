@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 using NatuurlikBase.Repository.IRepository;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
 
@@ -11,10 +12,12 @@ namespace NatuurlikBase.Controllers;
 public class ReviewReasonController : Controller
 {
     private readonly DatabaseContext db;
+    private readonly IUnitOfWork _uow;
 
-    public ReviewReasonController(DatabaseContext context)
+    public ReviewReasonController(DatabaseContext context, IUnitOfWork uow)
     {
         db = context;
+        _uow = uow;
     }
 
     // GET: Countries
@@ -35,7 +38,7 @@ public class ReviewReasonController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("Id,Name")] ReviewReason ReviewReason)
+    public async Task<IActionResult> Create([Bind("Id,Name")] ReviewReason ReviewReason)
     {
         if (ModelState.IsValid)
 
@@ -51,7 +54,12 @@ public class ReviewReasonController : Controller
                 db.ReviewReason.Add(ReviewReason);
 
                 ViewBag.ReviewReasonConfirmation = "Are you sure you want to add a Review reason.";
-                db.SaveChanges();
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await db.SaveChangesAsync(userName);
 
                 TempData["success"] = "Review Reason successfully added.";
                 TempData["NextCreation"] = "Review Reason Successfully Deleted.";
@@ -88,7 +96,7 @@ public class ReviewReasonController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit([Bind("Id,Name")] ReviewReason ReviewReason)
+    public async Task<IActionResult> Edit([Bind("Id,Name")] ReviewReason ReviewReason)
     {
         if (ModelState.IsValid)
 
@@ -104,7 +112,12 @@ public class ReviewReasonController : Controller
                 db.Entry(ReviewReason).State = EntityState.Modified;
                 TempData["success"] = "Review Reason Successfully Edited.";
                 ViewBag.ReviewReasonConfirmation = "Are you sure with your Review reason changes.";
-                db.SaveChanges();
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await db.SaveChangesAsync(userName);
                 return RedirectToAction("Index");
             }
         }
@@ -133,7 +146,7 @@ public class ReviewReasonController : Controller
     // POST: WriteOffReason/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public IActionResult DeleteConfirmed(int id)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
         ReviewReason ReviewReason = db.ReviewReason.Find(id);
         db.ReviewReason.Remove(ReviewReason);
@@ -150,7 +163,12 @@ public class ReviewReasonController : Controller
             }
             db.ReviewReason.Remove(ReviewReason);
             TempData["success"] = "Review Reason Deleted Successfully";
-            db.SaveChanges();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await db.SaveChangesAsync(userName);
             return RedirectToAction("Index");
         }
         else

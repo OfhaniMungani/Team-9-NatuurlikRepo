@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 using NatuurlikBase.Repository.IRepository;
+using NatuurlikBase.ViewModels;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
 
@@ -33,7 +35,7 @@ public class ProductCategoryController : Controller
     //POST
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create(ProductCategory obj)
+    public async Task<IActionResult> Create(ProductCategory obj)
     {
         if (ModelState.IsValid)
         {
@@ -44,7 +46,14 @@ public class ProductCategoryController : Controller
             }
             else
             {
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = user.FirstName + " " + user.Surname;
+                var userName = fullName.ToString();
+
                 _unitOfWork.Category.Add(obj);
+                await _db.SaveChangesAsync(userName);
                 _unitOfWork.Save();
                 TempData["success"] = "Category created successfully";
                 TempData["NextCreation"] = "Hello World.";
@@ -55,28 +64,29 @@ public class ProductCategoryController : Controller
     }
 
     //GET
-    public IActionResult Edit(int? id)
+    public async Task<IActionResult> Edit(int? id)
     {
+
         if (id == null || id == 0)
         {
             return NotFound();
         }
 
-        var categoryFromDbFirst = _unitOfWork.Category.GetFirstOrDefault(u => u.Id == id);
+        var productCategory = await _db.Categories.FindAsync(id);
 
 
-        if (categoryFromDbFirst == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        return View(categoryFromDbFirst);
+        return View(productCategory);
     }
 
     //POST
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit(ProductCategory obj)
+    public async Task<IActionResult> Edit(ProductCategory obj)
     {
 
         if (ModelState.IsValid)
@@ -88,7 +98,14 @@ public class ProductCategoryController : Controller
             }
             else
             {
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = user.FirstName + " " + user.Surname;
+                var userName = fullName.ToString();
+
                 _unitOfWork.Category.Update(obj);
+                await _db.SaveChangesAsync(userName);
                 _unitOfWork.Save();
                 TempData["success"] = "Category updated successfully";
                 return RedirectToAction("Index");
@@ -118,7 +135,7 @@ public class ProductCategoryController : Controller
     //POST
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public IActionResult DeletePOST(int? id)
+    public async Task<IActionResult> DeletePOST(int? id)
     {
         
         ViewBag.CountryConfirmation = "Are you sure you want to delete this Product Category?";
@@ -132,7 +149,14 @@ public class ProductCategoryController : Controller
             {
                 TempData["AlertMessage"] = "Error occurred while attempting delete";
             }
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = user.FirstName + " " + user.Surname;
+            var userName = fullName.ToString();
+
             _unitOfWork.Category.Remove(category);
+            await _db.SaveChangesAsync(userName);
             _unitOfWork.Save();
             TempData["success"] = "Product Category Successfully Deleted.";
             return RedirectToAction("Index");

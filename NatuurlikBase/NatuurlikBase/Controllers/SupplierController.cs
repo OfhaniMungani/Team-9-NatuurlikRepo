@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
 
@@ -67,7 +68,7 @@ public class SupplierController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create(Supplier obj)
+    public async Task<IActionResult> Create(Supplier obj)
     {
         if (ModelState.IsValid)
         {
@@ -78,7 +79,12 @@ public class SupplierController : Controller
             else
             {
                 _unitOfWork.Supplier.Add(obj);
-                _unitOfWork.Save();
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await _db.SaveChangesAsync(userName);
                 TempData["success"] = "Supplier created successfully";
                 return RedirectToAction("Index");
             }
@@ -111,7 +117,7 @@ public class SupplierController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit(Supplier obj)
+    public async Task<IActionResult> Edit(Supplier obj)
     {
 
         if (ModelState.IsValid)
@@ -126,7 +132,12 @@ public class SupplierController : Controller
             else
             {
                 _unitOfWork.Supplier.Update(obj);
-                _unitOfWork.Save();
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await _db.SaveChangesAsync(userName);
                 TempData["success"] = "Supplier Updated Successfully";
                 return RedirectToAction("Index");
             }
@@ -163,7 +174,7 @@ public class SupplierController : Controller
 
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public IActionResult DeletePOST(int? id)
+    public async Task<IActionResult> DeletePOST(int? id)
     {
         ViewBag.CountryConfirmation = "Are you sure you want to delete this Supplier?";
 
@@ -177,7 +188,12 @@ public class SupplierController : Controller
                 TempData["AlertMessage"] = "Error occurred while attempting delete";
             }
             _unitOfWork.Supplier.Remove(supplier);
-            _unitOfWork.Save();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await _db.SaveChangesAsync(userName);
             TempData["success"] = "Supplier Deleted Successfully.";
             return RedirectToAction("Index");
         }

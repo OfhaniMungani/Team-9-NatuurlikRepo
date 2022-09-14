@@ -46,8 +46,8 @@ public class DatabaseContext : IdentityDbContext<ApplicationUser>
     public DbSet<Video> Video { get; set; }
     public DbSet<Delivery> Delivery { get; set; }
     public DbSet<ConfirmationReminder> ConfirmationReminder { get; set; }
-
     public DbSet<ProductInventory> ProductConfiguration { get; set; }
+    public DbSet<Audit> Audit { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -66,10 +66,57 @@ public class DatabaseContext : IdentityDbContext<ApplicationUser>
             .HasOne(pi => pi.Inventory)
             .WithMany(i => i.ProductInventories)
             .HasForeignKey(pi => pi.InventoryItemId);
-
-
     }
 
-    
+    public virtual async Task<int> SaveChangesAsync(string userId = null)
+    {
+        OnBeforeSaveChanges(userId);
+        var result = await base.SaveChangesAsync();
+        return result;
+    }
+    private void OnBeforeSaveChanges(string userId)
+    {
+        ChangeTracker.DetectChanges();
+        var auditEntries = new List<AuditLine>();
+        foreach (var entry in ChangeTracker.Entries())
+        {
+            if (entry.Entity is Audit || entry.State == EntityState.Detached || entry.State == EntityState.Unchanged)
+                continue;
+            var auditEntry = new AuditLine(entry);
+            auditEntry.EntityName = entry.Entity.GetType().Name;
+            auditEntry.ActorFullName = userId;
+            auditEntries.Add(auditEntry);
+            foreach (var property in entry.Properties)
+            {
+                string propertyName = property.Metadata.Name;
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        auditEntry.AuditType = AuditType.Create;
+                        auditEntry.NewValues[propertyName] = property.CurrentValue;
+                        break;
+                    case EntityState.Deleted:
+                        auditEntry.AuditType = AuditType.Delete;
+                        auditEntry.OldValues[propertyName] = property.OriginalValue;
+                        break;
+                    case EntityState.Modified:
+                        if (property.IsModified)
+                        {
+                            auditEntry.ChangedColumns.Add(propertyName);
+                            auditEntry.AuditType = AuditType.Update;
+                            auditEntry.OldValues[propertyName] = property.OriginalValue;
+                            auditEntry.NewValues[propertyName] = property.CurrentValue;
+                        }
+                        break;
+                }
+            }
+        }
+        foreach (var auditEntry in auditEntries)
+        {
+            Audit.Add(auditEntry.ToAudit());
+        }
+    }
+
+
 }
 

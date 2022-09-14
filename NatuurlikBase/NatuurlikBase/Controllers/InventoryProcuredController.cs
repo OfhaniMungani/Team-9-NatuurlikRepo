@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
+using NatuurlikBase.Repository.IRepository;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
 //[Authorize(Roles = SR.Role_Admin)]
@@ -11,11 +13,13 @@ public class InventoryProcuredController : Controller
 {
     private readonly DatabaseContext db;
     private readonly IWebHostEnvironment _hostEnvironment;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public InventoryProcuredController(DatabaseContext context, IWebHostEnvironment hostEnvironment)
+    public InventoryProcuredController(DatabaseContext context, IWebHostEnvironment hostEnvironment, IUnitOfWork unitOfWork)
     {
         db = context;
         _hostEnvironment = hostEnvironment;
+        _unitOfWork = unitOfWork;
     }
 
     public IActionResult Index()
@@ -33,7 +37,7 @@ public class InventoryProcuredController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("Id,SupplierId,InvoiceNo,ItemID,QuantityReceived,DateLogged")] InventoryProcured inventoryProcured)
+    public async Task<IActionResult> Create([Bind("Id,SupplierId,InvoiceNo,ItemID,QuantityReceived,DateLogged")] InventoryProcured inventoryProcured)
     {
         if (ModelState.IsValid)
 
@@ -44,9 +48,16 @@ public class InventoryProcuredController : Controller
                 inv.QuantityOnHand += inventoryProcured.QuantityReceived;
             }
 
-            db.InventoryProcured.Add(inventoryProcured);
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = user.FirstName + " " + user.Surname;
+            var userName = fullName.ToString();
+
             ViewBag.InventoryProcuredConfrimation = "Confirm Procured Inventory Details";
-            db.SaveChanges();
+            db.InventoryProcured.Add(inventoryProcured);
+            await db.SaveChangesAsync(userName);
+
 
             TempData["success"] = "Procured Inventory Captured Successfully!";
             TempData["NextCreation"] = "Hello World.";

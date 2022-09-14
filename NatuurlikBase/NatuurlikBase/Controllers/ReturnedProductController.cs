@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 using NatuurlikBase.Repository.IRepository;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
 //[Authorize(Roles = SR.Role_Admin + "," + SR.Role_SA)]
@@ -45,7 +46,7 @@ public class ReturnedProductController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("Id,QuantityReceived,DateLogged,OrderId,ProductId,ReturnReasonId")] ReturnedProduct returnedProduct)
+    public async Task<IActionResult> Create([Bind("Id,QuantityReceived,DateLogged,OrderId,ProductId,ReturnReasonId")] ReturnedProduct returnedProduct)
     {
         if (ModelState.IsValid)
 
@@ -85,7 +86,12 @@ public class ReturnedProductController : Controller
 
             db.ReturnedProduct.Add(returnedProduct);
             ViewBag.ReturnedProductConfirmation = "Confirm Returned Product Details";
-            db.SaveChanges();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await db.SaveChangesAsync(userName);
 
             TempData["success"] = "Returned Product Captured Successfully!";
 

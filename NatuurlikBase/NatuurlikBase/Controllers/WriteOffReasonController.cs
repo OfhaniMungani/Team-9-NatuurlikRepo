@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
+using NatuurlikBase.Repository.IRepository;
 
 namespace NatuurlikBase.Controllers;
 
@@ -17,10 +19,12 @@ namespace NatuurlikBase.Controllers;
 public class WriteOffReasonController : Controller
 {
     private readonly DatabaseContext _context;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public WriteOffReasonController(DatabaseContext context)
+    public WriteOffReasonController(DatabaseContext context, IUnitOfWork unitOfWork)
     {
         _context = context;
+        _unitOfWork = unitOfWork;
     }
 
 
@@ -53,7 +57,7 @@ public class WriteOffReasonController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("Id,Name")] WriteOffReason writeOffReason)
+    public async Task<IActionResult> Create([Bind("Id,Name")] WriteOffReason writeOffReason)
     {
         if (ModelState.IsValid)
         {
@@ -64,7 +68,12 @@ public class WriteOffReasonController : Controller
             else
             {
                 _context.Add(writeOffReason);
-                _context.SaveChanges();
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await _context.SaveChangesAsync(userName);
                 TempData["success"] = "Write-Off Reason Added Successflly!";
                 return RedirectToAction("Index");
             }
@@ -97,7 +106,7 @@ public class WriteOffReasonController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit(int id, [Bind("Id,Name")] WriteOffReason writeOffReason)
+    public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] WriteOffReason writeOffReason)
     {
         if (ModelState.IsValid)
 
@@ -113,7 +122,12 @@ public class WriteOffReasonController : Controller
                 _context.Entry(writeOffReason).State = EntityState.Modified;
                 TempData["success"] = "Write-Off Reason Updated Successfully";
                 ViewBag.WriteOffReasonConfirmation = "Please confirm your changes";
-                _context.SaveChanges();
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await _context.SaveChangesAsync(userName);
                 return RedirectToAction("Index");
             }
         }
@@ -141,13 +155,18 @@ public class WriteOffReasonController : Controller
     // POST: WriteOffReason/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public IActionResult DeleteConfirmed(int id)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
         WriteOffReason writeoff = _context.WriteOffReason.Find(id);
         _context.WriteOffReason.Remove(writeoff);
         ViewBag.WriteOffReasonConfirmation = "Are you sure you want to delete this write-off reason?";
         TempData["success"] = "Write-Off Reason Deleted Successfully";
-        _context.SaveChanges();
+        var claimsId = (ClaimsIdentity)User.Identity;
+        var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+        var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+        var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+        var userName = fullName.ToString();
+        await _context.SaveChangesAsync(userName);
         return RedirectToAction("Index");
     }
 

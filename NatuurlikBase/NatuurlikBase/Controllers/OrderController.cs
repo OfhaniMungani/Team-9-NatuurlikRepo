@@ -60,13 +60,20 @@ namespace NatuurlikBase.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ApproveResellerOrder()
+        public async Task<IActionResult> ApproveResellerOrder()
         {
             //Retrieve Order details from the db
             var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
             //Update order status to approved state and save changes to db.
             _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.ProcessingOrder);
-            _uow.Save();
+
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+
+            await _db.SaveChangesAsync(userName);
 
             var user = _db.User.Where(z => z.Id == orderRetrieved.ApplicationUserId).FirstOrDefault();
             string email = user.Email;
@@ -82,7 +89,7 @@ namespace NatuurlikBase.Controllers
                 .Replace("[ID]", number).Replace("[DATE]", date).Replace("[URL]", callbackUrl);
             string message = template;
 
-            _emailSender.SendEmailAsync(
+             await _emailSender.SendEmailAsync(
             email,
             "Order Approved",
             message);
@@ -94,13 +101,18 @@ namespace NatuurlikBase.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CancelOrder()
+        public async Task<IActionResult> CancelOrder()
         {
             //Retrieve Order details from the db
             var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
             //Update order status to approved state and save changes to db.
             _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.OrderCancelled);
-            _uow.Save();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await _db.SaveChangesAsync(userName);
 
             var user = _db.User.Where(z => z.Id == orderRetrieved.ApplicationUserId).FirstOrDefault();
             string email = user.Email;
@@ -116,7 +128,7 @@ namespace NatuurlikBase.Controllers
                 .Replace("[ID]", number).Replace("[DATE]", date).Replace("[URL]", callbackUrl);
             string message = template;
 
-            _emailSender.SendEmailAsync(
+            await _emailSender.SendEmailAsync(
             email,
             "Order Cancelled",
             message);
@@ -217,13 +229,18 @@ namespace NatuurlikBase.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ProcessOrder()
+        public async Task<IActionResult> ProcessOrder()
         {
             //Retrieve Order details from the db
             var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
             //Update order status to approved state and save changes to db.
             _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.ProcessingOrder);
-            _uow.Save();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await _db.SaveChangesAsync(userName);
             TempData["Success"] = "Order status updated successfully.";
             return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
 
@@ -231,13 +248,18 @@ namespace NatuurlikBase.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RejectResellerOrder()
+        public async Task<IActionResult> RejectResellerOrder()
         {
             //Retrieve Order details from the db
             var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
             //Update order status to approved state and save changes to db.
             _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.OrderRejected);
-            _uow.Save();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await _db.SaveChangesAsync(userName);
 
             var user = _db.User.Where(z => z.Id == orderRetrieved.ApplicationUserId).FirstOrDefault();
             string email = user.Email;
@@ -253,7 +275,7 @@ namespace NatuurlikBase.Controllers
                 .Replace("[ID]", number).Replace("[DATE]", date).Replace("[URL]", callbackUrl);
             string message = template;
 
-            _emailSender.SendEmailAsync(
+            await _emailSender.SendEmailAsync(
             email,
             "Order Rejected",
             message);
@@ -265,13 +287,18 @@ namespace NatuurlikBase.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CaptureResellerPayment()
+        public async Task<IActionResult> CaptureResellerPayment()
         {
             //Retrieve Order details from the db
             var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
             //Update order status to approved state and save changes to db.
             _uow.Order.UpdateOrderPaymentStatus(OrderVM.Order.Id, SR.OrderPaymentApproved);
-            _uow.Save();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await _db.SaveChangesAsync(userName);
 
             var user = _db.User.Where(z => z.Id == orderRetrieved.ApplicationUserId).FirstOrDefault();
             string email = user.Email;
@@ -288,7 +315,7 @@ namespace NatuurlikBase.Controllers
                 .Replace("[ID]", number).Replace("[DATE]", date).Replace("[TOTAL]", total).Replace("[URL]", callbackUrl);
             string message = template;
 
-            _emailSender.SendEmailAsync(
+            await _emailSender.SendEmailAsync(
             email,
             "Payment Received",
             message);
@@ -298,7 +325,7 @@ namespace NatuurlikBase.Controllers
 
         }
 
-        public IActionResult DispatchParcel()
+        public async Task<IActionResult> DispatchParcel()
         {
             //Retrieve Order details from the db
             var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
@@ -307,7 +334,12 @@ namespace NatuurlikBase.Controllers
             orderRetrieved.DispatchedDate = DateTime.Now;
             orderRetrieved.OrderStatus = SR.OrderDispatched;
             _uow.Order.Update(orderRetrieved);
-            _uow.Save();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await _db.SaveChangesAsync(userName);
 
             string accountId = _configuration["AccountId"];
             string authToken = _configuration["AuthToken"];
@@ -331,7 +363,7 @@ namespace NatuurlikBase.Controllers
             return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });
 
         }
-        public IActionResult ViewQueries()
+        public async Task<IActionResult> ViewQueries()
 
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -417,13 +449,18 @@ namespace NatuurlikBase.Controllers
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ReviewQuery(OrderQuery orderQuery)
+        public async Task<IActionResult> ReviewQuery(OrderQuery orderQuery)
 
         {
             orderQuery.QueryStatus = SR.QueryReview;
             orderQuery.QueryFeedback = orderQuery.QueryFeedback;
             _db.OrderQuery.Update(orderQuery);
-            _db.SaveChanges();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await _db.SaveChangesAsync(userName);
             TempData["success"] = "The order query was reviewed successfully.";
             return RedirectToAction("ViewQueries");
 
@@ -431,7 +468,7 @@ namespace NatuurlikBase.Controllers
 
 
         [HttpGet]
-        public IActionResult LogQuery(int orderId)
+        public async Task<IActionResult> LogQuery(int orderId)
         {
             if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
             {
@@ -475,7 +512,12 @@ namespace NatuurlikBase.Controllers
                 };
                 orderQueryVM.OrderQuery.OrderId = orderId;
                 ViewBag.Confirmation = "Confirm order query details?";
-                _db.SaveChanges();
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await _db.SaveChangesAsync(userName);
 
                 return View(orderQueryVM);
             }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 using NatuurlikBase.Repository.IRepository;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
 
@@ -11,10 +12,12 @@ namespace NatuurlikBase.Controllers;
 public class QueryReasonController : Controller
 {
     private readonly DatabaseContext db;
+    private readonly IUnitOfWork _uow;
 
-    public QueryReasonController(DatabaseContext context)
+    public QueryReasonController(DatabaseContext context, IUnitOfWork unitOfWork)
     {
         db = context;
+        _uow = unitOfWork;
     }
 
     // GET: Countries
@@ -35,7 +38,7 @@ public class QueryReasonController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("Id,Name")] QueryReason QueryReason)
+    public async Task<IActionResult> Create([Bind("Id,Name")] QueryReason QueryReason)
     {
         if (ModelState.IsValid)
 
@@ -51,7 +54,12 @@ public class QueryReasonController : Controller
                 db.QueryReason.Add(QueryReason);
 
                 ViewBag.QueryReasonConfirmation = "Are you sure you want to add a Query reason.";
-                db.SaveChanges();
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await db.SaveChangesAsync(userName);
 
                 TempData["success"] = "Query Reason successfully added.";
                 TempData["NextCreation"] = "Query Reason Successfully Deleted.";
@@ -88,7 +96,7 @@ public class QueryReasonController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit([Bind("Id,Name")] QueryReason QueryReason)
+    public async Task<IActionResult> Edit([Bind("Id,Name")] QueryReason QueryReason)
     {
         if (ModelState.IsValid)
 
@@ -104,7 +112,12 @@ public class QueryReasonController : Controller
                 db.Entry(QueryReason).State = EntityState.Modified;
                 TempData["success"] = "Query Reason Successfully Edited.";
                 ViewBag.QueryReasonConfirmation = "Are you sure with your Query reason changes.";
-                db.SaveChanges();
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await db.SaveChangesAsync(userName);
                 return RedirectToAction("Index");
             }
         }
@@ -133,7 +146,7 @@ public class QueryReasonController : Controller
     // POST: WriteOffReason/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public IActionResult DeleteConfirmed(int id)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
         QueryReason queryReason = db.QueryReason.Find(id);
         db.QueryReason.Remove(queryReason);
@@ -150,7 +163,12 @@ public class QueryReasonController : Controller
             }
             db.QueryReason.Remove(queryReason);
             TempData["success"] = "Query Reason Deleted Successfully";
-            db.SaveChanges();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await db.SaveChangesAsync(userName);
             return RedirectToAction("Index");
         }
         else

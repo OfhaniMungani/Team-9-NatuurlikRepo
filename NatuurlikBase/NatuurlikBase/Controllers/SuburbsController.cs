@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -78,8 +79,13 @@ public class SuburbsController : Controller
             {
                 _context.Add(suburb);
                 TempData["success"] = "Suburb Created Successfully";
-               
-                await _context.SaveChangesAsync();
+
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await _context.SaveChangesAsync(userName);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -129,7 +135,12 @@ public class SuburbsController : Controller
                 {
                     _context.Update(suburb);
                     TempData["success"] = "Suburb Updated Successfully";
-                    await _context.SaveChangesAsync();
+                    var claimsId = (ClaimsIdentity)User.Identity;
+                    var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                    var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                    var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                    var userName = fullName.ToString();
+                    await _context.SaveChangesAsync(userName);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -206,7 +217,12 @@ public class SuburbsController : Controller
         else
         {
             TempData["success"] = "Suburb Deleted Successfully";
-            await _context.SaveChangesAsync();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await _context.SaveChangesAsync(userName);
             return RedirectToAction(nameof(Index));
         }
     }

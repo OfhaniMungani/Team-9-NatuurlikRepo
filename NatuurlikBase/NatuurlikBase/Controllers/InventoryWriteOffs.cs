@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 using NatuurlikBase.Repository.IRepository;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
 //[Authorize(Roles = SR.Role_Admin + "," + SR.Role_IM)]
@@ -53,10 +54,16 @@ public class InventoryWriteOffs : Controller
             if (item.QuantityOnHand > inventoryWriteOff.writeOffQuantity || item.QuantityOnHand == inventoryWriteOff.writeOffQuantity)
             {
                 item.QuantityOnHand -= inventoryWriteOff.writeOffQuantity;
-                //  item.QuantityOnHand = item.QuantityOnHand-inventoryWriteOff.writeOffQuantity;
                 _context.Add(inventoryWriteOff);
+
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+
+                await _context.SaveChangesAsync(userName);
                 TempData["success"] = "Inventory Item Written-Off Successfully";
-                await _context.SaveChangesAsync();
 
                 string wwwRootPath = _hostEnvironment.WebRootPath;
                 var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\lowInvTemp.html"));

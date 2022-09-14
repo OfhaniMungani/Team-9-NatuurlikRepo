@@ -6,6 +6,7 @@ using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 using NatuurlikBase.Models.ViewModels;
 using NatuurlikBase.Repository.IRepository;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
 //[Authorize(Roles = SR.Role_Admin)]
@@ -63,7 +64,7 @@ public class ProductController : Controller
     //POST
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Upsert(ProductVM obj, IFormFile? file)
+    public async Task<IActionResult> Upsert(ProductVM obj, IFormFile? file)
     {
 
         if (ModelState.IsValid)
@@ -109,12 +110,24 @@ public class ProductController : Controller
                 {
                     _unitOfWork.Product.Add(obj.Product);
                     TempData["success"] = "Product created successfully";
+                    var claimsId = (ClaimsIdentity)User.Identity;
+                    var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                    var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                    var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                    var userName = fullName.ToString();
+                    await _context.SaveChangesAsync(userName);
 
                 }
                 else
                 {
                     _unitOfWork.Product.Update(obj.Product);
                     TempData["success"] = "Product updated successfully";
+                    var claimsId = (ClaimsIdentity)User.Identity;
+                    var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                    var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                    var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                    var userName = fullName.ToString();
+                    await _db.SaveChangesAsync(userName);
                 }
                 _unitOfWork.Save();
                 
@@ -135,7 +148,7 @@ public class ProductController : Controller
     }
 
 
-    public IActionResult Delete(int? id)
+    public async Task<IActionResult> Delete(int? id)
     {
        
 
@@ -161,8 +174,12 @@ public class ProductController : Controller
             }
 
             _unitOfWork.Product.Remove(obj);
-
-            _unitOfWork.Save();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await _context.SaveChangesAsync(userName);
             TempData["successDelete"] = "Product deleted successfully";
             return Json(new { success = true, message = "Delete Successful" });
         }

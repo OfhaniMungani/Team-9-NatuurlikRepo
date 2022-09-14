@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 using NatuurlikBase.Repository.IRepository;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
 //[Authorize(Roles = SR.Role_Admin + "," + SR.Role_IM)]
@@ -58,7 +59,13 @@ public class ProductWriteOffController : Controller
                 _context.Add(productWriteOff);
 
                 TempData["success"] = "Product Written-Off Successfully";
-                await _context.SaveChangesAsync();
+
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await _context.SaveChangesAsync(userName);
 
                 string wwwRootPath = _hostEnvironment.WebRootPath;
                 var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\lowProdTemp.html"));

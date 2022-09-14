@@ -4,6 +4,7 @@ using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 using NatuurlikBase.Repository.IRepository;
 using NatuurlikBase.ViewModels;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers
 {   
@@ -98,7 +99,7 @@ namespace NatuurlikBase.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //protect against anti forgery token attacks.
-        public IActionResult Upsert(UserVM obj)
+        public async Task<IActionResult> Upsert(UserVM obj)
         {
             
             if(ModelState.IsValid)
@@ -108,10 +109,22 @@ namespace NatuurlikBase.Controllers
                 if(obj.User.Id == null)
                 {
                     _unitOfWork.User.Add(obj.User);
+                    var claimsId = (ClaimsIdentity)User.Identity;
+                    var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                    var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                    var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                    var userName = fullName.ToString();
+                    await _db.SaveChangesAsync(userName);
                 }
                 else
                 {
                     _unitOfWork.User.Update(obj.User);
+                    var claimsId = (ClaimsIdentity)User.Identity;
+                    var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                    var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                    var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                    var userName = fullName.ToString();
+                    await _db.SaveChangesAsync(userName);
                 }
                 
                 _unitOfWork.Save();

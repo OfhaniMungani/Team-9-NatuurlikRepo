@@ -121,7 +121,7 @@ public class PrepareOrderController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Route("PrepareOrder")]
-     public IActionResult Capture(PackageOrderVM packageOrderVM)
+     public async Task<IActionResult> Capture(PackageOrderVM packageOrderVM)
     {
         var claimsId = (ClaimsIdentity)User.Identity;
         var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
@@ -168,7 +168,10 @@ public class PrepareOrderController : Controller
                             prod.QuantityOnHand -= packageOrderVM.PackageOrderProduct.ProductQuantity;
                             TempData["success"] = "Product Packaged Successfully.";
                             _db.OrderProduct.Add(packageOrderVM.PackageOrderProduct);
-                            _db.SaveChanges();
+                            var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                            var userName = fullName.ToString();
+                            await _db.SaveChangesAsync(userName);
                             return Redirect("PrepareOrder?orderId=" + packageOrderVM.PackageOrderProduct.OrderId.ToString());
 
                         }
@@ -183,7 +186,10 @@ public class PrepareOrderController : Controller
                 {
                     TempData["success"] = "Product Packaged Successfully.";
                     _db.OrderProduct.Add(packageOrderVM.PackageOrderProduct);
-                    _db.SaveChanges();
+                    var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                    var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                    var userName = fullName.ToString();
+                    await _db.SaveChangesAsync(userName);
                     return Redirect("PrepareOrder?orderId=" + packageOrderVM.PackageOrderProduct.OrderId.ToString());
                 }
             }

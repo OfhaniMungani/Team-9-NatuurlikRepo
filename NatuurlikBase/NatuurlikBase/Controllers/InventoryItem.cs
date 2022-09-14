@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 using NatuurlikBase.Repository.IRepository;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
 //[Authorize(Roles = SR.Role_Admin)]
@@ -37,7 +38,7 @@ public class InventoryItemController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("Id,InventoryItemName,InventoryTypeId,QuantityOnHand,ThresholdValue")] InventoryItem inventoryItem)
+    public async Task<IActionResult> Create([Bind("Id,InventoryItemName,InventoryTypeId,QuantityOnHand,ThresholdValue")] InventoryItem inventoryItem)
     {
         if (ModelState.IsValid)
 
@@ -50,11 +51,16 @@ public class InventoryItemController : Controller
             }
             else
             {
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = user.FirstName + " " + user.Surname;
+                var userName = fullName.ToString();
+
                 db.InventoryItem.Add(inventoryItem);
 
                 ViewBag.CountryConfirmation = "Are you sure you want to add a return reason.";
-                db.SaveChanges();
-
+                await db.SaveChangesAsync(userName);
                 TempData["success"] = "Inventory Item successfully added.";
                 return RedirectToAction("Index");
             }
@@ -85,7 +91,7 @@ public class InventoryItemController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit([Bind("Id,InventoryItemName,InventoryTypeId,QuantityOnHand,ThresholdValue")] InventoryItem inventoryItem)
+    public async Task<IActionResult> Edit([Bind("Id,InventoryItemName,InventoryTypeId,QuantityOnHand,ThresholdValue")] InventoryItem inventoryItem)
     {
         if (ModelState.IsValid)
 
@@ -98,10 +104,16 @@ public class InventoryItemController : Controller
             }
             else
             {
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = user.FirstName + " " + user.Surname;
+                var userName = fullName.ToString();
+
                 db.Entry(inventoryItem).State = EntityState.Modified;
-                TempData["success"] = "Inventory Item Successfully Updated.";
                 ViewBag.ReturnReasonConfirmation = "Are you sure with your return reason changes.";
-                db.SaveChanges();
+                await db.SaveChangesAsync(userName);
+                TempData["success"] = "Inventory Item Successfully Updated.";
                 return RedirectToAction("Index");
             }
         }
@@ -131,7 +143,7 @@ public class InventoryItemController : Controller
 
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public IActionResult DeleteConfirmed(int id)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
         InventoryItem inventoryItem = db.InventoryItem.Find(id);
         db.InventoryItem.Remove(inventoryItem);
@@ -145,8 +157,14 @@ public class InventoryItemController : Controller
             {
                 TempData["AlertMessage"] = "Error occurred while attempting delete";
             }
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = user.FirstName + " " + user.Surname;
+            var userName = fullName.ToString();
+
             _unitOfWork.InventoryItem.Remove(obj);
-            _unitOfWork.Save();
+            await db.SaveChangesAsync(userName);
             TempData["success"] = "Inventory Item Successfully Deleted.";
             return RedirectToAction("Index");
         }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -56,7 +57,7 @@ public class ReturnReasonController : Controller
     // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("Id,ReturnReasonName")] ReturnReason returnReason)
+    public async Task<IActionResult> Create([Bind("Id,ReturnReasonName")] ReturnReason returnReason)
     {
         if (ModelState.IsValid)
 
@@ -71,7 +72,12 @@ public class ReturnReasonController : Controller
                 db.ReturnReason.Add(returnReason);
 
                 ViewBag.CountryConfirmation = "Are you sure you want to add a return reason.";
-                db.SaveChanges();
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await db.SaveChangesAsync(userName);
 
                 TempData["success"] = "Return reason successfully added.";
                 return RedirectToAction("Index");
@@ -108,7 +114,7 @@ public class ReturnReasonController : Controller
     // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit([Bind("Id,ReturnReasonName")] ReturnReason returnReason)
+    public async Task<IActionResult> Edit([Bind("Id,ReturnReasonName")] ReturnReason returnReason)
     {
         if (ModelState.IsValid)
 
@@ -124,7 +130,12 @@ public class ReturnReasonController : Controller
                 db.Entry(returnReason).State = EntityState.Modified;
                 TempData["success"] = "Return reason successfully Updated.";
                 ViewBag.ReturnReasonConfirmation = "Are you sure with your return reason changes.";
-                db.SaveChanges();
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await db.SaveChangesAsync(userName);
                 return RedirectToAction("Index");
             }
         }
@@ -151,7 +162,7 @@ public class ReturnReasonController : Controller
     // POST: Countries/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public IActionResult DeleteConfirmed(int id)
+    public async Task <IActionResult> DeleteConfirmed(int id)
     {
         ReturnReason country = db.ReturnReason.Find(id);
         db.ReturnReason.Remove(country);
@@ -167,7 +178,12 @@ public class ReturnReasonController : Controller
                 TempData["AlertMessage"] = "Error occurred while attempting delete";
             }
             _unitOfWork.ReturnReason.Remove(obj);
-            _unitOfWork.Save();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await db.SaveChangesAsync(userName);
             TempData["success"] = "Return Reason Successfully Deleted.";
             return RedirectToAction("Index");
         }

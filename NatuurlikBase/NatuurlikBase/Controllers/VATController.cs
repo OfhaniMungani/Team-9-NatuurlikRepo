@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
+using NatuurlikBase.Repository.IRepository;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
 
@@ -13,10 +15,12 @@ public class VATController : Controller
 {
 
     private readonly DatabaseContext db;
+    private readonly IUnitOfWork _uow;
 
-    public VATController(DatabaseContext context)
+    public VATController(DatabaseContext context, IUnitOfWork uow)
     {
         db = context;
+        _uow = uow;
     }
 
     // GET: Countries
@@ -39,7 +43,7 @@ public class VATController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("Id,VATPercentage,VATFactor,VATStatus,CreatedDate")] VAT vat)
+    public async Task<IActionResult> Create([Bind("Id,VATPercentage,VATFactor,VATStatus,CreatedDate")] VAT vat)
     {
         if (ModelState.IsValid)
         {
@@ -60,7 +64,12 @@ public class VATController : Controller
                 var vatFactor = Convert.ToDecimal(vat.VATPercentage / 100.00) ;
                 vat.VATFactor = vatFactor;
                 db.VAT.Add(vat);
-                db.SaveChanges();
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await db.SaveChangesAsync(userName);
                 TempData["success"] = "VAT Details Created Successfully.";
                 return RedirectToAction("Index");
             }
@@ -89,7 +98,7 @@ public class VATController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit([Bind("Id,VATPercentage,VATFactor,VATStatus,CreatedDate")] VAT vat)
+    public async Task<IActionResult> Edit([Bind("Id,VATPercentage,VATFactor,VATStatus,CreatedDate")] VAT vat)
     {
         if (ModelState.IsValid)
         {
@@ -107,7 +116,12 @@ public class VATController : Controller
                 db.Entry(vat).State = EntityState.Modified;
                 TempData["success"] = "VAT Details Updated Successfully.";
                 ViewBag.Prompt = "Are you sure you wish to save the changes.";
-                db.SaveChanges();
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await db.SaveChangesAsync(userName);
                 return RedirectToAction("Index");
             }
         }
@@ -135,13 +149,18 @@ public class VATController : Controller
 
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public IActionResult DeleteConfirmed(int id)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
         VAT vatInstance = db.VAT.Find(id);
         db.VAT.Remove(vatInstance);
         ViewBag.Confirmation = "Are you sure you want to proceed with removal?";
         TempData["success"] = "VAT Details Successfully Deleted.";
-        db.SaveChanges();
+        var claimsId = (ClaimsIdentity)User.Identity;
+        var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+        var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+        var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+        var userName = fullName.ToString();
+        await db.SaveChangesAsync(userName);
         return RedirectToAction("Index");
     }
 

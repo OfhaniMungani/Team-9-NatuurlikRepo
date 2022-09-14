@@ -6,6 +6,7 @@ using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 using NatuurlikBase.Repository.IRepository;
 using NatuurlikBase.ViewModels;
+using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
 //[Authorize(Roles = SR.Role_Admin)]
@@ -71,7 +72,12 @@ public class ProvinceController : Controller
             {
                
                 _db.Province.Add(province);
-                await _db.SaveChangesAsync();
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await _db.SaveChangesAsync(userName);
                 TempData["success"] = "Province Created Successfully";
                 TempData["NextCreation"] = "Hello World.";
                 return RedirectToAction(nameof(Index));
@@ -126,7 +132,12 @@ public class ProvinceController : Controller
                     _db.Entry(province).State = EntityState.Modified;
                     
                     TempData["success"] = "Province Updated Successfully";
-                    await _db.SaveChangesAsync();
+                    var claimsId = (ClaimsIdentity)User.Identity;
+                    var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                    var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                    var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                    var userName = fullName.ToString();
+                    await _db.SaveChangesAsync(userName);
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -174,7 +185,12 @@ public class ProvinceController : Controller
                 TempData["AlertMessage"] = "Error occurred while attempting delete";
             }
             _unitOfWork.Province.Remove(obj);
-            _unitOfWork.Save();
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await _db.SaveChangesAsync(userName);
             TempData["success"] = "Province Successfully Deleted.";
             return RedirectToAction("Index");
         }
