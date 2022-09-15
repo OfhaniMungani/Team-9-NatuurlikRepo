@@ -79,7 +79,7 @@ public class CountriesController : Controller
                 db.Country.Add(country);
                 
                 ViewBag.CountryConfirmation = "Are you sure you want to add a country.";
-                await db.SaveChangesAsync(userName);
+                await db.SaveChangesAsync("John");
                 TempData["success"] = "Country name successfully added.";
                 TempData["NextCreation"] = "Hello World.";
                 return RedirectToAction("Index");

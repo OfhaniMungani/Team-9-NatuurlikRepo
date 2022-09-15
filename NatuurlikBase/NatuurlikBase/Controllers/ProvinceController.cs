@@ -77,7 +77,7 @@ public class ProvinceController : Controller
                 var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
                 var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
                 var userName = fullName.ToString();
-                await _db.SaveChangesAsync(userName);
+                await _db.SaveChangesAsync("John");
                 TempData["success"] = "Province Created Successfully";
                 TempData["NextCreation"] = "Hello World.";
                 return RedirectToAction(nameof(Index));

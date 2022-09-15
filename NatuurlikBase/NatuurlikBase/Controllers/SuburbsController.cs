@@ -85,7 +85,7 @@ public class SuburbsController : Controller
                 var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
                 var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
                 var userName = fullName.ToString();
-                await _context.SaveChangesAsync(userName);
+                await _context.SaveChangesAsync("John");
                 return RedirectToAction(nameof(Index));
             }
         }

@@ -82,7 +82,7 @@ public class CitiesController : Controller
                 var userName = fullName.ToString();
 
                 _context.Add(city);
-                await _context.SaveChangesAsync(userName);
+                await _context.SaveChangesAsync("John");
 
                 TempData["success"] = "City Created Successfully";
 
