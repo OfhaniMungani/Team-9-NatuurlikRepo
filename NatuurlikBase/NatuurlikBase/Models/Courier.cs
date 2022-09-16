@@ -14,8 +14,7 @@ namespace NatuurlikBase.Models
 
         [Required(ErrorMessage = "Courier Fee is required")]
         [Display(Name = "Courier Fee")]
-        [Range(0, 10000)]
-        [DataType(DataType.Currency)]
+        [Range(1, 10000)]
         [Column(TypeName = "decimal(18, 2)")]
         public decimal CourierFee { get; set; }
 
