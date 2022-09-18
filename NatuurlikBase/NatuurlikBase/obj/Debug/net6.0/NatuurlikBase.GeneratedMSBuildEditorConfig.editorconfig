@@ -103,6 +103,10 @@ build_metadata.AdditionalFiles.CssScope = b-l4vkmysegz
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxDb25maXJtRW1haWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/KYLE/My UP/INF 370/Natuurlik Code/Team-9-NatuurlikRepo/NatuurlikBase/NatuurlikBase/Areas/Identity/Pages/Account/ConfirmEmailChange.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxDb25maXJtRW1haWxDaGFuZ2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/KYLE/My UP/INF 370/Natuurlik Code/Team-9-NatuurlikRepo/NatuurlikBase/NatuurlikBase/Areas/Identity/Pages/Account/ForgotPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxGb3Jnb3RQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -117,6 +121,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/KYLE/My UP/INF 370/Natuurlik Code/Team-9-NatuurlikRepo/NatuurlikBase/NatuurlikBase/Areas/Identity/Pages/Account/Logout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxMb2dvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/KYLE/My UP/INF 370/Natuurlik Code/Team-9-NatuurlikRepo/NatuurlikBase/NatuurlikBase/Areas/Identity/Pages/Account/Manage/ChangePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcQ2hhbmdlUGFzc3dvcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/KYLE/My UP/INF 370/Natuurlik Code/Team-9-NatuurlikRepo/NatuurlikBase/NatuurlikBase/Areas/Identity/Pages/Account/Manage/ChangePasswordConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcQ2hhbmdlUGFzc3dvcmRDb25maXJtYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/KYLE/My UP/INF 370/Natuurlik Code/Team-9-NatuurlikRepo/NatuurlikBase/NatuurlikBase/Areas/Identity/Pages/Account/Manage/Email.cshtml]
@@ -161,14 +173,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/KYLE/My UP/INF 370/Natuurlik Code/Team-9-NatuurlikRepo/NatuurlikBase/NatuurlikBase/Areas/Identity/Pages/Account/ResendEmailConfirmation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxSZXNlbmRFbWFpbENvbmZpcm1hdGlvbi5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/KYLE/My UP/INF 370/Natuurlik Code/Team-9-NatuurlikRepo/NatuurlikBase/NatuurlikBase/Areas/Identity/Pages/Account/ResetPassword.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/KYLE/My UP/INF 370/Natuurlik Code/Team-9-NatuurlikRepo/NatuurlikBase/NatuurlikBase/Areas/Identity/Pages/Account/ResetPasswordConfirmation.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxSZXNldFBhc3N3b3JkQ29uZmlybWF0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/KYLE/My UP/INF 370/Natuurlik Code/Team-9-NatuurlikRepo/NatuurlikBase/NatuurlikBase/Areas/Identity/Pages/Account/_ViewImports.cshtml]
