@@ -229,7 +229,7 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account.Manage
 
             await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated successfully";
+            TempData["success"] = "Your profile has been updated successfully";
             return RedirectToPage();
         }
     }

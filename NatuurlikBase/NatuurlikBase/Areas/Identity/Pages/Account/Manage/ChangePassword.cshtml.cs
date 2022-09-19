@@ -120,7 +120,7 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account.Manage
 
             await _signInManager.RefreshSignInAsync(user);
             _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Password changed successfully!";
+            TempData["success"] = "Password changed successfully!";
 
             return RedirectToPage();
         }

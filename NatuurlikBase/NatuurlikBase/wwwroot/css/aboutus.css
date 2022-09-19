@@ -6,7 +6,7 @@
 }
 
 .stone {
-    background-image: url("../images/august.png");
+    /*background-image: url("../images/august.png");*/
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -21,7 +21,9 @@
     padding-bottom: 5%;
 }
 
-
+#aboutprod {
+    width: 100%;
+}
 
 #logo {
     height: 350px;
@@ -32,7 +34,7 @@ p, .card-body, #our, h1 {
 }
 
 .teams {
-    background-image: url("../images/spratt.png");
+    /*background-image: url("../images/spratt.png");*/
     justify-content: space-around;
     padding-top: 5%;
     padding-bottom: 5%;
@@ -44,7 +46,7 @@ p, .card-body, #our, h1 {
 #our {
     text-align: center;
     padding-bottom: 4%;
-    color: white;
+    color: black;
 }
 
 #nat {
@@ -56,29 +58,41 @@ p, .card-body, #our, h1 {
 
 .team-title {
     margin-top: 5%;
-    font-family: Montserrat-SemiBold;
-    color: white;
-    font-size: 17px
+    font-family: Montserrat-Bold;
+    color: black;
+    font-size: 20px;
 }
 
 .team {
-    background-color: transparent;
+    background-color: #F5F5F5;
     border: none;
-    color: white;
-    width: 250px;
+    color: black;
+    text-align: center;
+    padding: 20px;
+    width: 290px;
     margin: auto;
     margin-bottom: 40px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: box-shadow 0.3s ease-in-out;
+    height: 550px;
 }
+
+
+    .team:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
 
 .team-text {
     margin-top: 5%;
-    color: white;
-    font-size: 16px
+    color: black;
+    font-size: small;
 }
 
 .team-img {
     margin-bottom: 30px;
-    width: 250px;
+    width: 200px;
+    padding-top: 10%;
+    padding-left: 20%;
 }
 
 .position {

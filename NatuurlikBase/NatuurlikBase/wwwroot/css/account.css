@@ -1,13 +1,44 @@
-﻿#registerSubmit, #login-submit, #reset, #update-profile-button {
+﻿.error {
+    text-align: center;
+    padding-top: 100px;
+}
+
+.contus {
+    padding-top: 6%;
+    padding-bottom: 4%
+}
+
+.cont {
+    padding-bottom: 6%
+}
+
+.bord {
+    border-left: 2px solid grey;
+    padding-left: 60px;
+}
+
+#erorfour {
+    margin-bottom: 50px;
+}
+
+.errorimg {
+    height: 70%;
+}
+
+.errorHeading {
+    font-size: 150px;
+    font-family: Montserrat-Bold;
+}
+
+.errorSub {
+    font-family: Montserrat-Bold;
+}
+
+#registerSubmit, #login-submit, #reset, #update-profile-button {
     margin-top: 40px;
     margin-bottom: 20px;
     background-color: black;
     border: 1px solid black;
-}
-
-.required:after {
-    content: " *";
-    color: red;
 }
 
     #registerSubmit:hover, #login-submit:hover, #reset:hover, #update-profile-button:hover {
@@ -28,12 +59,6 @@
     font-family: Montserrat-Regular;
 }
 
-.head {
-    padding-top: 10%;
-    font-family: Montserrat-Medium;
-    padding-bottom: 20px;
-    text-align: center;
-}
 
 #reg, #log {
     margin-bottom: 50px;
@@ -159,7 +184,51 @@
     padding-bottom: 15px;
 }
 
+.regimg {
+    margin-right: 15px;
+}
 
+.logimg {
+    margin-right: 20px;
+}
+
+.head, .lohead {
+    font-family: Montserrat-Medium;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.lohead {
+    padding-top: 25%;
+}
+
+.head {
+    padding-top: 10%;
+}
+
+.new {
+    flex-direction: row;
+    padding-right: 70px;
+    box-shadow: 5px 10px 8px #888888;
+    background-color: #FBFBFB;
+}
+
+.newreg {
+    flex-direction: row;
+    box-shadow: 5px 10px 8px #888888;
+    padding-right: 30px;
+    background-color: #FBFBFB;
+}
+
+/*.newprofile {
+    box-shadow: 5px 10px 18px #888888;
+    background-color: #FBFBFB;
+}*/
+
+.shadow {
+    box-shadow: 5px 10px 8px #888888;
+    background-color: #FBFBFB;
+}
 
 @media (min-width: 1025px) {
     #log, #res {
@@ -186,7 +255,22 @@
         margin-bottom: 50px;
     }
 
+    .error {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
     .sideside {
         width: 355px;
+    }
+
+    .new, .newreg {
+        margin-top: 40px;
+        padding-right: 0px;
+        box-shadow: none;
+    }
+
+    .lohead {
+        padding-top: 10%;
     }
 }

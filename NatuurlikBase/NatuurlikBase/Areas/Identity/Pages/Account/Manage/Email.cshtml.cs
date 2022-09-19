@@ -94,7 +94,7 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account.Manage
                 var newEmail = await _userManager.FindByEmailAsync(Input.NewEmail);
                 if (newEmail != null)
                 {
-                    TempData["success"] = "The email already exists!";
+                    TempData["warning"] = "The email already exists!";
                     return RedirectToPage();
                 }
 
@@ -124,7 +124,7 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            TempData["success"] = "Your email remained unchanged.";
+            TempData["warning"] = "Your email remained unchanged.";
             return RedirectToPage();
         }
 
