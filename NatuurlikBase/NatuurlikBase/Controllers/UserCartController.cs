@@ -493,8 +493,6 @@ namespace NatuurlikBase.Controllers
             Order order = _unitOfWork.Order.GetFirstOrDefault(x => x.Id == id);
             var reminder = _db.PaymentReminder.First(x => x.Active == "True").Id;
             order.PaymentReminderId = reminder;
-            var orderConfirmation = _db.ConfirmationReminder.First(x => x.IsActive == "True").Id;
-            order.ConfirmationReminderId = orderConfirmation;
 
             List<Cart> userCarts = _unitOfWork.UserCart.GetAll(uc => uc.ApplicationUserId == order.ApplicationUserId).ToList();
             _unitOfWork.UserCart.RemoveRange(userCarts);

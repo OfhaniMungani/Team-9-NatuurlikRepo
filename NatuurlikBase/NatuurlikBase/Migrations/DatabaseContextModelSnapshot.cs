@@ -346,30 +346,6 @@ namespace NatuurlikBase.Migrations
                     b.ToTable("City");
                 });
 
-            modelBuilder.Entity("NatuurlikBase.Models.ConfirmationReminder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Days")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IsActive")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ConfirmationReminder");
-                });
-
             modelBuilder.Entity("NatuurlikBase.Models.Country", b =>
                 {
                     b.Property<int>("Id")
@@ -572,9 +548,6 @@ namespace NatuurlikBase.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int?>("ConfirmationReminderId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CountryId")
                         .IsRequired()
                         .HasColumnType("int");
@@ -654,8 +627,6 @@ namespace NatuurlikBase.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("CityId");
-
-                    b.HasIndex("ConfirmationReminderId");
 
                     b.HasIndex("CountryId");
 
@@ -1489,10 +1460,6 @@ namespace NatuurlikBase.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NatuurlikBase.Models.ConfirmationReminder", "ConfirmationReminder")
-                        .WithMany()
-                        .HasForeignKey("ConfirmationReminderId");
-
                     b.HasOne("NatuurlikBase.Models.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
@@ -1528,8 +1495,6 @@ namespace NatuurlikBase.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("City");
-
-                    b.Navigation("ConfirmationReminder");
 
                     b.Navigation("Country");
 
