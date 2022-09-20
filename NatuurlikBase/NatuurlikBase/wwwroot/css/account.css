@@ -1,4 +1,9 @@
-﻿.error {
+﻿.required:after {
+    content: " *";
+    color: red;
+}
+
+.error {
     text-align: center;
     padding-top: 100px;
 }
