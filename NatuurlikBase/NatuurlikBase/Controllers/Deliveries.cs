@@ -1,9 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 using NatuurlikBase.Repository.IRepository;
 using NatuurlikBase.ViewModels;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace NatuurlikBase.Controllers
 {
@@ -14,12 +20,63 @@ namespace NatuurlikBase.Controllers
     {
         private readonly DatabaseContext  db ;
         private readonly IUnitOfWork _uow;
-       
-        public Deliveries(DatabaseContext _db, IUnitOfWork uow)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserClaimsPrincipalFactory<ApplicationUser> _claimsPrincipalFactory;
+        private readonly IConfiguration _configuration;
+        public Deliveries(DatabaseContext _db, IUnitOfWork uow, UserManager<ApplicationUser> userManager
+          , IUserClaimsPrincipalFactory<ApplicationUser> claimsPrincipalFactory
+          , IConfiguration configuration)
         {
             db = _db;
             _uow = uow;
+            _userManager = userManager;
+            _claimsPrincipalFactory = claimsPrincipalFactory;
+            _configuration = configuration;
         }
+
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<ActionResult> Login(Login model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(model.Email);
+
+                if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    try
+                    {
+                        var principal = await _claimsPrincipalFactory.CreateAsync(user);
+                        await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal);
+
+                       
+                    }
+                    catch (Exception)
+                    {
+                        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+                    }
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "Invalid user credentials.");
+                }
+            }
+
+           
+
+            return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+
+            return Ok("Successfully logged out");
+        }
+
 
         // Creating a order list. The list will contain all orders.
         [HttpGet]

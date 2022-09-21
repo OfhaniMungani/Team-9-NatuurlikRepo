@@ -9,6 +9,7 @@ using NatuurlikBase.Repository.IRepository;
 using NatuurlikBase.Repository;
 using NatuurlikBase.Models;
 using Stripe;
+using NatuurlikBase.Factory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,8 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).AddDefaultTokenProviders().AddDefaultUI()
-    .AddEntityFrameworkStores<DatabaseContext>();
+    .AddEntityFrameworkStores<DatabaseContext>()
+     .AddDefaultTokenProviders();
 
 builder.Services.AddControllersWithViews();
 
@@ -47,6 +49,9 @@ builder.Services.AddTransient<ISearchProductionTransactionsRepository, SearchPro
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IEmailSender, SendGridEmailSender>();
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppUserClaimsPrincipalFactory>();
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(3));
+
 //configure mobile application cors 
 builder.Services.AddCors(options => options.AddDefaultPolicy(
                builder =>
