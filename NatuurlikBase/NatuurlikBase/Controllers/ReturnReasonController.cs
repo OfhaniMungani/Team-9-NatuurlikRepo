@@ -79,7 +79,7 @@ public class ReturnReasonController : Controller
                 var userName = fullName.ToString();
                 await db.SaveChangesAsync(userName);
 
-                TempData["success"] = "Return reason successfully added.";
+                TempData["success"] = "Return reason created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -129,7 +129,7 @@ public class ReturnReasonController : Controller
             {
                 //db.Entry(returnReason).State = EntityState.Modified;
                 _unitOfWork.ReturnReason.Update(returnReason);
-                TempData["success"] = "Return reason successfully Updated.";
+                TempData["success"] = "Return reason updated successfully.";
                 ViewBag.ReturnReasonConfirmation = "Are you sure with your return reason changes.";
                 var claimsId = (ClaimsIdentity)User.Identity;
                 var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);

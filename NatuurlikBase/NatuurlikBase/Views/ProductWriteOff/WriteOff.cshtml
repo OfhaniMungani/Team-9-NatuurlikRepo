@@ -21,16 +21,16 @@
                             <div class="form-group">
 
 
-                                <label asp-for="ProductId" class="control-label">Product</label>
+                                <label asp-for="ProductId" class="required">Product</label>
                                 <select asp-for="ProductId" class ="form-control col-md-10" asp-items="ViewBag.ProductId"> <option disabled selected>- Select Product -</option></select>
                             </div>  <div class="form-group">
 
 
-                                <label asp-for="writeOffReasonId" class="control-label">Write-Off Reason</label>
+                                <label asp-for="writeOffReasonId" class="required">Write-Off Reason</label>
                                 <select asp-for="writeOffReasonId" class ="form-control col-md-10" asp-items="ViewBag.writeOffReasonId"> <option disabled selected>- Select Write-Off Reason -</option></select>
                             </div>
                               <div class="form-group">
-                                <label asp-for="writeOffQuantity" class="control-label"></label>
+                                <label asp-for="writeOffQuantity" class="required"></label>
                                 <input asp-for="writeOffQuantity" class="form-control col-md-10" placeholder ="5" />
                                 <span asp-validation-for="writeOffQuantity" class="text-danger"></span>
                             </div>
@@ -76,9 +76,9 @@
     <div class="modal" id="exampleModal1" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header border-0" style="background-color: black;">
-                    <h6 style="color: whitesmoke" ;>
-                        <i class="bi bi-info-circle"></i> &nbsp;@ViewBag.Error
+                <div class="modal-header border-0">
+                    <h6 >
+                       &nbsp;@ViewBag.Error
                     </h6>
                 </div>
 

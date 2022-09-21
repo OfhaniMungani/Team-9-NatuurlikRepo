@@ -40,18 +40,18 @@
                                             <div class="card-body">
 
                                                 <div class="form-group" hidden>
-                                                     <label asp-for="OrderQuery.OrderId" class="control-label">Order Number: </label>
+                                                     <label asp-for="OrderQuery.OrderId" class="control-label">Order Number </label>
                                                      <input asp-for="OrderQuery.OrderId" readonly type="text" class="form-control col-md-6" asp-items="@Model.OrdersList"/>                      
                                                 </div> 
 
                                                 <div class="form-group">
-                                                     <label asp-for="OrderQuery.QueryReasonId" class="control-label">Query Reason:</label>
+                                                     <label asp-for="OrderQuery.QueryReasonId" class="control-label">Query Reason</label>
                                                     <select asp-for="OrderQuery.QueryReasonId" class="form-control col-md-6" asp-items="@Model.QueryReasons"> <option disabled selected>- Select Query Reason -</option></select>
                                                 </div>  
 
                      
                                                     <div class="form-group">
-                                                        <label asp-for="OrderQuery.Description" class="control-label">Description:</label>
+                                                        <label asp-for="OrderQuery.Description" class="required">Description</label>
                                                         <textarea asp-for="OrderQuery.Description" class="form-control col-md-6"placeholder ="Hello, I received the wrong items..."> </textarea>
                                                         <span asp-validation-for="OrderQuery.Description" class="text-danger"></span>
                                                     </div>

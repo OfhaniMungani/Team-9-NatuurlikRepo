@@ -80,7 +80,7 @@ public class CountriesController : Controller
                 
                 ViewBag.CountryConfirmation = "Are you sure you want to add a country.";
                 await db.SaveChangesAsync("John");
-                TempData["success"] = "Country name successfully added.";
+                TempData["success"] = "Country name created successfully.";
                 TempData["NextCreation"] = "Hello World.";
                 return RedirectToAction("Index");
             }
@@ -137,7 +137,7 @@ public class CountriesController : Controller
 
                 //db.Entry(country).State = EntityState.Modified;
                 _unitOfWork.Country.Update(country);
-                TempData["success"] = "Country name successfully Edited.";
+                TempData["success"] = "Country name updated successfully.";
                 ViewBag.CountryConfirmation = "Are you sure with your country name changes.";
                 await db.SaveChangesAsync(userName);
                 return RedirectToAction("Index");

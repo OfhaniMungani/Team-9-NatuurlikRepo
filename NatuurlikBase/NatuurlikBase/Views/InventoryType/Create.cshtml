@@ -16,7 +16,7 @@
             <div class="card-body">
 		@*<div asp-validation-summary="All"></div>*@
 		<div class="mb-3">
-			<label asp-for="InventoryTypeName"></label>
+			<label asp-for="InventoryTypeName" class="required"></label>
 			<input asp-for="InventoryTypeName" class="form-control" placeholder ="Sticker"/>
 			<span asp-validation-for="InventoryTypeName" class="text-danger"></span>
 		</div>
@@ -39,7 +39,7 @@
 
                 </div>
                 <h6 class="col-md-10">
-                   Inventory Item already exists
+                   Inventory Type already exists
                 </h6>
 
                 <div class="modal-footer border-0">

@@ -20,14 +20,14 @@
 		     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="col-md-10">
-                <label asp-for="ProvinceName" class="control-label"></label>
+                <label asp-for="ProvinceName" class="required"></label>
                 <input asp-for="ProvinceName" class="form-control" />
                 <span asp-validation-for="ProvinceName" class="text-danger"></span>
             </div>
             <br />
             <div class="col-md-10">
                
-                <label asp-for="CountryId" class="control-label">Country Name</label>
+                <label asp-for="CountryId" class="required">Country Name</label>
                 <select asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId"></select>
                 <span asp-validation-for="CountryId" class="text-danger"></span>
               

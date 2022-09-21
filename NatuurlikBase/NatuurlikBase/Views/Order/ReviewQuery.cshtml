@@ -18,21 +18,21 @@
                     <div class="card-body">
 
                         <div class="form-group">
-                            <label asp-for="OrderId" class="control-label">Order Number:</label>
+                            <label asp-for="OrderId" class="control-label">Order Number</label>
                             <input asp-for="OrderId" class="form-control col-md-6" readonly>
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="QueryReason.Name" class="control-label">Query Reason:</label>
+                            <label asp-for="QueryReason.Name" class="control-label">Query Reason</label>
                             <input asp-for="QueryReason.Name" class="form-control col-md-6" readonly>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Description" class="control-label">Description:</label>
+                            <label asp-for="Description" class="control-label">Description</label>
                             <textarea asp-for="Description" class="form-control col-md-6" readonly></textarea>
                         </div>
 
                         <div class="form-group">
-                        <label asp-for="QueryFeedback" class="control-label"> Provide Feedback:</label>
+                        <label asp-for="QueryFeedback" class="required"> Provide Feedback</label>
                         <textarea asp-for="QueryFeedback" class="form-control col-md-6"placeholder ="Dear valued customer, sorry for the inconvenience..."></textarea>
                         </div>
 

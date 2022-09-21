@@ -60,7 +60,7 @@ public class InventoryTypeController : Controller
                 await db.SaveChangesAsync(userName);
                 ViewBag.CountryConfirmation = "Are you sure you want to add a return reason.";
 
-                TempData["success"] = "Inventory Type successfully added.";
+                TempData["success"] = "Inventory Type created successfully.";
                 TempData["NextCreation"] = "Inventory Type Successfully Deleted.";
 
                 return RedirectToAction("Index");
@@ -118,7 +118,7 @@ public class InventoryTypeController : Controller
                 _unitOfWork.InventoryType.Update(inventoryType);
                 ViewBag.ReturnReasonConfirmation = "Are you sure with your return reason changes.";
                 await db.SaveChangesAsync(userName);
-                TempData["success"] = "Inventory Type Successfully Updated.";
+                TempData["success"] = "Inventory Type Updated Successfully.";
                 return RedirectToAction("Index");
             }
         }

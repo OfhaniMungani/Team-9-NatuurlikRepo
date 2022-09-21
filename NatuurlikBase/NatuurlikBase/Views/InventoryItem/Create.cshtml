@@ -17,7 +17,7 @@
                         <form asp-action="Create">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
-                                <label asp-for="InventoryItemName" class="control-label"></label>
+                                <label asp-for="InventoryItemName" class="required"></label>
                                 <input asp-for="InventoryItemName" class="form-control"placeholder ="Coffee sticker" >
                                 <span asp-validation-for="InventoryItemName" class="text-danger"></span>
                             </div>
@@ -25,12 +25,12 @@
                             <div class="form-group">
 
 
-                                <label asp-for="InventoryTypeId" class="control-label">Inventory Type</label>
+                                <label asp-for="InventoryTypeId" class="required">Inventory Type</label>
                                 <select asp-for="InventoryTypeId" class ="form-control" asp-items="ViewBag.InventoryTypeId"> <option disabled selected>- Select Inventory Type -</option></select>
                                 <span asp-validation-for="InventoryTypeId" class="text-danger"></span>
                             </div>
                                       <div class="form-group"> 
-           <label asp-for="ThresholdValue"></label>
+           <label asp-for="ThresholdValue" class="required"></label>
 			<input asp-for="ThresholdValue" class="form-control"placeholder ="5" />
 			<span asp-validation-for="ThresholdValue" class="text-danger"></span>
            </div>

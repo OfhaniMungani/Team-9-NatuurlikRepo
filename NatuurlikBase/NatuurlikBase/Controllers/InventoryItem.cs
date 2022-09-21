@@ -61,7 +61,7 @@ public class InventoryItemController : Controller
 
                 ViewBag.CountryConfirmation = "Are you sure you want to add a return reason.";
                 await db.SaveChangesAsync(userName);
-                TempData["success"] = "Inventory Item successfully added.";
+                TempData["success"] = "Inventory Item created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -114,7 +114,7 @@ public class InventoryItemController : Controller
                 _unitOfWork.InventoryItem.Update(inventoryItem);
                 ViewBag.ReturnReasonConfirmation = "Are you sure with your return reason changes.";
                 await db.SaveChangesAsync(userName);
-                TempData["success"] = "Inventory Item Successfully Updated.";
+                TempData["success"] = "Inventory Item Updated Successfully.";
                 return RedirectToAction("Index");
             }
         }

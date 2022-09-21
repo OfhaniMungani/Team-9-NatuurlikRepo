@@ -46,7 +46,7 @@
                                                 </div> 
 
                                                 <div class="mb-3">
-			                                        <label asp-for="OrderReview.Rating">Order Rating:</label>
+			                                        <label asp-for="OrderReview.Rating" class="required">Order Rating:</label>
 			                                        1 <input asp-for="OrderReview.Rating" type="radio" value="1" />&nbsp
                                                     2 <input asp-for="OrderReview.Rating" type="radio" value="2" />&nbsp
                                                     3 <input asp-for="OrderReview.Rating" type="radio" value="3" />&nbsp
@@ -55,13 +55,13 @@
 			                                        <span asp-validation-for="OrderReview.Rating" class="text-danger"></span>
 		                                        </div>
                                                   <div class="form-group">
-                                                     <label asp-for="OrderReview.ReviewReasonId" class="control-label">Review Reason:</label>
+                                                     <label asp-for="OrderReview.ReviewReasonId" class="required">Review Reason:</label>
                                                     <select asp-for="OrderReview.ReviewReasonId" class="form-control col-md-6" asp-items="@Model.ReviewReasons"> <option disabled selected>- Select Review Reason -</option></select>
                                                 </div> 
                      
                          
                                                 <div class="form-group">
-                                                     <label asp-for="OrderReview.Description" class="control-label">Description:</label>
+                                                     <label asp-for="OrderReview.Description" class="required">Description:</label>
                                                      <textarea asp-for="OrderReview.Description" class="form-control col-md-6"placeholder ="High quality coffee gently dried to magically lock-in the rich sophisticated flavours..."></textarea>
                                                      <span asp-validation-for="OrderReview.Description" class="text-danger"></span>
                                                 </div>
