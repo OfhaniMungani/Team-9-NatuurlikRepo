@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "yNZ4GX7/mirLYac0r046ptXrN3R77kEG4nT3oQ78ctA=",
+  "Hash": "hH81R000+6gwWN5GMjgyAyRmkHZLEU/WI9VDkj8xk60=",
   "Source": "NatuurlikBase",
   "BasePath": "_content/NatuurlikBase",
   "Mode": "Default",
@@ -4724,6 +4724,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\Uploads\\Book1.xlsx",
+      "SourceId": "NatuurlikBase",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\",
+      "BasePath": "_content/NatuurlikBase",
+      "RelativePath": "Uploads/Book1.xlsx",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\Book1.xlsx"
     }
   ]
 }
