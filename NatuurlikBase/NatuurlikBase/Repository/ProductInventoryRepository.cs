@@ -29,7 +29,7 @@ namespace NatuurlikBase.Repository
 
         public async Task<List<ProductInventory>> GetConfiguredProductsAsync(string name)
         {
-            return await _db.ProductConfiguration.Include(x => x.Product).Where(x => (x.Product.Name.ToLower().IndexOf(name.ToLower()) >= 0 ||
+            return await _db.ProductConfiguration.Include(x => x.Product).GroupBy(x => x.ProductId).Select(y => y.First()).Distinct().Where(x => (x.Product.Name.ToLower().IndexOf(name.ToLower()) >= 0 ||
                                                     string.IsNullOrWhiteSpace(name))).ToListAsync();
         }
 

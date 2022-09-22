@@ -152,17 +152,26 @@ public class VATController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        VAT vatInstance = db.VAT.Find(id);
-        db.VAT.Remove(vatInstance);
-        ViewBag.Confirmation = "Are you sure you want to proceed with removal?";
-        TempData["success"] = "VAT Details Successfully Deleted.";
-        var claimsId = (ClaimsIdentity)User.Identity;
-        var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
-        var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
-        var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
-        var userName = fullName.ToString();
-        await db.SaveChangesAsync(userName);
-        return RedirectToAction("Index");
+        var fK = db.Order.Any(m => m.VATId == id);
+        if (!fK)
+        {
+            VAT vatInstance = db.VAT.Find(id);
+            db.VAT.Remove(vatInstance);
+            ViewBag.Confirmation = "Are you sure you want to proceed with removal?";
+            TempData["success"] = "VAT Details Successfully Deleted.";
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await db.SaveChangesAsync(userName);
+            return RedirectToAction("Index");
+        }
+        else
+        {
+            TempData["Delete"] = "The VAT intance cannot be deleted since it is associated with an order.";
+            return RedirectToAction("Index");
+        }
     }
 
     protected override void Dispose(bool disposing)
