@@ -17,6 +17,8 @@ namespace NatuurlikBase.Models
         [Required]
         [MaxLength(50)]
         [Display(Name = "Province Name")]
+        [RegularExpression(@"^[a-zA-Z]+[ ]?([a-zA-Z]+[ ]?)*$",
+         ErrorMessage = "Invalid Province Name: Two consecutive white spaces and digits are not allowed.")]
         public string ProvinceName { get; set; }
         [Required]
         public int CountryId { get; set; }

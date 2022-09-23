@@ -12,6 +12,8 @@ namespace NatuurlikBase.Models
         [Required]
         [MaxLength(50)]
         [Display(Name = "Suburb Name")]
+        [RegularExpression(@"^[a-zA-Z]+[ ]?([a-zA-Z]+[ ]?)*$",
+         ErrorMessage = "Invalid Suburb Name: Two consecutive white spaces and digits are not allowed.")]
         public string SuburbName { get; set; }
         [Required]
         [Display(Name = "Postal Code")]

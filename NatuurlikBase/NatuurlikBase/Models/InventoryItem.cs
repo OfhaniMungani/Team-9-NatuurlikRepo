@@ -12,6 +12,8 @@ namespace NatuurlikBase.Models
         [Required]
         [Display(Name = "Inventory Item")]
         [MaxLength(50)]
+        [RegularExpression(@"^[0-9]*[a-zA-Z]+[ ]?([a-zA-Z0-9_]+[ ]?)*$",
+         ErrorMessage = "Invalid Inventory Item Name: Two consecutive white spaces and only digits is not permitted.")]
         public string InventoryItemName { get; set; }
 
         [Required(ErrorMessage = "The Quantity On Hand Field is required.")]

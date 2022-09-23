@@ -10,6 +10,8 @@ namespace NatuurlikBase.Models
         [Required]
         [Display(Name = "Courier Name")]
         [MaxLength(25)]
+        [RegularExpression(@"^[0-9]*[a-zA-Z]+[ ]?([a-zA-Z0-9_]+[ ]?)*$",
+         ErrorMessage = "Invalid Courier Name: Two consecutive white spaces and only digits is not permitted.")]
         public string CourierName { get; set; }
 
         [Required(ErrorMessage = "Courier Fee is required")]
