@@ -590,14 +590,14 @@ namespace NatuurlikBase.Controllers
             if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
             {
                 //Retrieve all orders for Administrator and Sales Assistant roles.
-                 orders = _uow.Order.GetAll(includeProperties: "ApplicationUser");
+                 orders = _uow.Order.GetAll(x => x.OrderPaymentStatus != SR.CustomerPaymentPending, includeProperties: "ApplicationUser");
             }
             else
             {
                 //get the orders associated only with the customer or reseller.
                 var claimsIdentity = (ClaimsIdentity)User.Identity;
                 var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-                orders = _uow.Order.GetAll(u => u.ApplicationUserId == claim.Value, includeProperties: "ApplicationUser");
+                orders = _uow.Order.GetAll(u => u.ApplicationUserId == claim.Value && u.OrderPaymentStatus != SR.CustomerPaymentPending, includeProperties: "ApplicationUser");
             }
            
 

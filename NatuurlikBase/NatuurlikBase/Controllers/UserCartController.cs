@@ -288,8 +288,8 @@ namespace NatuurlikBase.Controllers
                         TempData["success"] = "The requested quantity is unfortunately no longer available.";
                         return RedirectToAction("Index");
                     }
-                    UserCartVM.Order.OrderPaymentStatus = SR.OrderPaymentApproved;
-                    UserCartVM.Order.OrderStatus = SR.ProcessingOrder;
+                    UserCartVM.Order.OrderPaymentStatus = SR.CustomerPaymentPending;
+                    UserCartVM.Order.OrderStatus = SR.OrderPending;
                     userCartItem.CartItemPrice = GetCartItemPrices(userCartItem.Count, userCartItem.Product.CustomerPrice);
                     UserCartVM.Order.OrderTotal += (userCartItem.CartItemPrice * userCartItem.Count);
                     UserCartVM.Order.OrderTotal += UserCartVM.Order.DeliveryFee;
@@ -373,7 +373,7 @@ namespace NatuurlikBase.Controllers
                     LineItems = new List<SessionLineItemOptions>(),
                     Mode = "payment",
                     SuccessUrl = domain + $"usercart/OrderConfirmation?id={UserCartVM.Order.Id}",
-                    CancelUrl = domain + $"usercart/index",
+                    CancelUrl = domain + $"usercart/OrderCancelled?id={UserCartVM.Order.Id}"
                 };
 
                 foreach (var item in UserCartVM.CartList)
@@ -455,7 +455,14 @@ namespace NatuurlikBase.Controllers
                     _unitOfWork.Order.UpdateOrderStatus(id, SR.ProcessingOrder, SR.OrderPaymentApproved);
                     _unitOfWork.Save();
                 }
+                else
+                {
+                    _unitOfWork.Order.Remove(order);
+                }
             }
+
+
+
 
             //Clear shopping cart details from DB.
             List<Cart> userCarts = _unitOfWork.UserCart.GetAll(uc => uc.ApplicationUserId == order.ApplicationUserId).ToList();
@@ -487,8 +494,37 @@ namespace NatuurlikBase.Controllers
 
         }
 
-        //Create Reseller Order and display Confirmation Page Details
-        public IActionResult ResellerOrderConfirmation(int id)
+
+        public IActionResult OrderCancelled(int id)
+        {
+            Order order = _unitOfWork.Order.GetFirstOrDefault(x => x.Id == id);
+            IList<OrderLine> orderLines = _unitOfWork.OrderLine.GetAll(x => x.OrderId == id).ToList();
+
+            //Need to validate payment.
+            if (order.OrderPaymentStatus != SR.ResellerDelayedPayment)
+            {
+                var service = new SessionService();
+                Session session = service.Get(order.SessionId);
+
+                //Perform check to see if payment was made successfully.
+
+                if (session.PaymentStatus.ToLower() == "paid")
+                {
+                    _unitOfWork.Order.UpdateOrderStatus(id, SR.ProcessingOrder, SR.OrderPaymentApproved);
+                    _unitOfWork.Save();
+                }
+                else
+                {
+                    _unitOfWork.Order.Remove(order);
+                    _unitOfWork.OrderLine.RemoveRange(orderLines);
+                    _unitOfWork.Save();
+                }
+            }
+            return View(id);
+        }
+
+            //Create Reseller Order and display Confirmation Page Details
+            public IActionResult ResellerOrderConfirmation(int id)
         {
             Order order = _unitOfWork.Order.GetFirstOrDefault(x => x.Id == id);
             var reminder = _db.PaymentReminder.First(x => x.Active == "True").Id;

@@ -655,6 +655,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlckNhcnRcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/KYLE/My UP/INF 370/Natuurlik Code/Team-9-NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/UserCart/OrderCancelled.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlckNhcnRcT3JkZXJDYW5jZWxsZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/KYLE/My UP/INF 370/Natuurlik Code/Team-9-NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/UserCart/OrderConfirmation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlckNhcnRcT3JkZXJDb25maXJtYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

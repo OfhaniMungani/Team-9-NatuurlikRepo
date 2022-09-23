@@ -24,6 +24,7 @@
 
         //Order Payment Status
         public const string OrderPaymentApproved = "Paid";
+        public const string CustomerPaymentPending = "Awaiting Payment Confirmation";
         public const string ResellerDelayedPayment = "Payment Outstanding";
 
         //Query Status Management
