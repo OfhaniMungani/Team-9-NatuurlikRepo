@@ -153,11 +153,11 @@ namespace NatuurlikBase.Controllers
                 Text = i.SuburbName,
                 Value = i.Id.ToString()
             });
-            UserCartVM.CourierList = _unitOfWork.Courier.GetAll().Select(i => new SelectListItem
+            UserCartVM.CourierList = _unitOfWork.Courier.GetAll(x => x.CourierName != "Natuurlik Free Delivery").Select(i => new SelectListItem
             {
                 Text = i.CourierName,
                 Value = i.Id.ToString()
-            });
+            }).Append(new SelectListItem { Text = "Free Delivery", Value = "0" }); 
 
             //var deliveryMethods = _db.Courier.ToList();
 
@@ -246,7 +246,19 @@ namespace NatuurlikBase.Controllers
             UserCartVM.Order.CreatedDate = System.DateTime.Now;
             UserCartVM.Order.ApplicationUserId = claim.Value;
             //Add Courier fees
-            UserCartVM.Order.CourierId = UserCartVM.Order.CourierId;
+            if(UserCartVM.Order.CourierId != 0)
+            {
+                UserCartVM.Order.CourierId = UserCartVM.Order.CourierId;
+            }
+            else
+            {
+                var garsfonteinId = _unitOfWork.Courier.GetFirstOrDefault(x => x.CourierName == "Natuurlik Free Delivery");
+                UserCartVM.Order.CourierId = garsfonteinId.Id;
+            }
+            
+
+            //if Courier = Free Delivery option
+
             var deliveryFee = _db.Courier.FirstOrDefault(x => x.Id == UserCartVM.Order.CourierId);
             if (deliveryFee != null)
             {
@@ -373,7 +385,7 @@ namespace NatuurlikBase.Controllers
                     LineItems = new List<SessionLineItemOptions>(),
                     Mode = "payment",
                     SuccessUrl = domain + $"usercart/OrderConfirmation?id={UserCartVM.Order.Id}",
-                    CancelUrl = domain + $"usercart/OrderCancelled?id={UserCartVM.Order.Id}"
+                    CancelUrl = domain + $"usercart/OrderCancelled?id={UserCartVM.Order.Id}",
                 };
 
                 foreach (var item in UserCartVM.CartList)
