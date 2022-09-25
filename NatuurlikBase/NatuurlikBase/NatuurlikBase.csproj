@@ -40,4 +40,12 @@
     <Folder Include="wwwroot\lib\jquery\dist\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Views\Province\Create.cshtml" />
+    <None Include="Views\Province\Delete.cshtml" />
+    <None Include="Views\Province\Edit.cshtml" />
+    <None Include="Views\Province\Index.cshtml" />
+    <None Include="Views\Province\Upsert.cshtml" />
+  </ItemGroup>
+
 </Project>

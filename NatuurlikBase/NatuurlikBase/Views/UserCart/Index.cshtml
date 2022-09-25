@@ -71,7 +71,12 @@
 									</td>
 									<td>
 										<h6><strong>@cartItem.Product.Name</strong></h6>
-										<p><small>@cartItem.Product.Description</small></p>											
+										<p><small>@cartItem.Product.Description</small></p>
+										@if(cartItem.Product.QuantityOnHand <= cartItem.Count)
+										{
+											<p style="color:red;"><small>Only @cartItem.Product.QuantityOnHand left!</small></p>
+										}
+										
 									</td>
 									<td>
 										@if (User.IsInRole(SR.Role_Reseller))

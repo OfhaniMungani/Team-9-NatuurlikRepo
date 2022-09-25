@@ -18,15 +18,15 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ProvinceName" class="required"></label>
-                <input asp-for="ProvinceName" class="form-control col-md-10" placeholder ="Gauteng"/>
+                <label asp-for="ProvinceName" class="control-label"></label>
+                <input asp-for="ProvinceName" class="form-control col-md-10" />
                 <span asp-validation-for="ProvinceName" class="text-danger"></span>
             </div>
             <div class="form-group">
               
                 
-                      <label asp-for="CountryId" class="required">Country Name</label>
-                <select asp-for="CountryId" class ="form-control col-md-10" asp-items="ViewBag.CountryId"> <option disabled selected>- Select Country -</option></select>
+                      <label asp-for="CountryId" class="control-label">Country Name</label>
+                <select asp-for="CountryId" class ="form-control col-md-10" asp-items="ViewBag.CountryId"></select>
             </div>
            <button type="submit" class="btn btn-success" data-toggle="modal" style="width:150px">Create</button>
 		<a asp-controller="Province" asp-action="Index" class="btn btn-outline-dark" style="width:150px">

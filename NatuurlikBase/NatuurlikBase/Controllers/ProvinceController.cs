@@ -70,7 +70,7 @@ public class ProvinceController : Controller
             }
             else
             {
-               
+
                 _db.Province.Add(province);
                 var claimsId = (ClaimsIdentity)User.Identity;
                 var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
@@ -81,9 +81,9 @@ public class ProvinceController : Controller
                 TempData["success"] = "Province Created Successfully";
                 TempData["NextCreation"] = "Hello World.";
                 return RedirectToAction(nameof(Index));
-              
+
             }
-           
+
         }
         ViewData["CountryId"] = new SelectList(_db.Province, "Id", "CountryName", province.CountryId);
         return View(province);
@@ -119,16 +119,17 @@ public class ProvinceController : Controller
         }
 
         if (ModelState.IsValid)
-           
+
         {
-            if (_db.Province.Any(c => c.ProvinceName==province.ProvinceName && c.CountryId==province.CountryId))
+            if (_db.Province.Any(c => c.ProvinceName == province.ProvinceName && c.CountryId == province.CountryId))
             {
                 ViewBag.Error = "Province Name Already Exist In The Database.";
-         
+
             }
-            else { 
-            
+            else
             {
+
+                {
                     _unitOfWork.Province.Update(province);
                     TempData["success"] = "Province Updated Successfully";
                     var claimsId = (ClaimsIdentity)User.Identity;
@@ -140,7 +141,7 @@ public class ProvinceController : Controller
                 }
                 return RedirectToAction(nameof(Index));
             }
-         
+
         }
         ViewData["CountryId"] = new SelectList(_db.Province, "Id", "CountryName", province.CountryId);
         return View(province);

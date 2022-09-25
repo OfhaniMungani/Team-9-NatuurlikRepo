@@ -211,6 +211,12 @@ namespace NatuurlikBase.Controllers
             {
                 foreach (var userCartItem in UserCartVM.CartList)
                 {
+                    var prod = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCartItem.ProductId);
+                    if (prod.QuantityOnHand < userCartItem.Count)
+                    {
+                        TempData["success"] = "The requested quantity is unfortunately no longer available.";
+                        return RedirectToAction("Index");
+                    }
                     userCartItem.CartItemPrice = GetCartItemPrices(userCartItem.Count, userCartItem.Product.ResellerPrice);
 
                     UserCartVM.Order.OrderTotal += (userCartItem.CartItemPrice * userCartItem.Count);
@@ -220,11 +226,19 @@ namespace NatuurlikBase.Controllers
             {
                 foreach (var userCartItem in UserCartVM.CartList)
                 {
+                    var prod = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCartItem.ProductId);
+                    if (prod.QuantityOnHand < userCartItem.Count)
+                    {
+                        TempData["success"] = "The requested quantity is unfortunately no longer available.";
+                        return RedirectToAction("Index");
+                    }
                     userCartItem.CartItemPrice = GetCartItemPrices(userCartItem.Count, userCartItem.Product.CustomerPrice);
 
                     UserCartVM.Order.OrderTotal += (userCartItem.CartItemPrice * userCartItem.Count);
                 }
             }
+
+           
             return View(UserCartVM);
         }
 
@@ -278,7 +292,7 @@ namespace NatuurlikBase.Controllers
                 {
 
                     var prod = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCartItem.ProductId);
-                    if (prod.QuantityOnHand <= userCartItem.Count)
+                    if (prod.QuantityOnHand < userCartItem.Count)
                     {
                         TempData["success"] = "The requested quantity is unfortunately no longer available.";
                         return RedirectToAction("Index");
@@ -295,7 +309,7 @@ namespace NatuurlikBase.Controllers
                 foreach (var userCartItem in UserCartVM.CartList)
                 {
                     var prod = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCartItem.ProductId);
-                    if (prod.QuantityOnHand <= userCartItem.Count)
+                    if (prod.QuantityOnHand < userCartItem.Count)
                     {
                         TempData["success"] = "The requested quantity is unfortunately no longer available.";
                         return RedirectToAction("Index");

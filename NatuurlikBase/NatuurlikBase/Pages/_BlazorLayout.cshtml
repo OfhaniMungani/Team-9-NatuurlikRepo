@@ -35,11 +35,8 @@
             </div>
             <ul class="list-unstyled components">
 
-                <li>
+              <li>
                     <a asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-house-door">&nbsp;</i> Store</a>
-                </li>
-                <li>
-                    <a asp-area="" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-chat-dots">&nbsp;</i> Blogs</a>
                 </li>
                 <li>
                     <a href="#productSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-cart">&nbsp;</i> Products</a>
@@ -59,14 +56,24 @@
                         <li>
                             <a asp-area="" asp-controller="Produce" asp-action="Index">Produce Product</a>
                         </li>
+                        <li>
+                            <a asp-area="" asp-controller="ProductWriteOff" asp-action="Index"> Product Write-Off Log</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="ReturnedProduct" asp-action="Index">Returned Products</a>
+                        </li>
+
                     </ul>
                 </li>
                 <li>
                     <a href="#orderSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-bag">&nbsp;</i> Orders</a>
                     <ul class="collapse list-unstyled" id="orderSubmenu">
                         <li>
-                            <a asp-area="" asp-controller="Dashboard" asp-action="Index">Orders</a>
+                            <a asp-area="" asp-controller="Order" asp-action="Index">Manage Orders</a>
                         </li>
+                        <li>
+                            <a asp-area="" asp-controller="PaymentReminder" asp-action="Index">Payment Reminders</a>
+                        </li>                     
                         <li>
                             <a asp-area="" asp-controller="ReturnReason" asp-action="Index">Return Reasons</a>
                         </li>
@@ -78,6 +85,12 @@
                         </li>
                         <li>
                             <a asp-area="" asp-controller="Courier" asp-action="Index">Couriers</a>
+                        </li>
+                           <li>
+                            <a asp-area="" asp-controller="Order" asp-action="ViewQueries">View Order Queries</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Order" asp-action="ViewReviews">View Order Reviews</a>
                         </li>
                     </ul>
                 </li>
@@ -97,28 +110,36 @@
                             <a asp-area="" asp-controller="WriteOffReason" asp-action="Index">Write-Off Reasons</a>
                         </li>
                         <li>
-                            <a asp-area="" asp-controller="Dashboard" asp-action="Index">Inventory Levels</a>
+                            <a asp-area="" asp-controller="SupplierOrder" asp-action="Index"> Send Supplier Order</a>
                         </li>
-                              <li>
+                        <li>
                             <a asp-area="" asp-controller="InventoryProcured" asp-action="Index">Capture Procured Inventory</a>
                         </li>
+                         <li>
+                            <a asp-area="" asp-controller="InventoryWriteOffs" asp-action="Index"> Inventory Write-Off Log</a>
+                        </li>
+                        
                     </ul>
                 </li>
 
                 <li>
                     <a href="#returnSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-geo-alt"> &nbsp;</i>Locations</a>
                     <ul class="collapse list-unstyled" id="returnSubmenu">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Suburbs" asp-action="Index"> Suburbs</a>
+
+                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Countries" asp-action="Index">Countries</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cities" asp-action="Index"> Cities</a>
-                        </li>
-                       <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Province" asp-action="Index"> Provinces</a>
                         </li>
+
+                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cities" asp-action="Index"> Cities</a>
+                        </li>
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Countries" asp-action="Index">Countries</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Suburbs" asp-action="Index"> Suburbs</a>
                         </li>
                     </ul>
                 </li>
@@ -127,27 +148,56 @@
                     <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-card-list"> &nbsp;</i>Reports</a>
                     <ul class="collapse list-unstyled" id="reportSubmenu">
                         <li>
-                            <a asp-area="" asp-controller="Dashboard" asp-action="Index">Sales Report</a>
+                            <a asp-area="" asp-controller="report" asp-action="Index">Sales Report</a>
                         </li>
                         <li>
-                            <a asp-area="" asp-controller="Dashboard" asp-action="Index">Product Report</a>
+                            <a asp-area="" asp-controller="CustomerReport" asp-action="Index">Customer Report</a>
                         </li>
                         <li>
-                            <a asp-area="" asp-controller="Dashboard" asp-action="Index">Customer Report</a>
+                            <a asp-area="" asp-controller="ResellerReport" asp-action="Index">Reseller Report</a>
                         </li>
                         <li>
-                            <a asp-area="" asp-controller="Dashboard" asp-action="Index">Inventory Report</a>
+                            <a asp-area="" asp-controller="InventoryReport" asp-action="Index">Inventory List Report</a>
                         </li>
                         <li>
                             <a asp-area="" asp-controller="Dashboard" asp-action="Index">Orders Report</a>
+                        </li>
+                         <li>
+                            <a asp-area="" asp-controller="ProductionReport" asp-action="Index">Produced Products Report</a>
+                        </li>
+                         <li>
+                            <a asp-area="" asp-controller="ProductReport" asp-action="Index">Product Report</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="OrdersByStatus" asp-action="Index">Orders By Status Report</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="OrdersByRegion" asp-action="Index">Orders By Region Report</a>
                         </li>
                     </ul>
                 </li>               
                 <li>
                     <a asp-area="Admin" asp-controller="User" asp-action="Index"><i class="bi bi-person">&nbsp;</i> Users</a>
                 </li>
+                                <li>
+                    <a asp-area="Admin" asp-controller="Video" asp-action="Index"><i class="bi bi-camera-reels">&nbsp;</i> Videos</a>
+                </li>
+
+                  <li>
+                    <a asp-area="Admin" asp-controller="VAT" asp-action="Index"><i class="bi bi-tags">&nbsp;</i> Manage VAT </a>
+                </li>
+
                 <li>
-                    <a asp-area="" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-question-circle">&nbsp;</i> Help</a>
+                    <a asp-area="" asp-controller="Audit" asp-action="Index"><i class="bi bi-search">&nbsp;</i> Audit Log</a>
+                </li>
+
+
+                <li>
+                    <a asp-area="" asp-controller="ImportProductCatalogue" asp-action="Index"><i class="bi bi-journal-code">&nbsp;</i> Import Products</a>
+                </li>
+
+                <li>
+                    <a asp-area="" asp-controller="Help" asp-action="Index"><i class="bi bi-question-circle">&nbsp;</i> Help</a>
                 </li>
            </ul>
         </nav>
