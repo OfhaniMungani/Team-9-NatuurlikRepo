@@ -56,7 +56,20 @@ namespace NatuurlikBase.Controllers
             return View(orderVM);
         }
 
-       
+        [HttpPost]
+        public async Task<IActionResult> AutoSavePackageOrder(int OrderlineId, bool IsChecked)
+        {
+            var obj = _db.OrderLine.Where(x => x.Id == OrderlineId).FirstOrDefault();
+            //Save changes
+            obj.IsPackaged = IsChecked;
+            _db.SaveChanges();
+
+            TempData["Success"] = "Product packaged successfully.";
+            return RedirectToAction("Detail", "Order", new { orderId = obj.OrderId });
+
+        }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

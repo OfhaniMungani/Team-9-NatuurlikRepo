@@ -651,6 +651,9 @@ namespace NatuurlikBase.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsPackaged")
+                        .HasColumnType("bit");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
