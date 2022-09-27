@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NatuurlikBase.Models.Product>
+﻿@model NatuurlikBase.Models.ViewModels.ProductCategoryVM
 
 
 @section catalogue {
@@ -14,22 +14,28 @@
                     <input name="" class="form-control" type="search" placeholder="Search" id="myInput" onkeyup="myFunction()"  title="Type in a Product">
                 </div>               
                 <h5 id="cat">Categories</h5> 
-                <p id="catp">Sauce</p>
-                <p id="catp">Oil</p>
-                <p id="catp">Soap</p>
-                <p id="catp">Wine</p>
+                <br />
+                <a class="btn btn-primary" asp-controller="ProductCatalogue" asp-action="Index" >Clear </a>
+                <br />
+                @foreach(var cats in @Model.CategoryList.DistinctBy(x => x.Name))
+            {
+                <a asp-controller="ProductCatalogue" asp-action="Index" asp-route-categoryId="@cats.Id">@cats.Name</a>
+                <br />
+            }
+            
+                
             </div>
             <div class="col-md-9">
                 <div class="row">
                     <div class="col-lg-8 col-sm-10">
-                        <p id="catp"> Showing  1-12  of  12  Results</p>
+                        
                     </div>                 
                 </div>    
                 
 
                                     <div class="row">
                                         <ul id="myUL" style="list-style-type:none; padding-left:0px">
-                                            @foreach (var product in Model)
+                                            @foreach (var product in @Model.ProductsList)
                                             {   
                                                 @if(product.DisplayProduct == "Yes")
                                                 {
@@ -52,7 +58,7 @@
                                                             {
                                                                 <p class="natitems" style="color:red;"><a>Only @product.QuantityOnHand left!</a></p>
                                                             }
-                                            <p class="catprice">R<a>@product.ResellerPrice.ToString("0.00")</a></p>
+                                                                <p class="catprice">R<a>@product.ResellerPrice.ToString("0.00")</a></p>
                                                             @if(@product.QuantityOnHand == 0)
                                                             {
                                                                 <a asp-area="" asp-controller="ProductCatalogue" asp-action="Item" asp-route-productId="@product.Id" class="btn btn-primary btn-block" id="prodbtn"><i class="bi bi-info-circle-fill"></i>&nbsp; OUT OF STOCK</a>

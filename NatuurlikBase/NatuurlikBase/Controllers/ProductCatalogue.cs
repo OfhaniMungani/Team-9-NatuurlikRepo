@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NatuurlikBase.Models;
+using NatuurlikBase.Models.ViewModels;
 using NatuurlikBase.Repository.IRepository;
 using NatuurlikBase.ViewModels;
 using System.Security.Claims;
@@ -17,11 +18,22 @@ namespace NatuurlikBase.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? categoryId)
         {
-            //Get all products and return to the view
-            IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category,Brand");
-            return View(productList);
+            ProductCategoryVM ProductVM = new ProductCategoryVM();
+            if (categoryId != null && categoryId > 0)
+            {
+                ProductVM.ProductsList = _unitOfWork.Product.GetAll(x => x.Category.Id == categoryId, includeProperties: "Category,Brand").ToList();
+            }
+            else
+            {
+                //Get all products and return to the view
+                ProductVM.ProductsList = _unitOfWork.Product.GetAll(includeProperties: "Category,Brand").ToList();
+
+            }
+            ProductVM.CategoryList = _unitOfWork.Category.GetAll().ToList();
+            return View(ProductVM);
+
         }
 
         public IActionResult Item(int productId)
