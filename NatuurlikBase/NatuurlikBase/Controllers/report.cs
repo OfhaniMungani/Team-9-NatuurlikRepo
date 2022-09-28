@@ -11,7 +11,7 @@ namespace NatuurlikBase.Controllers;
 //[Authorize(Roles = SR.Role_Admin)]
 public class report : Controller
 {
-
+    string userInfo = "en-ZA";
     private DatabaseContext db;
     public report(DatabaseContext _db)
     {
@@ -85,8 +85,8 @@ public class report : Controller
         foreach (var userOrder in obj)
         {
             //double Pamount = obj.Sum(o => o.ProductAmount);
-            string Samount = obj.Sum(o => o.Amount).ToString("C", CultureInfo.CurrentCulture);
-            list.Add(new { tableAmount = userOrder.Amount.ToString("C", CultureInfo.CurrentCulture), Amount = Math.Round(userOrder.Amount,2), Name = userOrder.Name + " " + userOrder.Surname, sales = Samount, Fname = userOrder.Name, lName = userOrder.Surname });
+            string Samount = obj.Sum(o => o.Amount).ToString("C", CultureInfo.CreateSpecificCulture(userInfo));
+            list.Add(new { tableAmount = userOrder.Amount.ToString("C", CultureInfo.CreateSpecificCulture(userInfo)), Amount = Math.Round(userOrder.Amount,2), Name = userOrder.Name + " " + userOrder.Surname, sales = Samount, Fname = userOrder.Name, lName = userOrder.Surname });
         }
 
         return JsonConvert.SerializeObject(list);
@@ -117,8 +117,8 @@ public class report : Controller
         //render chart data
         foreach (var monthlyOrder in obj)
         {
-            string Samount = obj.Sum(o => o.Amount).ToString("C", CultureInfo.CurrentCulture);
-            list.Add(new { tableAmount = monthlyOrder.Amount.ToString("C", CultureInfo.CurrentCulture), Amount = Math.Round(monthlyOrder.Amount,2), Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthlyOrder.Month) + " " + monthlyOrder.Year, month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthlyOrder.Month), year = monthlyOrder.Year, sales =Samount });
+            string Samount = obj.Sum(o => o.Amount).ToString("C", CultureInfo.CreateSpecificCulture(userInfo));
+            list.Add(new { tableAmount = monthlyOrder.Amount.ToString("C", CultureInfo.CreateSpecificCulture(userInfo)), Amount = Math.Round(monthlyOrder.Amount,2), Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthlyOrder.Month) + " " + monthlyOrder.Year, month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthlyOrder.Month), year = monthlyOrder.Year, sales =Samount });
         }
 
         return JsonConvert.SerializeObject(list);
@@ -148,10 +148,10 @@ public class report : Controller
             double SALESamount = obj.Where(o => o.Product == product.Id).Sum(o => o.salesAmount);
             double PRODUCTamount = obj.Where(o => o.Product == product.Id).Sum(o => o.ProductAmount);
             double Pamount = obj.Sum(o => o.ProductAmount);
-            string Samount = obj.Sum(o => o.salesAmount).ToString("C", CultureInfo.CurrentCulture);
+            string Samount = obj.Sum(o => o.salesAmount).ToString("C", CultureInfo.CreateSpecificCulture(userInfo));
 
 
-            list.Add(new { tableAmount = SALESamount.ToString("C", CultureInfo.CurrentCulture), salesAmount = Math.Round(SALESamount,2), ProductAmount = Math.Round(PRODUCTamount,2), Name = product.Name, amount = Math.Round(Pamount,2), Samount = Samount });
+            list.Add(new { tableAmount = SALESamount.ToString("C", CultureInfo.CreateSpecificCulture(userInfo)), salesAmount = Math.Round(SALESamount,2), ProductAmount = Math.Round(PRODUCTamount,2), Name = product.Name, amount = Math.Round(Pamount,2), Samount = Samount });
         }
 
         return JsonConvert.SerializeObject(list);
