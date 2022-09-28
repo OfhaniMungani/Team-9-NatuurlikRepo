@@ -30,6 +30,16 @@
  
 
 }
+
+@if (TempData["error"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" id="success-alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+            &nbsp @TempData["error"]
+
+        </div>
+    }
+
     <div class="card">
 
         <form enctype="multipart/form-data" method="post" asp-action="Import">
@@ -46,3 +56,8 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+     <script src="~/js/notifications.js"></script>
+    
+}

@@ -553,6 +553,10 @@ namespace NatuurlikBase.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
+                    b.Property<string>("CourierName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 

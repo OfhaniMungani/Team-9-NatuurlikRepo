@@ -34,21 +34,7 @@
         <form id="profile-form" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            @if(User.IsInRole(SR.Role_Reseller))
-            {
-                 <div class="form-floating" id="formspace" hidden>
-                <label asp-for="Input.FirstName" class="required"></label>
-                <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" />
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-floating" id="formspace" hidden>
-                <label asp-for="Input.Surname" class="required"></label>
-                <input asp-for="Input.Surname" class="form-control" autocomplete="lastname" aria-required="true" />
-                <span asp-validation-for="Input.Surname" class="text-danger"></span>
-                </div>
-            }
-            else
-            {
+        
                 <div class="form-floating" id="formspace">
                 <label asp-for="Input.FirstName" class="required"></label>
                 <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" />
@@ -60,8 +46,6 @@
                 <input asp-for="Input.Surname" class="form-control" autocomplete="lastname" aria-required="true" />
                 <span asp-validation-for="Input.Surname" class="text-danger"></span>
             </div>
-            }
-           
           
             <div class="form-floating" id="formspace">
                 <label asp-for="Input.Email"></label>

@@ -90,7 +90,7 @@
                                         <p id="paydue"><strong>@Model.Order.OrderPaymentStatus</strong></p>
                                     </div>
                                     <div class="col-md-7 rights">
-                                        @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
+                       @*                 @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
                                         {
                                             <a asp-controller="Order" asp-action="LogQuery" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Query Order">Query Order</a>
                                             <a asp-controller="Order" asp-action="LogReview" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Review Order">Review Order</a>
@@ -124,7 +124,7 @@
                                                     </div>
                                                 </div>
                                             }
-                                        }
+                                        }*@
                                         @if (User.IsInRole(SR.Role_Reseller) && Model.Order.OrderStatus == SR.OrderPending)
                                         {
                                             <input type="button" onclick="return validateInput()" data-toggle="modal" data-target="#exampleModal33" class="btn btn-danger" style="width:150px" value="Cancel Order" />
@@ -139,7 +139,7 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <h6 class="col-md-10">
-                                                                Are You Sure You Want To Cancel This Order
+                                                                Proceed To Cancel This Order?
                                                             </h6>
                                                         </div>
 
@@ -179,7 +179,11 @@
                                             <div class="col-md-4">
                                                 <p id="strong">Delivery Details</p>
                                                 <label>Courier: @Model.Order.Courier.CourierName</label> <br />
-                                                <label>Tracking Number: @Model.Order.ParcelTrackingNumber</label> <br />
+                                                @if(@Model.Order.ParcelTrackingNumber != null)
+                                                {
+                                                     <label>Tracking Number: @Model.Order.ParcelTrackingNumber</label> <br />
+                                                }
+                                               
                                                 <label>Dispatched Date: @Model.Order.DispatchedDate.ToString("d")</label>
                                             </div>
                                             <div class="col-md-5">
@@ -224,6 +228,38 @@
         <form method="post">
             <div class="card">
                 <div class="card-header" id="">
+
+
+                    @if(@Model.Order.OrderStatus == SR.OrderPending)
+                    {
+                        //screenshot if reseller order is pending
+                    }
+                    else if(@Model.Order.OrderStatus == SR.OrderApproved)
+                    {
+                        //Approved reseller order 
+                    }
+                    else if (@Model.Order.OrderStatus == SR.OrderCancelled)
+                    {
+                        //Cancelled Order
+                    }
+                    else if(@Model.Order.OrderStatus == SR.OrderRejected)
+                    {
+                        //Rejected Reseller Order
+                    }
+                    else if (@Model.Order.OrderStatus == SR.ProcessingOrder)
+                    {
+                        //Customer order being processed
+                    }
+                     else if (@Model.Order.OrderStatus == SR.Delivered)
+                    {
+                        //Delivered Order
+                    }
+                     else if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                    {
+                        //Customer or Reseller Order Dispatched
+                    }
+
+
                     <div class="d-flex justify-content-between">
                         <medium id="strong">Order Details</medium>
                         <small>Order Date: @Model.Order.CreatedDate.ToString("d")</small>
@@ -436,11 +472,14 @@
                                         <label> @Model.Order.DispatchedDate.ToString("d")</label>
                                     }
                                     <div class="d-flex justify-content-between">
-                                        <label>Tracking Number: @Model.Order.ParcelTrackingNumber</label>
-                                        @*Only allow the tracking number to be editable for Admin or SA and when status is processing.*@
+                                        
                                         @if (@Model.Order.OrderStatus == SR.ProcessingOrder)
                                         {
-                                            <input asp-for="Order.ParcelTrackingNumber" id="trackingNumber" type="text" class="form-control" />
+                                            @if(@Model.Order.Courier.CourierName != "Natuurlik Free Delivery")
+                                            {
+                                                <label>Tracking Number: @Model.Order.ParcelTrackingNumber</label>
+                                                <input asp-for="Order.ParcelTrackingNumber" id="trackingNumber" type="text" class="form-control" />
+                                            }
                                         }
                                     </div>
                                 </div>

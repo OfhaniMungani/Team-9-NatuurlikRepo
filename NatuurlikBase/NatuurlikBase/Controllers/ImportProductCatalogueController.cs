@@ -26,17 +26,27 @@ namespace NatuurlikBase.Controllers
         [HttpPost]
         public async Task<IActionResult> Import(IFormFile file)
         {
-            using (var reader = new StreamReader(file.OpenReadStream()))
+
+            try
             {
-                string json = reader.ReadToEnd();
-                List<Product> items = JsonConvert.DeserializeObject<List<Product>>(json);
-                foreach (var prod in items)
+                using (var reader = new StreamReader(file.OpenReadStream()))
                 {
-                    _unitOfWork.Product.Add(prod);
+                    string json = reader.ReadToEnd();
+                    List<Product> items = JsonConvert.DeserializeObject<List<Product>>(json);
+                    foreach (var prod in items)
+                    {
+                        _unitOfWork.Product.Add(prod);
+                    }
                 }
+                _unitOfWork.Save();
+                TempData["success"] = "Products imported successfully";
             }
-            _unitOfWork.Save();
-            TempData["success"] = "Products imported successfully";
+
+            catch
+            {
+                TempData["error"] = "An error occurred when importing products.";
+            }
+          
             return RedirectToAction(nameof(Index));
         }
     }
