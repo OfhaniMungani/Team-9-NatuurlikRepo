@@ -298,7 +298,8 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account
                 CountryId = Input.Country,
                 ProvinceId = Input.Province,
                 CityId = Input.City,
-                SuburbId = Input.Suburb
+                SuburbId = Input.Suburb,
+                UserRole = Input.Role
             };
             _userManager.CreateAsync(user);
             return user;

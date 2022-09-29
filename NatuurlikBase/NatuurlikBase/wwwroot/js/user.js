@@ -14,6 +14,7 @@ function loadDataTable() {
             { data: "surname", "width": "10%" },
             { data: "email", "width": "10%" },
             { data: "phoneNumber", "width": "10%" },
+            { data: "userRole", "width": "10%" },
             //{ data: "country.countryName", "width": "10%" },
             //{ data: "province.provinceName", "width": "10%" },
             //{ data: "city.cityName", "width": "10%" },

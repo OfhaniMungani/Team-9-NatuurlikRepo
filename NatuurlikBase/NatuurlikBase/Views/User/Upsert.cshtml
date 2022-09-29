@@ -15,6 +15,15 @@
       <div class="card-body">
 
         <div class="row">
+
+         @if (Model.User.Id != null)
+            {
+        <div class="col-md-6">
+            <label asp-for="User.UserRole"> User Role </label>
+            <input asp-for="User.UserRole" class="form-control" readonly/>
+        </div>
+            }
+
         <div class="col-md-6">
             <label asp-for="User.FirstName"> First Name </label>&nbsp;<label style="color:red">*</label>
             <input asp-for="User.FirstName" class="form-control" />

@@ -30,6 +30,9 @@ public class ApplicationUser : IdentityUser
     public string PhoneNumber { get; set; }
 
     [Required]
+    public string UserRole { get; set; }
+
+    [Required]
     [MaxLength(50)]
     [Display(Name = "Street Address")]
     public string StreetAddress { get; set; }
