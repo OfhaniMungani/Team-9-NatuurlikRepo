@@ -350,7 +350,7 @@ namespace NatuurlikBase.Migrations
                         column: x => x.writeOffReasonId,
                         principalTable: "WriteOffReason",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -416,7 +416,7 @@ namespace NatuurlikBase.Migrations
                         column: x => x.InventoryItemId,
                         principalTable: "InventoryItem",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_InventoryWriteOff_WriteOffReason_writeOffReasonId",
                         column: x => x.writeOffReasonId,

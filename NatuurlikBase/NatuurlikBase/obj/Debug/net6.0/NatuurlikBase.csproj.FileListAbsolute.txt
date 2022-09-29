@@ -3727,3 +3727,13 @@ D:\Users\vumis\Desktop\NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.
 D:\Users\vumis\Desktop\NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 D:\Users\vumis\Desktop\NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 D:\Users\vumis\Desktop\NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.PerformanceCounter.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\System.Data.OleDb.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\System.Diagnostics.PerformanceCounter.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Data.OleDb.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\thenj\Desktop\INF 370 2022\Coding\Team-9-NatuurlikRepo\NatuurlikBase\NatuurlikBase\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.PerformanceCounter.dll

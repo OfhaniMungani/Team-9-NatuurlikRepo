@@ -69,9 +69,14 @@
         <tr>
             <th class="text-light">
                Supplier
-			</th><th class="text-light">
+			</th>
+              <th class="text-light">
+               Invoice No.
+			</th>
+            <th class="text-light">
                Inventory Item
-			</th><th class="text-light">
+			</th>
+            <th class="text-light">
                Quantity Received
 			</th>
             <th class="text-light">
@@ -86,6 +91,9 @@
             <tr>
                  <td width="25%">
                     @obj.Supplier.CompanyName
+                </td>
+                <td width="25%">
+                    @obj.InvoiceNo
                 </td>
                  <td width="25%">
                      @obj.InventoryItem.InventoryItemName

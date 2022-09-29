@@ -161,14 +161,33 @@ public class WriteOffReasonController : Controller
         WriteOffReason writeoff = _context.WriteOffReason.Find(id);
         _context.WriteOffReason.Remove(writeoff);
         ViewBag.WriteOffReasonConfirmation = "Are you sure you want to delete this write-off reason?";
-        TempData["success"] = "Write-Off Reason Deleted Successfully";
-        var claimsId = (ClaimsIdentity)User.Identity;
-        var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
-        var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
-        var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
-        var userName = fullName.ToString();
-        await _context.SaveChangesAsync(userName);
-        return RedirectToAction("Index");
+        //Check association with inventory write-off
+        var InvForeignKey = _context.InventoryWriteOff.Any(x => x.writeOffReasonId == id);
+        //Check association with product write-off
+        var ProdForeignKey = _context.ProductWriteOff.Any(x => x.writeOffReasonId == id);
+        if (InvForeignKey)
+        {
+            TempData["Delete"] = "Write-Off Reason Cannot be deleted since it has an association with written-off inventory";
+            return RedirectToAction("Index");
+        }
+
+        if (ProdForeignKey)
+        {
+            TempData["Delete"] = "Write-Off Reason Cannot be deleted since it has an association with written-off product(s)";
+            return RedirectToAction("Index");
+        }
+        else
+        {
+            TempData["success"] = "Write-Off Reason Deleted Successfully";
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await _context.SaveChangesAsync(userName);
+            return RedirectToAction("Index");
+        }
+       
     }
 
     protected override void Dispose(bool disposing)
