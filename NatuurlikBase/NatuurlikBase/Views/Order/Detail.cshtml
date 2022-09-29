@@ -122,7 +122,7 @@
                                             <a asp-controller="Order" asp-action="LogQuery" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Query Order">Query Order</a>
                                             <a asp-controller="Order" asp-action="LogReview" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Review Order">Review Order</a>
 
-@*                                            if (Model.Order.OrderStatus == SR.OrderPending && Model.Order.OrderPaymentStatus == SR.OrderPaymentApproved)
+                                            @*if (Model.Order.OrderStatus == SR.OrderPending && Model.Order.OrderPaymentStatus == SR.OrderPaymentApproved)
                                             {
                                                 <input type="button" data-toggle="modal" data-target="#exampl12" onclick="return validateInput()" class="btn btn-danger" style="width:150px" value="Cancel Order" />
                                                 <div class="modal fade" id="exampl12">
@@ -255,38 +255,6 @@
         <form method="post">
             <div class="card">
                 <div class="card-header" id="">
-
-
-                    @if(@Model.Order.OrderStatus == SR.OrderPending)
-                    {
-                        //screenshot if reseller order is pending
-                    }
-                    else if(@Model.Order.OrderStatus == SR.OrderApproved)
-                    {
-                        //Approved reseller order 
-                    }
-                    else if (@Model.Order.OrderStatus == SR.OrderCancelled)
-                    {
-                        //Cancelled Order
-                    }
-                    else if(@Model.Order.OrderStatus == SR.OrderRejected)
-                    {
-                        //Rejected Reseller Order
-                    }
-                    else if (@Model.Order.OrderStatus == SR.ProcessingOrder)
-                    {
-                        //Customer order being processed
-                    }
-                     else if (@Model.Order.OrderStatus == SR.Delivered)
-                    {
-                        //Delivered Order
-                    }
-                     else if (@Model.Order.OrderStatus == SR.OrderDispatched)
-                    {
-                        //Customer or Reseller Order Dispatched
-                    }
-
-
                     <div class="d-flex justify-content-between">
                         <medium id="strong">Order Details</medium>
                         <small>Order Date: @Model.Order.CreatedDate.ToString("d")</small>
@@ -296,6 +264,122 @@
                     </div>
                 </div>
                 <div class="card-body">
+
+                    <div class="row justify-content-center">  
+
+                        @*!!!!!!!!!!    RESELLER ORDER - NORMAL DELIVERY    !!!!!!!!!!!!*@
+                        @if(@Model.Order.IsResellerOrder == true && @Model.Order.Courier.CourierName != "Natuurlik Free Delivery")
+                        {
+                            @if(@Model.Order.OrderStatus == SR.OrderPending)
+                            {
+                                <img src="~/images/orderStatus/res1.png">
+                            }
+                            else if (@Model.Order.OrderStatus == SR.ProcessingOrder)
+                            {
+                                if(@Model.OrderLine.All(x => x.IsPackaged == true))
+                                {
+                                    <img src="~/images/orderStatus/res3.png">
+                                }
+                                else
+                                {
+                                    <img src="~/images/orderStatus/res2.png">
+                                }
+                            }
+                             else if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                            {
+                                <img src="~/images/orderStatus/res4.png">
+                            }    
+                             else if (@Model.Order.OrderStatus == SR.OrderCancelled)
+                            {
+                                <img src="~/images/orderStatus/resC.png">
+                            }                            
+                            
+                        }
+
+                        @*!!!!!!!!!!    RESELLER ORDER - FREE DELIVERY    !!!!!!!!!!!!*@
+                        @if(@Model.Order.IsResellerOrder == true && @Model.Order.Courier.CourierName == "Natuurlik Free Delivery")
+                        {
+                            @if(@Model.Order.OrderStatus == SR.OrderPending)
+                            {
+                                <img src="~/images/orderStatus/resD1.png">
+                            }
+                            else if (@Model.Order.OrderStatus == SR.ProcessingOrder)
+                            {
+                                if(@Model.OrderLine.All(x => x.IsPackaged == true))
+                                {
+                                    <img src="~/images/orderStatus/resD3.png">
+                                }
+                                else
+                                {
+                                    <img src="~/images/orderStatus/resD2.png">
+                                }
+                            }
+                             else if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                            {
+                                <img src="~/images/orderStatus/resD4.png">
+                            }
+                             else if (@Model.Order.OrderStatus == SR.Delivered)
+                            {
+                                <img src="~/images/orderStatus/resD5.png">
+                            } 
+                             else if (@Model.Order.OrderStatus == SR.OrderCancelled)
+                            {
+                                <img src="~/images/orderStatus/resDC.png">
+                            }                            
+                             else if (@Model.Order.OrderStatus == SR.OrderRejected)
+                            {
+                                <img src="~/images/orderStatus/resDR.png">
+                            } 
+                        }
+
+                        @*!!!!!!!!!!    CUSTOMER ORDER - NORMAL DELIVERY    !!!!!!!!!!!!*@
+                        @if(@Model.Order.IsResellerOrder == false && @Model.Order.Courier.CourierName != "Natuurlik Free Delivery")
+                        {
+                            @if (@Model.Order.OrderStatus == SR.ProcessingOrder)
+                            {
+                                if(@Model.OrderLine.All(x => x.IsPackaged == true))
+                                {
+                                    <img src="~/images/orderStatus/cus2.png">
+                                }
+                                else
+                                {
+                                    <img src="~/images/orderStatus/cus1.png">
+                                }
+                            }
+                             else if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                            {
+                                <img src="~/images/orderStatus/cus3.png">
+                            }                            
+                        }
+
+                        @*!!!!!!!!!!    CUSTOMER ORDER - FREE DELIVERY    !!!!!!!!!!!!*@
+                        @if(@Model.Order.IsResellerOrder == false && @Model.Order.Courier.CourierName == "Natuurlik Free Delivery")
+                        {
+                            @if (@Model.Order.OrderStatus == SR.ProcessingOrder)
+                            {
+                                if(@Model.OrderLine.All(x => x.IsPackaged == true))
+                                {
+                                    <img src="~/images/orderStatus/cusD2.png">
+                                }
+                                else
+                                {
+                                    <img src="~/images/orderStatus/cusD1.png">
+                                }
+                            }
+                             else if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                            {
+                                <img src="~/images/orderStatus/cusD3.png">
+                            }  
+                             else if (@Model.Order.OrderStatus == SR.Delivered)
+                            {
+                                <img src="~/images/orderStatus/cusD4.png">
+                            }                             
+                        }
+
+                        
+                    </div>
+
+               <hr>     
                     <div class="row ordstatus">
                         <div class="col-md-4">
                             <h2 id="ordspace">Order Status: <strong>@Model.Order.OrderStatus</strong></h2>
@@ -539,7 +623,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <h5 class="spaceing"><strong>Order Summary</strong></h5>
+                                    @if (@Model.Order.OrderStatus == SR.OrderDispatched || @Model.Order.OrderStatus == SR.OrderCancelled || @Model.Order.OrderStatus == SR.OrderRejected)
+                                    {
+                                        <h5 class="spaceing"><strong>Order Summary</strong></h5>
+                                    }
+                                    else
+                                    {
+                                        <h5 class="spaceing"><strong>Package Order </strong></h5>
+                                    }                                   
                                     <div class="card">
                                         <div class="card-body">
                                             @foreach (var line in Model.OrderLine)

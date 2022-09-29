@@ -37,7 +37,7 @@ namespace NatuurlikBase.Controllers
                                                     .ToList();
             ViewBag.res = res.Count();
 
-            var owing = db.Order.Count(c => c.OrderPaymentStatus == SR.PaymentOverdue);
+            var owing = db.Order.Count(c => c.OrderPaymentStatus == SR.PaymentOverdue );
             ViewBag.owing = owing;
 
             var due = db.Order.Count(c => c.OrderPaymentStatus == SR.ResellerDelayedPayment);
