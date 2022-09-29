@@ -188,10 +188,10 @@
                                     <div class="col-12">
                                         <div class="row">
                                             <div class="col-md-3 strongdetails">
-                                                <br>
+                                                
                                                 <p id="strong">Contact Person</p>
                                                 <label>@Model.Order.FirstName @Model.Order.Surname</label> <br />
-                                                <label><label>+27</label>@Model.Order.PhoneNumber</label> <br />
+                                                <label>+27 @Model.Order.PhoneNumber</label> <br />
                                                 <label>@Model.Order.ApplicationUser.Email</label>
                                                 <br />
                                                 <p id="strongone">Delivery Address</p>
@@ -221,9 +221,9 @@
                                                         {
                                                             <div class="d-flex justify-content-between" id="cartitems">
                                                                 <small>@line.Product.Name</small>
-                                                                <small><strong>@((line.Count * line.Price).ToString("0.00"))</strong></small>
+                                                                <small id="money"><strong>R @((line.Count * line.Price).ToString("0.00"))</strong></small>
                                                             </div>
-                                                            <small class="text-muted">Price : @line.Price.ToString("0.00")</small> <br />
+                                                            <small class="text-muted" id="money">Price : R @line.Price.ToString("0.00")</small> <br />
                                                             <small class="text-muted">Quantity: @line.Count</small>
                                                             <hr />
                                                         }
@@ -303,7 +303,7 @@
                             {
                                 <h5><strong>Account Holder</strong></h5>
                                 <medium>Full Name: @Model.Order.ApplicationUser.FirstName @Model.Order.ApplicationUser.Surname</medium> <br />
-                                <medium>Phone Number: @Model.Order.ApplicationUser.PhoneNumber</medium> <br />
+                                <medium>Phone Number: <label>+27</label>@Model.Order.ApplicationUser.PhoneNumber</medium> <br />
                             }
                         </div>
                         <div class="col-md-8 rightside">
@@ -505,7 +505,7 @@
                                 <div class="col-md-4 strongdetails">
                                     <h5 class="spaceing"><strong>Contact Person</strong></h5>
                                     <label>Full Name: @Model.Order.FirstName @Model.Order.Surname</label> <br />
-                                    <label>Phone Number: <label>+27</label>@Model.Order.PhoneNumber</label> <br />
+                                    <label>Phone Number: +27 @Model.Order.PhoneNumber</label> <br />
                                     <label>Email Address: @Model.Order.ApplicationUser.Email</label>
                                     <br />
                                     <h5 id="stronger" class="spaceing"><strong>Delivery Address</strong></h5>
@@ -546,9 +546,9 @@
                                             {
                                                 <div class="d-flex justify-content-between" id="cartitems">
                                                     <medium>@line.Product.Name</medium>
-                                                    <medium><strong>@((line.Count * line.Price).ToString("0.00"))</strong></medium>
+                                                    <medium id="money"><strong>R @((line.Count * line.Price).ToString("0.00"))</strong></medium>
                                                 </div>
-                                                <small class="text-muted">Price : @line.Price.ToString("0.00")</small> <br />
+                                                <small class="text-muted" id="money">Price : R @line.Price.ToString("0.00")</small> <br />
                                                 <small class="text-muted">Quantity: @line.Count</small>
                                                 <div class="d-flex justify-content-between">
                                                     <small class="text-muted">Package Order Status:</small>

@@ -39,7 +39,7 @@
             <tr>
                 <th class="text-light">Month</th>
                 <th class="text-light">Year</th>
-                <th class="text-light">Sales Value (ZAR)</th> 
+                <th class="text-light" id="money">Sales Value (ZAR)</th> 
             </tr>
         </thead>
         <tbody id ="table-body2"></tbody>
@@ -127,13 +127,13 @@ $("#exportButton").click(function(){
 
                         if (inData.length > 0) {
                             $(inData).each((i, v) => {
-                                table.append(`<tr><td>${v.month}</td><td>${v.year}</td><td>  ${v.tableAmount}</td>/tr>`);
+                                table.append(`<tr><td>${v.month}</td><td>${v.year}</td><td Style="text-align: right;">  ${v.tableAmount}</td>/tr>`);
                               
                                salesTotal =v.sales;
                                 console.log("row inserted")
                                  
                             });
-                                foot.append(`<tr><td Style="font-weight: bold;">Total</td><td>  </td><td  Style="font-weight: bold;">  ${salesTotal}</td><br/>/tr>`); 
+                                foot.append(`<tr><td Style="font-weight: bold;">Total</td><td>  </td><td  Style="font-weight: bold; text-align: right;">  ${salesTotal}</td><br/>/tr>`); 
                         } 
                     let chartLabel = [];
                     let chartData = [];

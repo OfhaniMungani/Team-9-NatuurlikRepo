@@ -37,7 +37,7 @@
                 <tr>
                     <th class="text-light">Product Name</th>
                     <th class="text-light">Product Quantity</th>
-                    <th class="text-light">Sales Value (ZAR)</th> 
+                    <th class="text-light" id="money">Sales Value (ZAR)</th> 
                 </tr>
             </thead>
             <tbody id ="table-body"></tbody>
@@ -245,13 +245,13 @@ $("#exportButton").click(function(){
 
                         if (inData.length > 0) {
                             $(inData).each((i, v) => {
-                                table.append(`<tr><td>${v.Name}</td><td>${v.ProductAmount}</td><td>  ${v.tableAmount}</td>/tr>`);
+                                table.append(`<tr><td>${v.Name}</td><td>${v.ProductAmount}</td><td Style="text-align: right;">  ${v.tableAmount}</td>/tr>`);
                                total=v.amount;
                                salesTotal =v.Samount;
                                 console.log("row inserted")
                                  
                             });
-                                foot.append(`<tr><td  Style="font-weight: bold;">Total</td><td Style="font-weight: bold;">  ${total}</td><td  Style="font-weight: bold;"> ${salesTotal}</td>/tr><br/>`); 
+                                foot.append(`<tr><td  Style="font-weight: bold;">Total</td><td Style="font-weight: bold;">  ${total}</td><td  Style="font-weight: bold; text-align: right;"> ${salesTotal}</td>/tr><br/>`); 
                         } 
                           }
         });});

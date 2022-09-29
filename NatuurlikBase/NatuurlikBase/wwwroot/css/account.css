@@ -3,6 +3,10 @@
     color: red;
 }
 
+#money{
+    text-align:right;
+}
+
 #pluss {
     font-size: 18px;
     color: red;

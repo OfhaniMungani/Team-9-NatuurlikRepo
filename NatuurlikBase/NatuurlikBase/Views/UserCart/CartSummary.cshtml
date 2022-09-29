@@ -118,6 +118,7 @@
                                 <small>@orderItem.Product.Name</small>
                                 <small>R @((orderItem.CartItemPrice * orderItem.Count).ToString("0.00")) </small>
                             </div>
+                            <small class="text-muted">Price: R @orderItem.CartItemPrice</small> <br />
                             <small class="text-muted">Quantity: @orderItem.Count</small>
                             <hr />
                         }
