@@ -3,6 +3,15 @@
     color: red;
 }
 
+#pluss {
+    font-size: 18px;
+    color: red;
+}
+
+#carticon {
+    font-size: 19px;
+}
+
 .error {
     text-align: center;
     padding-top: 100px;
@@ -116,12 +125,16 @@
 
 #paydue {
     color: red;
-    padding-bottom: 30px;
+    padding-bottom: 10px;
+}
+
+#paydueing {
+    color: red;
 }
 
 #paying {
     color: red;
-    margin-top: 20px;
+    /*   margin-top: 70px;*/
     margin-bottom: 30px;
     padding-right: 10px;
 }
@@ -144,6 +157,7 @@
 
 .smaller, .rights {
     padding-top: 20px;
+    margin-bottom: 50px;
 }
 
 .rights {

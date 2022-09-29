@@ -53,6 +53,34 @@ namespace NatuurlikBase.Controllers
                 OrderLine = _uow.OrderLine.GetAll(ol => ol.OrderId == orderId, includeProperties: "Product")
             };
 
+            var orderprsn = _db.Order.Where(z => z.Id == orderId && z.OrderPaymentStatus == "Payment Outstanding" && z.OrderStatus != "Cancelled"
+            && z.OrderStatus != "Rejected" && z.OrderStatus != "Pending").FirstOrDefault();
+            if (orderprsn != null)
+            {
+                var fullTime = _db.PaymentReminder.FirstOrDefault(x => x.Id == orderprsn.PaymentReminderId).Value;
+                var orderProcDate = orderprsn.ProcessedDate.Date;
+                var threshold = orderProcDate.AddDays(fullTime);
+                string fullDate = threshold.ToString("D");
+                var remaining = threshold - DateTime.Today;
+                var remainingDate = remaining.ToString("dd");
+                TempData["Remaining"] = remainingDate;
+                TempData["Due"] = fullDate;
+            }
+
+            var overdue = _db.Order.Where(z => z.Id == orderId && z.OrderPaymentStatus == "Payment Overdue" && z.OrderStatus != "Cancelled"
+            && z.OrderStatus != "Rejected" && z.OrderStatus != "Pending").FirstOrDefault();
+            if (overdue != null)
+            {
+                var fullTime = _db.PaymentReminder.FirstOrDefault(x => x.Id == overdue.PaymentReminderId).Value;
+                var orderProcDate = overdue.ProcessedDate.Date;
+                var threshold = orderProcDate.AddDays(fullTime);
+                string fullDate = threshold.ToString("D");
+                var overDue = DateTime.Today - threshold;
+                var dateOver = overDue.ToString("dd");
+                TempData["Due"] = fullDate;
+                TempData["OverDue"] = dateOver;
+            }
+
             return View(orderVM);
         }
 
@@ -79,6 +107,9 @@ namespace NatuurlikBase.Controllers
             var orderRetrieved = _uow.Order.GetFirstOrDefault(u => u.Id == OrderVM.Order.Id);
             //Update order status to approved state and save changes to db.
             _uow.Order.UpdateOrderStatus(OrderVM.Order.Id, SR.ProcessingOrder);
+
+            orderRetrieved.ProcessedDate = DateTime.Now;
+            _uow.Save();
 
             var claimsId = (ClaimsIdentity)User.Identity;
             var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
@@ -357,14 +388,10 @@ namespace NatuurlikBase.Controllers
             string accountId = _configuration["AccountId"];
             string authToken = _configuration["AuthToken"];
             TwilioClient.Init(accountId, authToken);
-            var number = orderRetrieved.PhoneNumber;
             var name = orderRetrieved.FirstName;
             var order = orderRetrieved.Id;
             var track = orderRetrieved.ParcelTrackingNumber;
-            var phoneUtil = PhoneNumberUtil.GetInstance();
-            var numberProto = phoneUtil.Parse(number, "ZA");
-            var formattedPhone = phoneUtil.Format(numberProto, PhoneNumberFormat.E164);
-            var to = formattedPhone;
+            var to = "+27" + orderRetrieved.PhoneNumber;
             var companyNr = "+18305216564";
 
             var message = MessageResource.Create(

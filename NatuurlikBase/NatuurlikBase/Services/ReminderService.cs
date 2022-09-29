@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using NatuurlikBase.Data;
+using NatuurlikBase.Models;
 
 namespace NatuurlikBase.Services
 {
@@ -28,7 +29,8 @@ namespace NatuurlikBase.Services
 
         public async Task PaymentReminder()
         {
-            var orderprsn = _db.Order.Where(z => z.OrderPaymentStatus == "Payment Outstanding" && z.OrderStatus != "Cancelled" && z.OrderStatus != "Rejected").ToList();
+            var orderprsn = _db.Order.Where(z => z.OrderPaymentStatus == "Payment Outstanding" && z.OrderStatus != "Cancelled"
+            && z.OrderStatus != "Rejected" && z.OrderStatus != "Pending").ToList();
 
             if (orderprsn != null)
             {
@@ -36,15 +38,15 @@ namespace NatuurlikBase.Services
                 {
                     var fullTime = _db.PaymentReminder.FirstOrDefault(x => x.Id == psn.PaymentReminderId).Value;
                     var halfTime = fullTime / 2;
-                    var orderDate = psn.CreatedDate.Date;
-                    var threshold = orderDate.AddDays(fullTime);
-                    var halfthreshold = orderDate.AddDays(halfTime);
+                    var orderProcDate = psn.ProcessedDate.Date;
+                    var threshold = orderProcDate.AddDays(fullTime);
+                    var halfthreshold = orderProcDate.AddDays(halfTime);
                     var user = _db.User.Where(z => z.Id == psn.ApplicationUserId).FirstOrDefault();
                     string email = user.Email;
                     string name = user.FirstName;
                     string number = psn.Id.ToString();
                     string total = psn.OrderTotal.ToString();
-                    string date = orderDate.ToString("M");
+                    string date = orderProcDate.ToString("M");
                     string fullDate = threshold.ToString("D");
                     string status = psn.OrderPaymentStatus;
                     string wwwRootPath = _hostEnvironment.WebRootPath;
@@ -61,7 +63,7 @@ namespace NatuurlikBase.Services
                             message);
                     }
 
-                    else if (threshold == DateTime.Today.Date)
+                    if (threshold == DateTime.Today.Date)
                     {
                         var template = File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\payDueTemp.html"));
                         template = template.Replace("[NAME]", name).Replace("[TOTAL]", total).Replace("[STATUS]", status).Replace("[DUE]", fullDate)
@@ -71,6 +73,12 @@ namespace NatuurlikBase.Services
                             email,
                             "PAYMENT DUE",
                             message);
+                    }
+
+                    else if (orderProcDate < DateTime.Today.Date)
+                    {
+                        psn.OrderPaymentStatus = SR.PaymentOverdue;
+                        _db.SaveChanges();
                     }
                 }
 

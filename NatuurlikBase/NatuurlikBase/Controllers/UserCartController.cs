@@ -380,6 +380,48 @@ namespace NatuurlikBase.Controllers
                     prod.QuantityOnHand -= userCartItem.Count;
                     _unitOfWork.Save();
 
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+                    var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\lowProdTemp.html"));
+
+                    var users = (from user in _db.Users
+                                 join userRole in _db.UserRoles on user.Id equals userRole.UserId
+                                 join role in _db.Roles on userRole.RoleId equals role.Id
+                                 where role.Name == "Admin" || role.Name == "Inventory Manager"
+                                 select user.Email)
+                                       .ToList();
+
+
+                    string quantity = prod.QuantityOnHand.ToString();
+                    template = template.Replace("[ITEM]", prod.Name).Replace("[QUANTITY]", quantity);
+
+
+                    if (prod.QuantityOnHand <= prod.ThresholdValue && prod.QuantityOnHand > 0)
+                    {
+                        template = template.Replace("[TEXT]", "LOW STOCK ALERT!");
+                        string message = template;
+
+                        foreach (var user in users)
+                        {
+                            _emailSender.SendEmailAsync(
+                               user,
+                               "LOW STOCK ALERT",
+                               message);
+                        }
+                    }
+                    else if (prod.QuantityOnHand == 0)
+                    {
+                        template = template.Replace("[TEXT]", "OUT OF STOCK ALERT!");
+                        string message = template;
+
+                        foreach (var user in users)
+                        {
+                            _emailSender.SendEmailAsync(
+                               user,
+                               "OUT OF STOCK ALERT",
+                               message);
+                        }
+                    }
+
                 }
                 //Redirect to the Confirmation page.
                 return RedirectToAction("ResellerOrderConfirmation", "UserCart", new { id = UserCartVM.Order.Id });

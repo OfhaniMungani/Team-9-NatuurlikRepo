@@ -111,9 +111,9 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account
             public int City { get; set; }
 
             [Required]
-            [RegularExpression(@"^(\d{10})$", ErrorMessage = "Please enter a valid Phone Number.")]
+            [RegularExpression(@"^(\d{9})$", ErrorMessage = "Please enter a valid Phone Number.")]
             [Display(Name = "Phone Number")]
-            [MaxLength(10)]
+            [MaxLength(9)]
             public string PhoneNumber { get; set; }
             public string? Role { get; set; }
 

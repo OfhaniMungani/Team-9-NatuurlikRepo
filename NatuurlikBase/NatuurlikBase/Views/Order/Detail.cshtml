@@ -87,7 +87,34 @@
                                 <div class="row">
                                     <div class="col-md-5 smaller">
                                         <h2 id="light">Order Status: <strong>@Model.Order.OrderStatus</strong></h2>
-                                        <p id="paydue"><strong>@Model.Order.OrderPaymentStatus</strong></p>
+                                         <div id="paydue">                                     
+                                            @*OUTSTANDING*@
+                                            @if (Model.Order.OrderPaymentStatus == SR.ResellerDelayedPayment)
+                                            { 
+                                                if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
+                                                {
+                                                        <medium ><strong>@Model.Order.OrderPaymentStatus</strong></medium> <br>
+                                                        <small>Due Date: @TempData["Due"]</small> <br />
+                                                        <small>Days Remaining: @TempData["Remaining"]</small>    
+                                                }        
+                                            }
+
+                                            @*OVERDUE*@
+                                            @if(Model.Order.OrderPaymentStatus == SR.PaymentOverdue)
+                                            {
+                                                if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
+                                                {
+                                                             <medium ><strong>@Model.Order.OrderPaymentStatus</strong></medium> <br>
+                                                                <small>Due Date: @TempData["Due"]</small> <br />
+                                                                <small>Days Overdue: @TempData["OverDue"]</small>                                         
+                                                }                                          
+                                            }
+                                            @if(Model.Order.OrderPaymentStatus == SR.OrderPaymentApproved)
+                                            { 
+                                                <medium><strong>@Model.Order.OrderPaymentStatus</strong></medium> <br>                                          
+                                            }
+
+                                         </div>                                      
                                     </div>
                                     <div class="col-md-7 rights">
                        @*                 @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
@@ -164,7 +191,7 @@
                                                 <br>
                                                 <p id="strong">Contact Person</p>
                                                 <label>@Model.Order.FirstName @Model.Order.Surname</label> <br />
-                                                <label>@Model.Order.PhoneNumber</label> <br />
+                                                <label><label>+27</label>@Model.Order.PhoneNumber</label> <br />
                                                 <label>@Model.Order.ApplicationUser.Email</label>
                                                 <br />
                                                 <p id="strongone">Delivery Address</p>
@@ -280,7 +307,35 @@
                             }
                         </div>
                         <div class="col-md-8 rightside">
-                            <label id="paying"><strong>Payment Status: @Model.Order.OrderPaymentStatus</strong></label> <br />
+                            <div id="paying">                                                                                              
+                                        @*OUTSTANDING*@
+                                        @if (Model.Order.OrderPaymentStatus == SR.ResellerDelayedPayment)
+                                        { 
+                                            if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
+                                            {
+                                                    <h5><strong>@Model.Order.OrderPaymentStatus</strong></h5>
+                                                    <medium>Due Date: @TempData["Due"]</medium> <br />
+                                                    <medium>Days Remaining: @TempData["Remaining"]</medium>    
+                                            }        
+                                        }
+
+                                        @*OVERDUE*@
+                                        @if(Model.Order.OrderPaymentStatus == SR.PaymentOverdue)
+                                        {
+                                            if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
+                                            {
+                                                         <h5><strong>@Model.Order.OrderPaymentStatus</strong></h5>
+                                                            <medium>Due Date: @TempData["Due"]</medium> <br />
+                                                            <medium>Days Overdue: @TempData["OverDue"]</medium>                                         
+                                            }                                          
+                                        }
+                                        @if(Model.Order.OrderPaymentStatus == SR.OrderPaymentApproved)
+                                        { 
+                                            <h5><strong>@Model.Order.OrderPaymentStatus</strong></h5>                                           
+                                        }
+                                                   
+                             </div>                            
+
                             @if (User.IsInRole(SR.Role_Admin))
                             {
                                 if (Model.Order.OrderStatus == SR.ProcessingOrder)
@@ -450,7 +505,7 @@
                                 <div class="col-md-4 strongdetails">
                                     <h5 class="spaceing"><strong>Contact Person</strong></h5>
                                     <label>Full Name: @Model.Order.FirstName @Model.Order.Surname</label> <br />
-                                    <label>Phone Number: @Model.Order.PhoneNumber</label> <br />
+                                    <label>Phone Number: <label>+27</label>@Model.Order.PhoneNumber</label> <br />
                                     <label>Email Address: @Model.Order.ApplicationUser.Email</label>
                                     <br />
                                     <h5 id="stronger" class="spaceing"><strong>Delivery Address</strong></h5>

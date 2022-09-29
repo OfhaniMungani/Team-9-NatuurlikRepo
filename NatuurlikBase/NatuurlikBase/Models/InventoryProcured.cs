@@ -26,7 +26,7 @@ namespace NatuurlikBase.Models
 
         [ValidateNever]
         [Display(Name = "Supplier Invoice File")]
-        public string? InvoiceFile { get; set; }
+        public string InvoiceFile { get; set; }
     }
 }
 

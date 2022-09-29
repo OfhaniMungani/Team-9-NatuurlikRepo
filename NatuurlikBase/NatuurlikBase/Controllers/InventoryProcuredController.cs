@@ -37,7 +37,7 @@ public class InventoryProcuredController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,SupplierId,InvoiceNo,ItemID,QuantityReceived,DateLogged")] InventoryProcured inventoryProcured)
+    public async Task<IActionResult> Create([Bind("Id,SupplierId,InvoiceNo,ItemID,QuantityReceived,DateLogged,InvoiceFile")] InventoryProcured inventoryProcured, IFormFile? file)
     {
         if (ModelState.IsValid)
 
@@ -48,21 +48,41 @@ public class InventoryProcuredController : Controller
                 inv.QuantityOnHand += inventoryProcured.QuantityReceived;
             }
 
-            var claimsId = (ClaimsIdentity)User.Identity;
-            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
-            var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
-            var fullName = user.FirstName + " " + user.Surname;
-            var userName = fullName.ToString();
+            string wwwRootPath = _hostEnvironment.WebRootPath;
+            if (file != null)
+            {
+                string fileName = Guid.NewGuid().ToString();
+                var uploads = Path.Combine(wwwRootPath, @"invoices\");
+                var extension = Path.GetExtension(file.FileName);
 
-            ViewBag.InventoryProcuredConfrimation = "Confirm Procured Inventory Details";
-            db.InventoryProcured.Add(inventoryProcured);
-            await db.SaveChangesAsync(userName);
+                if (extension != ".pdf" && extension != ".png" && extension != ".jpeg" && extension != ".jpg")
+                {
+                    TempData["wrong"] = "Please upload a pdf, jpeg, jpg or png";
+                }
 
+                else
+                {
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        file.CopyTo(fileStreams);
+                    }
+                    inventoryProcured.InvoiceFile = @"\invoices\" + fileName + extension;
 
-            TempData["success"] = "Procured Inventory Captured Successfully!";
-            TempData["NextCreation"] = "Hello World.";
+                    var claimsId = (ClaimsIdentity)User.Identity;
+                    var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                    var user = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                    var fullName = user.FirstName + " " + user.Surname;
+                    var userName = fullName.ToString();
 
-            return RedirectToAction("Index");
+                    ViewBag.InventoryProcuredConfrimation = "Confirm Procured Inventory Details";
+                    db.InventoryProcured.Add(inventoryProcured);
+                    await db.SaveChangesAsync(userName);
+
+                    TempData["success"] = "Procured Inventory Captured Successfully!";
+                    return RedirectToAction("Index");
+
+                }
+            }
         }
         ViewData["SupplierId"] = new SelectList(db.Suppliers, "Id", "CompanyName", inventoryProcured.SupplierId);
         ViewData["ItemID"] = new SelectList(db.InventoryItem, "Id", "InventoryItemName", inventoryProcured.ItemID);

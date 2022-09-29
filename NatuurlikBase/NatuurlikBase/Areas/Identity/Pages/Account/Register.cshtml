@@ -32,8 +32,11 @@
                 <div class="row">
                     <div class="form-floating col-md-6" id="formspace">
                         <label asp-for="Input.PhoneNumber" class="required">Phone Number</label>
-                        <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="0987654321"/>
-                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                          <div class="input-group">
+                            <span class="input-group-text">+27</span>
+                            <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="987654321"/>
+                            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                          </div>
                     </div>
                 </div>
 

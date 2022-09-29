@@ -62,7 +62,6 @@ namespace NatuurlikBase.Models
         [Required]
         public string Surname { get; set; }
 
-        [Required]
         public string PhoneNumber { get; set; }
 
         [Required]
@@ -102,6 +101,8 @@ namespace NatuurlikBase.Models
         [ValidateNever]
         public PaymentReminder PaymentReminder { get; set; }
 
+        [ValidateNever]
+        public DateTime ProcessedDate { get; set; }
 
     }
 }

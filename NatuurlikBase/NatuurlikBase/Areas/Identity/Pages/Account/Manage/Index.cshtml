@@ -52,11 +52,14 @@
                 <input asp-for="Input.Email" class="form-control" autocomplete="lastname" disabled />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
-            <div class="form-floating" id="formspace">
-                <label asp-for="Input.PhoneNumber" class="form-label required"></label>
-                <input asp-for="Input.PhoneNumber" class="form-control" />
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
+                    <div class="form-floating" id="formspace">
+                        <label asp-for="Input.PhoneNumber" class="required">Phone Number</label>
+                          <div class="input-group">
+                            <span class="input-group-text">+27</span>
+                            <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="987654321"/>                            
+                          </div>
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
             <div class="form-floating" id="formspace">
                 <label asp-for="Input.StreetAddress" class="required"></label>
                 <input asp-for="Input.StreetAddress" class="form-control" aria-required="true" />

@@ -206,8 +206,8 @@ namespace NatuurlikBase.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
@@ -487,6 +487,7 @@ namespace NatuurlikBase.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("InvoiceFile")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InvoiceNo")
@@ -553,10 +554,6 @@ namespace NatuurlikBase.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<string>("CourierName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -600,6 +597,9 @@ namespace NatuurlikBase.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ProcessedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ProvinceId")
                         .IsRequired()
@@ -1108,8 +1108,8 @@ namespace NatuurlikBase.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
 
                     b.Property<int>("ProvinceId")
                         .HasColumnType("int");

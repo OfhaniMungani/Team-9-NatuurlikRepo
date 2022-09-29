@@ -61,9 +61,9 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account.Manage
             public string Surname { get; set; }
 
             [Required]
-            [RegularExpression(@"^(\d{10})$", ErrorMessage = "Please enter a valid phone number.")]
+            [RegularExpression(@"^(\d{9})$", ErrorMessage = "Please enter a valid phone number.")]
             [Display(Name = "Phone Number")]
-            [MaxLength(10)]
+            [MaxLength(9)]
             public string PhoneNumber { get; set; }
 
             
