@@ -62,8 +62,7 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your email address has been changed successfully!";
+            await _signInManager.SignOutAsync();
             return Page();
         }
     }

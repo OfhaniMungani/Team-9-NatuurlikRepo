@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "H1pTQBVkhJx4+6n4UkoLnNU7Mn/gza3C99WQjry5pc8=",
+  "Hash": "MGq74y62RUCOqqUJV7aYUnsHMin3gLaS89vV4emVaNI=",
   "Source": "NatuurlikBase",
   "BasePath": "_content/NatuurlikBase",
   "Mode": "Default",
@@ -2312,6 +2312,23 @@
       "OriginalItemSpec": "wwwroot\\images\\bill.png"
     },
     {
+      "Identity": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\images\\carticon.png",
+      "SourceId": "NatuurlikBase",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\",
+      "BasePath": "_content/NatuurlikBase",
+      "RelativePath": "images/carticon.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\carticon.png"
+    },
+    {
       "Identity": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\images\\carts.png",
       "SourceId": "NatuurlikBase",
       "SourceType": "Discovered",
@@ -2497,6 +2514,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\emile.png"
+    },
+    {
+      "Identity": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\images\\emptycart.png",
+      "SourceId": "NatuurlikBase",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\",
+      "BasePath": "_content/NatuurlikBase",
+      "RelativePath": "images/emptycart.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\emptycart.png"
     },
     {
       "Identity": "D:\\Users\\vumis\\Desktop\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\images\\hannes.png",

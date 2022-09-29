@@ -117,12 +117,12 @@
                                          </div>                                      
                                     </div>
                                     <div class="col-md-7 rights">
-                       @*                 @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
+                                        @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
                                         {
                                             <a asp-controller="Order" asp-action="LogQuery" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Query Order">Query Order</a>
                                             <a asp-controller="Order" asp-action="LogReview" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Review Order">Review Order</a>
 
-                                            if (Model.Order.OrderStatus == SR.OrderPending && Model.Order.OrderPaymentStatus == SR.OrderPaymentApproved)
+@*                                            if (Model.Order.OrderStatus == SR.OrderPending && Model.Order.OrderPaymentStatus == SR.OrderPaymentApproved)
                                             {
                                                 <input type="button" data-toggle="modal" data-target="#exampl12" onclick="return validateInput()" class="btn btn-danger" style="width:150px" value="Cancel Order" />
                                                 <div class="modal fade" id="exampl12">
@@ -150,8 +150,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            }
-                                        }*@
+                                            }*@
+                                        }
                                         @if (User.IsInRole(SR.Role_Reseller) && Model.Order.OrderStatus == SR.OrderPending)
                                         {
                                             <input type="button" onclick="return validateInput()" data-toggle="modal" data-target="#exampleModal33" class="btn btn-danger" style="width:150px" value="Cancel Order" />

@@ -46,6 +46,15 @@ namespace NatuurlikBase.Controllers
 
         public IActionResult Detail(int? orderId)
         {
+
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                var hasCart = _uow.UserCart.GetAll(x => x.ApplicationUserId == claim.Value).FirstOrDefault();
+                ViewData["has"] = hasCart;
+            }
+
             //Load all order details
             OrderVM orderVM = new OrderVM()
             {
@@ -409,6 +418,14 @@ namespace NatuurlikBase.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
+            if (claim != null)
+            {
+                var hasCart = _uow.UserCart.GetAll(x => x.ApplicationUserId == claim.Value).FirstOrDefault();
+                ViewData["has"] = hasCart;
+            }
+
+
+
             IEnumerable<OrderQuery> orderQueries;
 
             if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
@@ -510,6 +527,16 @@ namespace NatuurlikBase.Controllers
         [HttpGet]
         public async Task<IActionResult> LogQuery(int orderId)
         {
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (claim != null)
+            {
+                var hasCart = _uow.UserCart.GetAll(x => x.ApplicationUserId == claim.Value).FirstOrDefault();
+                ViewData["has"] = hasCart;
+            }
+
             if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
             {
                 OrderQueryVM orderQueryVM = new()
@@ -552,8 +579,6 @@ namespace NatuurlikBase.Controllers
                 };
                 orderQueryVM.OrderQuery.OrderId = orderId;
                 ViewBag.Confirmation = "Confirm order query details?";
-                var claimsId = (ClaimsIdentity)User.Identity;
-                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
                 var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
                 var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
                 var userName = fullName.ToString();
@@ -567,6 +592,17 @@ namespace NatuurlikBase.Controllers
         [HttpGet]
         public IActionResult LogReview(int orderId)
         {
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (claim != null)
+            {
+                var hasCart = _uow.UserCart.GetAll(x => x.ApplicationUserId == claim.Value).FirstOrDefault();
+                ViewData["has"] = hasCart;
+            }
+
+
             if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
             {
                 OrderReviewVMcs orderReviewVM = new()
@@ -625,6 +661,9 @@ namespace NatuurlikBase.Controllers
 
         public IActionResult Index(string status)
         {
+
+
+
             IEnumerable<Order> orders;
 
             if (User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_SA))
@@ -638,6 +677,14 @@ namespace NatuurlikBase.Controllers
                 var claimsIdentity = (ClaimsIdentity)User.Identity;
                 var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
                 orders = _uow.Order.GetAll(u => u.ApplicationUserId == claim.Value && u.OrderPaymentStatus != SR.CustomerPaymentPending, includeProperties: "ApplicationUser");
+
+                if (claim != null)
+                {
+                    var hasCart = _uow.UserCart.GetAll(x => x.ApplicationUserId == claim.Value).FirstOrDefault();
+                    ViewData["has"] = hasCart;
+                }
+
+
             }
            
 

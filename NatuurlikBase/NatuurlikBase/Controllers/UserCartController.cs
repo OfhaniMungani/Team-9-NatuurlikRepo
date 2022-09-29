@@ -93,6 +93,10 @@ namespace NatuurlikBase.Controllers
                 Order = new()
             };
 
+
+            var hasCart = _unitOfWork.UserCart.GetAll(x => x.ApplicationUserId == claim.Value).FirstOrDefault();
+            ViewData["has"] = hasCart;
+
             //Capture different prices for Resellers.
 
             if (User.IsInRole(SR.Role_Reseller))
@@ -120,11 +124,14 @@ namespace NatuurlikBase.Controllers
 
         public IActionResult CartSummary()
         {
-
-
             //get user claims.
             var claimsId = (ClaimsIdentity)User.Identity;
             var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                var hasCart = _unitOfWork.UserCart.GetAll(x => x.ApplicationUserId == claim.Value).FirstOrDefault();
+                ViewData["has"] = hasCart;
+            }
 
             UserCartVM = new UserCartVM()
             {

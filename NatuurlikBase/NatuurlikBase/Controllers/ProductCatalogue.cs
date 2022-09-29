@@ -20,6 +20,16 @@ namespace NatuurlikBase.Controllers
 
         public IActionResult Index(int? categoryId)
         {
+
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                var hasCart = _unitOfWork.UserCart.GetAll(x => x.ApplicationUserId == claim.Value).FirstOrDefault();
+                ViewData["has"] = hasCart;
+            }
+
+
             ProductCategoryVM ProductVM = new ProductCategoryVM();
             if (categoryId != null && categoryId > 0)
             {
@@ -58,6 +68,12 @@ namespace NatuurlikBase.Controllers
             var claimsId = (ClaimsIdentity)User.Identity;
             var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
             userCart.ApplicationUserId = claim.Value;
+
+            if (claim != null)
+            {
+                var hasCart = _unitOfWork.UserCart.GetAll(x => x.ApplicationUserId == claim.Value).FirstOrDefault();
+                ViewData["has"] = hasCart;
+            }
 
             Cart cart = _unitOfWork.UserCart.GetFirstOrDefault(u => u.ProductId == userCart.ProductId && u.ApplicationUserId == claim.Value);
             var prods = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCart.ProductId);
