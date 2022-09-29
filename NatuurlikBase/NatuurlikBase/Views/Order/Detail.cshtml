@@ -87,34 +87,34 @@
                                 <div class="row">
                                     <div class="col-md-5 smaller">
                                         <h2 id="light">Order Status: <strong>@Model.Order.OrderStatus</strong></h2>
-                                         <div id="paydue">                                     
+                                        <div id="paydue">
                                             @*OUTSTANDING*@
                                             @if (Model.Order.OrderPaymentStatus == SR.ResellerDelayedPayment)
-                                            { 
-                                                if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
-                                                {
-                                                        <medium ><strong>@Model.Order.OrderPaymentStatus</strong></medium> <br>
-                                                        <small>Due Date: @TempData["Due"]</small> <br />
-                                                        <small>Days Remaining: @TempData["Remaining"]</small>    
-                                                }        
-                                            }
-
-                                            @*OVERDUE*@
-                                            @if(Model.Order.OrderPaymentStatus == SR.PaymentOverdue)
                                             {
                                                 if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
                                                 {
-                                                             <medium ><strong>@Model.Order.OrderPaymentStatus</strong></medium> <br>
-                                                                <small>Due Date: @TempData["Due"]</small> <br />
-                                                                <small>Days Overdue: @TempData["OverDue"]</small>                                         
-                                                }                                          
-                                            }
-                                            @if(Model.Order.OrderPaymentStatus == SR.OrderPaymentApproved)
-                                            { 
-                                                <medium><strong>@Model.Order.OrderPaymentStatus</strong></medium> <br>                                          
+                                                    <medium><strong>@Model.Order.OrderPaymentStatus</strong></medium> <br>
+                                                    <small>Due Date: @TempData["Due"]</small> <br />
+                                                    <small>Days Remaining: @TempData["Remaining"]</small>
+                                                }
                                             }
 
-                                         </div>                                      
+                                            @*OVERDUE*@
+                                            @if (Model.Order.OrderPaymentStatus == SR.PaymentOverdue)
+                                            {
+                                                if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
+                                                {
+                                                    <medium><strong>@Model.Order.OrderPaymentStatus</strong></medium> <br>
+                                                    <small>Due Date: @TempData["Due"]</small> <br />
+                                                    <small>Days Overdue: @TempData["OverDue"]</small>
+                                                }
+                                            }
+                                            @if (Model.Order.OrderPaymentStatus == SR.OrderPaymentApproved)
+                                            {
+                                                <medium><strong>@Model.Order.OrderPaymentStatus</strong></medium> <br>
+                                            }
+
+                                        </div>
                                     </div>
                                     <div class="col-md-7 rights">
                                         @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
@@ -123,34 +123,34 @@
                                             <a asp-controller="Order" asp-action="LogReview" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Review Order">Review Order</a>
 
                                             @*if (Model.Order.OrderStatus == SR.OrderPending && Model.Order.OrderPaymentStatus == SR.OrderPaymentApproved)
-                                            {
-                                                <input type="button" data-toggle="modal" data-target="#exampl12" onclick="return validateInput()" class="btn btn-danger" style="width:150px" value="Cancel Order" />
-                                                <div class="modal fade" id="exampl12">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header border-0">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
+                                    {
+                                    <input type="button" data-toggle="modal" data-target="#exampl12" onclick="return validateInput()" class="btn btn-danger" style="width:150px" value="Cancel Order" />
+                                    <div class="modal fade" id="exampl12">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                    <div class="modal-header border-0">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
 
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <h6 class="col-md-10">
-                                                                    Are You Sure You Want To Cancel This Order
-                                                                </h6>
-                                                            </div>
+                                    </div>
+                                    <div class="modal-body">
+                                    <h6 class="col-md-10">
+                                    Are You Sure You Want To Cancel This Order
+                                    </h6>
+                                    </div>
 
-                                                            <div class="modal-footer border-0">
-                                                                <div class="form-actions no-color">
-                                                                    <input type="submit" value="Confirm" asp-action="CancelOrder" class="btn btn-success" style="width:150px;" />
-                                                                    <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
-                                                                </div>
-                                                            </div>
+                                    <div class="modal-footer border-0">
+                                    <div class="form-actions no-color">
+                                    <input type="submit" value="Confirm" asp-action="CancelOrder" class="btn btn-success" style="width:150px;" />
+                                    <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
+                                    </div>
+                                    </div>
 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }*@
+                                    </div>
+                                    </div>
+                                    </div>
+                                    }*@
                                         }
                                         @if (User.IsInRole(SR.Role_Reseller) && Model.Order.OrderStatus == SR.OrderPending)
                                         {
@@ -188,7 +188,7 @@
                                     <div class="col-12">
                                         <div class="row">
                                             <div class="col-md-3 strongdetails">
-                                                
+
                                                 <p id="strong">Contact Person</p>
                                                 <label>@Model.Order.FirstName @Model.Order.Surname</label> <br />
                                                 <label>+27 @Model.Order.PhoneNumber</label> <br />
@@ -206,11 +206,11 @@
                                             <div class="col-md-4">
                                                 <p id="strong">Delivery Details</p>
                                                 <label>Courier: @Model.Order.Courier.CourierName</label> <br />
-                                                @if(@Model.Order.ParcelTrackingNumber != null)
+                                                @if (@Model.Order.ParcelTrackingNumber != null)
                                                 {
-                                                     <label>Tracking Number: @Model.Order.ParcelTrackingNumber</label> <br />
+                                                    <label>Tracking Number: @Model.Order.ParcelTrackingNumber</label> <br />
                                                 }
-                                               
+
                                                 <label>Dispatched Date: @Model.Order.DispatchedDate.ToString("d")</label>
                                             </div>
                                             <div class="col-md-5">
@@ -265,18 +265,18 @@
                 </div>
                 <div class="card-body">
 
-                    <div class="row justify-content-center">  
+                    <div class="row justify-content-center">
 
                         @*!!!!!!!!!!    RESELLER ORDER - NORMAL DELIVERY    !!!!!!!!!!!!*@
-                        @if(@Model.Order.IsResellerOrder == true && @Model.Order.Courier.CourierName != "Natuurlik Free Delivery")
+                        @if (@Model.Order.IsResellerOrder == true && @Model.Order.Courier.CourierName != "Natuurlik Free Delivery")
                         {
-                            @if(@Model.Order.OrderStatus == SR.OrderPending)
+                            @if (@Model.Order.OrderStatus == SR.OrderPending)
                             {
                                 <img src="~/images/orderStatus/res1.png">
                             }
                             else if (@Model.Order.OrderStatus == SR.ProcessingOrder)
                             {
-                                if(@Model.OrderLine.All(x => x.IsPackaged == true))
+                                if (@Model.OrderLine.All(x => x.IsPackaged == true))
                                 {
                                     <img src="~/images/orderStatus/res3.png">
                                 }
@@ -285,27 +285,27 @@
                                     <img src="~/images/orderStatus/res2.png">
                                 }
                             }
-                             else if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                            else if (@Model.Order.OrderStatus == SR.OrderDispatched)
                             {
                                 <img src="~/images/orderStatus/res4.png">
-                            }    
-                             else if (@Model.Order.OrderStatus == SR.OrderCancelled)
+                            }
+                            else if (@Model.Order.OrderStatus == SR.OrderCancelled)
                             {
                                 <img src="~/images/orderStatus/resC.png">
-                            }                            
-                            
+                            }
+
                         }
 
                         @*!!!!!!!!!!    RESELLER ORDER - FREE DELIVERY    !!!!!!!!!!!!*@
-                        @if(@Model.Order.IsResellerOrder == true && @Model.Order.Courier.CourierName == "Natuurlik Free Delivery")
+                        @if (@Model.Order.IsResellerOrder == true && @Model.Order.Courier.CourierName == "Natuurlik Free Delivery")
                         {
-                            @if(@Model.Order.OrderStatus == SR.OrderPending)
+                            @if (@Model.Order.OrderStatus == SR.OrderPending)
                             {
                                 <img src="~/images/orderStatus/resD1.png">
                             }
                             else if (@Model.Order.OrderStatus == SR.ProcessingOrder)
                             {
-                                if(@Model.OrderLine.All(x => x.IsPackaged == true))
+                                if (@Model.OrderLine.All(x => x.IsPackaged == true))
                                 {
                                     <img src="~/images/orderStatus/resD3.png">
                                 }
@@ -314,30 +314,30 @@
                                     <img src="~/images/orderStatus/resD2.png">
                                 }
                             }
-                             else if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                            else if (@Model.Order.OrderStatus == SR.OrderDispatched)
                             {
                                 <img src="~/images/orderStatus/resD4.png">
                             }
-                             else if (@Model.Order.OrderStatus == SR.Delivered)
+                            else if (@Model.Order.OrderStatus == SR.Delivered)
                             {
                                 <img src="~/images/orderStatus/resD5.png">
-                            } 
-                             else if (@Model.Order.OrderStatus == SR.OrderCancelled)
+                            }
+                            else if (@Model.Order.OrderStatus == SR.OrderCancelled)
                             {
                                 <img src="~/images/orderStatus/resDC.png">
-                            }                            
-                             else if (@Model.Order.OrderStatus == SR.OrderRejected)
+                            }
+                            else if (@Model.Order.OrderStatus == SR.OrderRejected)
                             {
                                 <img src="~/images/orderStatus/resDR.png">
-                            } 
+                            }
                         }
 
                         @*!!!!!!!!!!    CUSTOMER ORDER - NORMAL DELIVERY    !!!!!!!!!!!!*@
-                        @if(@Model.Order.IsResellerOrder == false && @Model.Order.Courier.CourierName != "Natuurlik Free Delivery")
+                        @if (@Model.Order.IsResellerOrder == false && @Model.Order.Courier.CourierName != "Natuurlik Free Delivery")
                         {
                             @if (@Model.Order.OrderStatus == SR.ProcessingOrder)
                             {
-                                if(@Model.OrderLine.All(x => x.IsPackaged == true))
+                                if (@Model.OrderLine.All(x => x.IsPackaged == true))
                                 {
                                     <img src="~/images/orderStatus/cus2.png">
                                 }
@@ -346,18 +346,18 @@
                                     <img src="~/images/orderStatus/cus1.png">
                                 }
                             }
-                             else if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                            else if (@Model.Order.OrderStatus == SR.OrderDispatched)
                             {
                                 <img src="~/images/orderStatus/cus3.png">
-                            }                            
+                            }
                         }
 
                         @*!!!!!!!!!!    CUSTOMER ORDER - FREE DELIVERY    !!!!!!!!!!!!*@
-                        @if(@Model.Order.IsResellerOrder == false && @Model.Order.Courier.CourierName == "Natuurlik Free Delivery")
+                        @if (@Model.Order.IsResellerOrder == false && @Model.Order.Courier.CourierName == "Natuurlik Free Delivery")
                         {
                             @if (@Model.Order.OrderStatus == SR.ProcessingOrder)
                             {
-                                if(@Model.OrderLine.All(x => x.IsPackaged == true))
+                                if (@Model.OrderLine.All(x => x.IsPackaged == true))
                                 {
                                     <img src="~/images/orderStatus/cusD2.png">
                                 }
@@ -366,20 +366,20 @@
                                     <img src="~/images/orderStatus/cusD1.png">
                                 }
                             }
-                             else if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                            else if (@Model.Order.OrderStatus == SR.OrderDispatched)
                             {
                                 <img src="~/images/orderStatus/cusD3.png">
-                            }  
-                             else if (@Model.Order.OrderStatus == SR.Delivered)
+                            }
+                            else if (@Model.Order.OrderStatus == SR.Delivered)
                             {
                                 <img src="~/images/orderStatus/cusD4.png">
-                            }                             
+                            }
                         }
 
-                        
+
                     </div>
 
-               <hr>     
+                    <hr>
                     <div class="row ordstatus">
                         <div class="col-md-4">
                             <h2 id="ordspace">Order Status: <strong>@Model.Order.OrderStatus</strong></h2>
@@ -391,45 +391,45 @@
                             }
                         </div>
                         <div class="col-md-8 rightside">
-                            <div id="paying">                                                                                              
-                                        @*OUTSTANDING*@
-                                        @if (Model.Order.OrderPaymentStatus == SR.ResellerDelayedPayment)
-                                        { 
-                                            if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
-                                            {
-                                                    <h5><strong>@Model.Order.OrderPaymentStatus</strong></h5>
-                                                    <medium>Due Date: @TempData["Due"]</medium> <br />
-                                                    <medium>Days Remaining: @TempData["Remaining"]</medium>    
-                                            }        
-                                        }
+                            <div id="paying">
+                                @*OUTSTANDING*@
+                                @if (Model.Order.OrderPaymentStatus == SR.ResellerDelayedPayment)
+                                {
+                                    if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
+                                    {
+                                        <h5><strong>@Model.Order.OrderPaymentStatus</strong></h5>
+                                        <medium>Due Date: @TempData["Due"]</medium> <br />
+                                        <medium>Days Remaining: @TempData["Remaining"]</medium>
+                                    }
+                                }
 
-                                        @*OVERDUE*@
-                                        @if(Model.Order.OrderPaymentStatus == SR.PaymentOverdue)
-                                        {
-                                            if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
-                                            {
-                                                         <h5><strong>@Model.Order.OrderPaymentStatus</strong></h5>
-                                                            <medium>Due Date: @TempData["Due"]</medium> <br />
-                                                            <medium>Days Overdue: @TempData["OverDue"]</medium>                                         
-                                            }                                          
-                                        }
-                                        @if(Model.Order.OrderPaymentStatus == SR.OrderPaymentApproved)
-                                        { 
-                                            <h5><strong>@Model.Order.OrderPaymentStatus</strong></h5>                                           
-                                        }
-                                                   
-                             </div>                            
+                                @*OVERDUE*@
+                                @if (Model.Order.OrderPaymentStatus == SR.PaymentOverdue)
+                                {
+                                    if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
+                                    {
+                                        <h5><strong>@Model.Order.OrderPaymentStatus</strong></h5>
+                                        <medium>Due Date: @TempData["Due"]</medium> <br />
+                                        <medium>Days Overdue: @TempData["OverDue"]</medium>
+                                    }
+                                }
+                                @if (Model.Order.OrderPaymentStatus == SR.OrderPaymentApproved)
+                                {
+                                    <h5><strong>@Model.Order.OrderPaymentStatus</strong></h5>
+                                }
+
+                            </div>
 
                             @if (User.IsInRole(SR.Role_Admin))
                             {
                                 if (Model.Order.OrderStatus == SR.ProcessingOrder)
                                 {
                                     @* <a asp-controller="PrepareOrder" asp-action="Index" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Package Order">Package Order</a>*@
-                                    @if(@Model.OrderLine.All(x => x.IsPackaged == true))
+                                    @if (@Model.OrderLine.All(x => x.IsPackaged == true))
                                     {
                                         <input type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-secondary" value="Dispatch Order" style="width:150px" />
                                     }
-                                    
+
                                     <div class="modal fade" id="exampleModal">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
@@ -611,10 +611,10 @@
                                         <label> @Model.Order.DispatchedDate.ToString("d")</label>
                                     }
                                     <div class="d-flex justify-content-between">
-                                        
+
                                         @if (@Model.Order.OrderStatus == SR.ProcessingOrder)
                                         {
-                                            @if(@Model.Order.Courier.CourierName != "Natuurlik Free Delivery")
+                                            @if (@Model.Order.Courier.CourierName != "Natuurlik Free Delivery")
                                             {
                                                 <label>Tracking Number: @Model.Order.ParcelTrackingNumber</label>
                                                 <input asp-for="Order.ParcelTrackingNumber" id="trackingNumber" type="text" class="form-control" />
@@ -630,7 +630,7 @@
                                     else
                                     {
                                         <h5 class="spaceing"><strong>Package Order </strong></h5>
-                                    }                                   
+                                    }
                                     <div class="card">
                                         <div class="card-body">
                                             @foreach (var line in Model.OrderLine)
@@ -641,18 +641,37 @@
                                                 </div>
                                                 <small class="text-muted" id="money">Price : R @line.Price.ToString("0.00")</small> <br />
                                                 <small class="text-muted">Quantity: @line.Count</small>
-                                                <div class="d-flex justify-content-between">
-                                                    <small class="text-muted">Package Order Status:</small>
-                                                    @if (@line.IsPackaged == true)
-                                                    {
-                                                        <small class="text-muted">Is Packaged</small>
-                                                    }
-                                                    else
-                                                    {
-                                                        <small class="text-muted">Not Packaged</small>
-                                                    }
-                                                    <medium><input asp-for="@line.IsPackaged" class="form-control" type="checkbox" id="@line.Id" onchange="autoSave(this)" /></medium>
-                                                </div>
+                                                @if (@Model.Order.OrderStatus == SR.OrderDispatched || @Model.Order.OrderStatus == SR.OrderRejected || @Model.Order.OrderStatus == SR.OrderCancelled)
+                                                {
+                                                     <div class="d-flex justify-content-between">
+                                                        <small class="text-muted">Package Order Status:</small>
+                                                        @if (@line.IsPackaged == true)
+                                                        {
+                                                            <small class="text-muted">Is Packaged</small>
+                                                        }
+                                                        else
+                                                        {
+                                                            <small class="text-muted">Not Packaged</small>
+                                                        }
+                                                        <medium><input asp-for="@line.IsPackaged" class="form-control" type="checkbox" id="@line.Id" onchange="autoSave(this)" disabled /></medium>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="d-flex justify-content-between">
+                                                        <small class="text-muted">Package Order Status:</small>
+                                                        @if (@line.IsPackaged == true)
+                                                        {
+                                                            <small class="text-muted">Is Packaged</small>
+                                                        }
+                                                        else
+                                                        {
+                                                            <small class="text-muted">Not Packaged</small>
+                                                        }
+                                                        <medium><input asp-for="@line.IsPackaged" class="form-control" type="checkbox" id="@line.Id" onchange="autoSave(this)" /></medium>
+                                                    </div>
+                                                }
+
                                                 <hr />
                                             }
                                             <div class="d-flex justify-content-between" id="summarytotal">
@@ -701,8 +720,8 @@
             timer: 2500
         })
         setTimeout(function() {
-                window.location.reload();
-            }, 2500);
+            window.location.reload();
+        }, 2500);
     }
 </script>
 
