@@ -15,7 +15,6 @@
       <div class="card-body">
 
         <div class="row">
-
          @if (Model.User.Id != null)
             {
         <div class="col-md-6">
@@ -24,6 +23,11 @@
         </div>
             }
 
+        </div>
+
+        <br />
+
+        <div class="row">
         <div class="col-md-6">
             <label asp-for="User.FirstName"> First Name </label>&nbsp;<label style="color:red">*</label>
             <input asp-for="User.FirstName" class="form-control" />
@@ -36,13 +40,13 @@
             <label asp-for="User.Surname"> Surname </label>&nbsp;<label style="color:red">*</label>
             <input asp-for="User.Surname" class="form-control" />
             <span asp-validation-for="User.Surname" class="text-danger"></span>
-            </div>
+        </div>
         </div>
 
         <br />
 
           <div class="row">
-                        <div class="form-floating col-md-6" id="formspace">
+                        <div class="form-floating col-md-6">
                             <label asp-for="User.PhoneNumber" class="required">Phone Number</label>
                               <div class="input-group">
                                 <span class="input-group-text">+27</span>

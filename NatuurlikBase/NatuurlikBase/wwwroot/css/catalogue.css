@@ -10,8 +10,14 @@
 
 
 #cat {
-    margin-top: 30px;
+    margin-top: 10px;
 }
+
+#catText{
+    color:black;
+    text-decoration: none;
+}
+
 
 .space {
     padding-bottom: 100px;

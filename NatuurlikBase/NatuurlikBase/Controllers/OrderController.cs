@@ -133,12 +133,11 @@ namespace NatuurlikBase.Controllers
             string name = user.FirstName;
             string number = orderRetrieved.Id.ToString();
             string date = orderRetrieved.CreatedDate.ToString("M");
-            string status = orderRetrieved.OrderPaymentStatus.ToString();
             var callbackUrl = Url.Action("Index", "Order", values: null, protocol: Request.Scheme);
 
             string wwwRootPath = _hostEnvironment.WebRootPath;
             var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\appOrderTemp.html"));
-            template = template.Replace("[NAME]", name).Replace("[STATUS]", status)
+            template = template.Replace("[NAME]", name)
                 .Replace("[ID]", number).Replace("[DATE]", date).Replace("[URL]", callbackUrl);
             string message = template;
 
@@ -172,12 +171,11 @@ namespace NatuurlikBase.Controllers
             string name = user.FirstName;
             string number = orderRetrieved.Id.ToString();
             string date = orderRetrieved.CreatedDate.ToString("M");
-            string status = orderRetrieved.OrderPaymentStatus.ToString();
             var callbackUrl = Url.Action("Index", "Order", values: null, protocol: Request.Scheme);
 
             string wwwRootPath = _hostEnvironment.WebRootPath;
             var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\canResOrderTemp.html"));
-            template = template.Replace("[NAME]", name).Replace("[STATUS]", status)
+            template = template.Replace("[NAME]", name)
                 .Replace("[ID]", number).Replace("[DATE]", date).Replace("[URL]", callbackUrl);
             string message = template;
 
@@ -319,12 +317,11 @@ namespace NatuurlikBase.Controllers
             string name = user.FirstName;
             string number = orderRetrieved.Id.ToString();
             string date = orderRetrieved.CreatedDate.ToString("M");
-            string status = orderRetrieved.OrderPaymentStatus.ToString();
             var callbackUrl = Url.Action("Index", "Order", values: null, protocol: Request.Scheme);
 
             string wwwRootPath = _hostEnvironment.WebRootPath;
             var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\rejOrderTemp.html"));
-            template = template.Replace("[NAME]", name).Replace("[STATUS]", status)
+            template = template.Replace("[NAME]", name)
                 .Replace("[ID]", number).Replace("[DATE]", date).Replace("[URL]", callbackUrl);
             string message = template;
 

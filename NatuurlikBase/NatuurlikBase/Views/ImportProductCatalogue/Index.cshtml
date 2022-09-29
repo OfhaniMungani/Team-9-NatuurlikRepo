@@ -41,19 +41,21 @@
     }
 
     <div class="card">
+         <div class="card-header" style="background-color: #F2F2F2">
+              <h5>Import Natuurlik Products</h5>
+         </div>
+         <div class="card-body">
+            <form enctype="multipart/form-data" method="post" asp-action="Import">
 
-        <form enctype="multipart/form-data" method="post" asp-action="Import">
-            <h5> Import Natuurlik Products</h5>
-            <br />
-
-            <label>Choose a JSON file to upload</label> <i class="bi bi-filetype-json"></i>
-            <hr />
-            <input asp-for="File" type="file">
-            <span asp-validation-for="File"></span>
-            <br />
-            <br />
-            <input class="btn btn-outline-success" type="submit" value="Upload" />
-        </form>
+                <label>Choose a JSON file to upload</label> <i class="bi bi-filetype-json"></i>
+                <hr />
+                <input asp-for="File" type="file">
+                <span asp-validation-for="File"></span>
+                <br />
+                <br />
+                <input class="btn btn-success" type="submit" value="Upload" />
+            </form>
+        </div>
     </div>
 </div>
 
