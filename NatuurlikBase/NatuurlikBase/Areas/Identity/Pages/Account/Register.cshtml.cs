@@ -204,7 +204,7 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account
                 user.ProvinceId = Input.Province;
                 user.CityId = Input.City;
                 user.SuburbId = Input.Suburb;
-                user.UserRole = Input.Role;
+                user.UserRole = SR.Role_Customer;
 
 
 

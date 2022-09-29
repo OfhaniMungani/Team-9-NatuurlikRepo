@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "YLmLX6aL437wecjL4keehtO93h40MVUHoZoozFgMgK8=",
+  "Hash": "ugNzAaNb5AOl2OBj4xeBc/YtpSk2dBk08es47LUBDMA=",
   "Source": "NatuurlikBase",
   "BasePath": "_content/NatuurlikBase",
   "Mode": "Default",
@@ -2344,6 +2344,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\products\\f6e7e081-36ba-422f-968f-985a297d9198.jpg"
+    },
+    {
+      "Identity": "C:\\KYLE\\My UP\\INF 370\\Natuurlik Code\\Team-9-NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\images\\products\\f81f86fa-a49a-455c-96c1-f19976ffd8a9.png",
+      "SourceId": "NatuurlikBase",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\KYLE\\My UP\\INF 370\\Natuurlik Code\\Team-9-NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\",
+      "BasePath": "_content/NatuurlikBase",
+      "RelativePath": "images/products/f81f86fa-a49a-455c-96c1-f19976ffd8a9.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\products\\f81f86fa-a49a-455c-96c1-f19976ffd8a9.png"
     },
     {
       "Identity": "C:\\KYLE\\My UP\\INF 370\\Natuurlik Code\\Team-9-NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\images\\products\\fb16a453-1dd5-4838-8fb2-73acb432f815.png",

@@ -1,7 +1,13 @@
 ﻿@page 
 @namespace NatuurlikBase.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@{
+
+@if (Request.Path.Value.Contains("/ConfigureProduct/"))
+{
+    Layout = "_BlazorLayout1";
+}
+else
+{
     Layout = "_BlazorLayout";
 }
 <component type="typeof(App)" render-mode="ServerPrerendered" />
