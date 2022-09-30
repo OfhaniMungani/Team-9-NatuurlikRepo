@@ -10,6 +10,7 @@ using NatuurlikBase.Repository;
 using NatuurlikBase.Models;
 using Stripe;
 using NatuurlikBase.Factory;
+using NatuurlikBase.Data.DbInitilizer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +48,7 @@ builder.Services.AddTransient<ISendSupplierOrderRepository, SendSupplierOrderRep
 builder.Services.AddTransient<IViewSupplierById, ViewSupplierById>();
 builder.Services.AddTransient<ISearchProductionTransactionsRepository, SearchProductionTransactionsRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IDbInitilizer, DbInitilizer>();
 builder.Services.AddTransient<IEmailSender, SendGridEmailSender>();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppUserClaimsPrincipalFactory>();
@@ -90,6 +92,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
+SeedDatabase();
 app.UseAuthentication();;
 
 app.UseAuthorization();
@@ -109,3 +112,11 @@ app.UseEndpoints(endpoints =>
 
 app.Run();
 
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitiliazer = scope.ServiceProvider.GetRequiredService<IDbInitilizer>();
+        dbInitiliazer.Initialize();
+    }
+}
