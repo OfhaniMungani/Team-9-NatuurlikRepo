@@ -44,7 +44,7 @@ namespace NatuurlikBase.Data.DbInitilizer
             if (!_roleManager.RoleExistsAsync(SR.Role_Admin).GetAwaiter().GetResult())
             {
                 _roleManager.CreateAsync(new IdentityRole(SR.Role_Admin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SR.Role_MD)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(SR.Role_DRI)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SR.Role_SA)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SR.Role_IM)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SR.Role_Customer)).GetAwaiter().GetResult();
@@ -80,8 +80,8 @@ namespace NatuurlikBase.Data.DbInitilizer
 
                 _userManager.CreateAsync(new ApplicationUser
                 {
-                    UserName = "u18139958@tuks.co.za",
-                    Email = "u18139958@tuks.co.za",
+                    UserName = "bytexpress5@gmail.com",
+                    Email = "bytexpress5@gmail.com",
                     FirstName = "Thenjiwe",
                     Surname = "Ntsonda",
                     PhoneNumber = "817473388",
@@ -95,7 +95,7 @@ namespace NatuurlikBase.Data.DbInitilizer
                 }, "N@uurlik_14953").GetAwaiter().GetResult();
                
                 
-                ApplicationUser user = _db.User.FirstOrDefault(u => u.Email == "u18139958@tuks.co.za");
+                ApplicationUser user = _db.User.FirstOrDefault(u => u.Email == "bytexpress5@gmail.com");
 
                 _userManager.AddToRoleAsync(user, SR.Role_Admin).GetAwaiter().GetResult();
             }
