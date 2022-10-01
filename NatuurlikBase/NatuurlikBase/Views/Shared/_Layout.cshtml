@@ -61,7 +61,7 @@
                         </li>
 
                        
-                      @if(User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_MD) || User.IsInRole(SR.Role_IM) || User.IsInRole(SR.Role_SA))
+                      @if(User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_IM) || User.IsInRole(SR.Role_SA))
                     {
                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">MANAGE STORE</a>
