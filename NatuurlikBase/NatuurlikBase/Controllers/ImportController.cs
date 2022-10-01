@@ -77,7 +77,7 @@ namespace natuurlik.Controllers
                     }
 
                     //Insert the Data read from the Excel file to Database Table.
-                    conString = @"Data Source=.;Initial Catalog=NatuurlikDB;Trusted_Connection=True;";
+                    conString = @"Data Source=.;Initial Catalog=NatuurlikDBTest;Trusted_Connection=True;";
                     using (SqlConnection con = new SqlConnection(conString))
                     {
                         using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(con))
@@ -121,7 +121,7 @@ namespace natuurlik.Controllers
 
             }
             else { TempData["x"] = "Please choose an Excel file to upload"; }
-            return RedirectToAction("Create", "Countries");
+            return RedirectToAction("Index", "PaymentReminder");
         }
         [HttpPost]
         public IActionResult country(IFormFile postedFile)
@@ -177,7 +177,7 @@ namespace natuurlik.Controllers
                     }
 
                     //Insert the Data read from the Excel file to Database Table.
-                    conString = @"Data Source=.;Initial Catalog=NatuurlikDB;Trusted_Connection=True;";
+                    conString = @"Data Source=.;Initial Catalog=NatuurlikDBTest;Trusted_Connection=True;";
                     using (SqlConnection con = new SqlConnection(conString))
                     {
                         using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(con))
@@ -279,7 +279,7 @@ namespace natuurlik.Controllers
                     }
 
                     //Insert the Data read from the Excel file to Database Table.
-                    conString = @"Data Source=.;Initial Catalog=NatuurlikDB;Trusted_Connection=True;";
+                    conString = @"Data Source=.;Initial Catalog=NatuurlikDBTest;Trusted_Connection=True;";
                     using (SqlConnection con = new SqlConnection(conString))
                     {
                         using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(con))
@@ -379,7 +379,7 @@ namespace natuurlik.Controllers
                     }
 
                     //Insert the Data read from the Excel file to Database Table.
-                    conString = @"Data Source=.;Initial Catalog=NatuurlikDB;Trusted_Connection=True;";
+                    conString = @"Data Source=.;Initial Catalog=NatuurlikDBTest;Trusted_Connection=True;";
                     using (SqlConnection con = new SqlConnection(conString))
                     {
                         using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(con))
@@ -481,7 +481,7 @@ namespace natuurlik.Controllers
                     }
 
                     //Insert the Data read from the Excel file to Database Table.
-                    conString = @"Data Source=.;Initial Catalog=NatuurlikDB;Trusted_Connection=True;";
+                    conString = @"Data Source=.;Initial Catalog=NatuurlikDBTest;Trusted_Connection=True;";
                     using (SqlConnection con = new SqlConnection(conString))
                     {
                         using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(con))

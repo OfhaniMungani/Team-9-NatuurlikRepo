@@ -10641,24 +10641,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\preci\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\User\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\preci\\OneDrive\\Desktop\\code to commit\\Team-9-NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\NatuurlikBase.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\NatuurlikBase.csproj",
       "projectName": "NatuurlikBase",
-      "projectPath": "C:\\Users\\preci\\OneDrive\\Desktop\\code to commit\\Team-9-NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\NatuurlikBase.csproj",
-      "packagesPath": "C:\\Users\\preci\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\preci\\OneDrive\\Desktop\\code to commit\\Team-9-NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\obj\\",
+      "projectPath": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\NatuurlikBase.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\preci\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
