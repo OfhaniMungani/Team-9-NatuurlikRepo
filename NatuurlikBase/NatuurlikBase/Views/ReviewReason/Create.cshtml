@@ -6,10 +6,11 @@
 }
 
 <div id="page-content-wrapper">
-    <form method="post">	
-        <div>
-            @if (ViewBag.Error == null)
-            {
+
+    @if (ViewBag.Error == null)
+    {
+          <form method="post">	
+            <div>
                 <div class="card">
                     <div class="card-header" style="background-color: #F2F2F2">
                     <h5>Create Review Reason</h5>
@@ -30,8 +31,12 @@
             </div>
 	    </div>
          </div>
-         }
-            </div>
+
+        </div>
+          </form>
+      
+    }
+
 	         <div class="modal" id="exampleModal1" data-bs-backdrop="static" data-bs-keyboard="false" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -52,9 +57,8 @@
 
                 </div>
             </div>
-        </div>
-    </form>
-</div>
+            </div>
+   
 @section Scripts{
 	
 	 
@@ -73,3 +77,4 @@
     
     }
 }
+

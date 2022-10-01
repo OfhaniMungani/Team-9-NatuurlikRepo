@@ -27,59 +27,7 @@ public class ReviewReasonController : Controller
     }
 
     // GET: Countries/Details/5
-
-
-    // GET: Countries/Create
-    public IActionResult Create()
-    {
-        return View();
-    }
-
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Name")] ReviewReason ReviewReason)
-    {
-        if (ModelState.IsValid)
-
-        {
-            if (db.ReviewReason.Any(c => c.Name.Equals(ReviewReason.Name)))
-            {
-                ViewBag.Error = "Review Reason Already exist in the database.";
-
-
-            }
-            else
-            {
-                db.ReviewReason.Add(ReviewReason);
-
-                ViewBag.ReviewReasonConfirmation = "Are you sure you want to add a Review reason.";
-                var claimsId = (ClaimsIdentity)User.Identity;
-                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
-                var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
-                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
-                var userName = fullName.ToString();
-                await db.SaveChangesAsync(userName);
-
-                TempData["success"] = "Review Reason successfully added.";
-                TempData["NextCreation"] = "Review Reason Successfully Deleted.";
-
-                return RedirectToAction("Index");
-            }
-
-        }
-
-        else if (!ModelState.IsValid)
-
-        {
-            ViewBag.modal = "invalid.";
-
-        }
-        return View(ReviewReason);
-    }
-
-
-    public IActionResult Edit(int? id)
+    public IActionResult Details(int? id)
     {
         if (id == null)
         {
@@ -93,16 +41,78 @@ public class ReviewReasonController : Controller
         return View(ReviewReason);
     }
 
+    // GET: Countries/Create
+    public IActionResult Create()
+    {
+        return View();
+    }
+
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit([Bind("Id,Name")] ReviewReason ReviewReason)
+    public async Task<IActionResult> Create([Bind("Id,Name")] ReviewReason reviewReason)
+    {
+        if (ModelState.IsValid)
+
+        {
+            if (db.ReviewReason.Any(c => c.Name.Equals(reviewReason.Name)))
+            {
+                ViewBag.ReturnError = "Review Reason Already exist in the database.";
+
+
+            }
+            else
+            {
+                db.ReviewReason.Add(reviewReason);
+
+                ViewBag.ReviewReasonConfirmation = "Are you sure you want to add a Review reason.";
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _uow.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await db.SaveChangesAsync(userName);
+
+                TempData["success"] = "Review Reason created successfully.";
+                return RedirectToAction("Index");
+            }
+
+        }
+
+        else if (!ModelState.IsValid)
+
+        {
+            ViewBag.modal = "invalid.";
+
+        }
+        return View(reviewReason);
+    }
+
+
+    public IActionResult Edit(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+        ReviewReason reviewReason = db.ReviewReason.Find(id);
+        if (reviewReason == null)
+        {
+            return NotFound();
+        }
+        return View(reviewReason);
+    }
+
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit([Bind("Id,Name")] ReviewReason reviewReason)
     {
         if (ModelState.IsValid)
 
         {
 
-            if (db.ReviewReason.Any(c => c.Name.Equals(ReviewReason.Name)))
+            if (db.ReviewReason.Any(c => c.Name.Equals(reviewReason.Name)))
             {
                 ViewBag.Error = "Review Reason Already exist in the database.";
 
@@ -110,7 +120,7 @@ public class ReviewReasonController : Controller
             else
             {
                 //db.Entry(ReviewReason).State = EntityState.Modified;
-                _uow.ReviewReason.Update(ReviewReason);
+                _uow.ReviewReason.Update(reviewReason);
                 TempData["success"] = "Review Reason Successfully Edited.";
                 ViewBag.ReviewReasonConfirmation = "Are you sure with your Review reason changes.";
                 var claimsId = (ClaimsIdentity)User.Identity;
@@ -122,7 +132,7 @@ public class ReviewReasonController : Controller
                 return RedirectToAction("Index");
             }
         }
-        return View(ReviewReason);
+        return View(reviewReason);
     }
 
 
@@ -190,5 +200,4 @@ public class ReviewReasonController : Controller
         base.Dispose(disposing);
     }
 }
-
 
