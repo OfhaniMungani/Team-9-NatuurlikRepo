@@ -13,6 +13,7 @@
         public string suburb { get; set; }
        public DateTime date { get; set; }
         public int phoneNumber { get; set; }
+        public string img { get; set; }
     }
  
     

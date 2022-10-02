@@ -1,0 +1,78 @@
+﻿@model IEnumerable<NatuurlikBase.Models.Delivery>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+
+
+<div id="page-content-wrapper">
+
+
+
+ <div class="container-fluid">
+     <div class="row justify-content-start">
+            <div class="col-10 col-sm-10 col-md-10">
+            <h2 class="cheading">Completed Deliveries List
+                <a href="" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
+            </h2>
+		</div>
+       
+	</div>
+    <br /><br />
+
+<table class="table" id="tblData" style="background-color: #232323">
+    <thead>
+        <tr>
+            <th class="text-light">
+               Order Number
+			</th>
+            <th class="text-light">
+                Date
+			</th> 
+            <th class="text-light">
+               Image
+            </th>
+           
+		</tr>
+	</thead>
+    <tbody>
+        @foreach(var obj in Model)
+        {
+            <tr>
+                <td >
+                    @obj.OrderId
+				</td> <td>
+                    @obj.Date.ToString("MM/dd/yyyy")
+				</td>
+                <td>
+                    <img src="@obj.img">
+                   
+                   
+                </td>
+
+			</tr>
+        }
+    </tbody>
+
+</table>
+</div>
+</div>
+
+@section Scripts {
+     <script src="~/js/notifications.js"></script>
+     <script>
+          var dataTable;
+        $(document).ready(function () {
+            dataTable = $("#tblData").DataTable({
+
+
+            });
+        })
+
+
+        </script>
+}

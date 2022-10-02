@@ -727,6 +727,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlkZW9cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/User/Documents/GitHub/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/ViewDeliveries/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlld0RlbGl2ZXJpZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/User/Documents/GitHub/NatuurlikRepo/NatuurlikBase/NatuurlikBase/Views/WriteOffReason/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV3JpdGVPZmZSZWFzb25cQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

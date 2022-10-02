@@ -17,8 +17,9 @@ namespace NatuurlikBase.Models
         [ValidateNever]
         [ForeignKey("OrderId")]
         public Order Order { get; set; }
-      
-       
+
+        [Column("Image")]
+        public string img { get; set; }
     }
 }
 

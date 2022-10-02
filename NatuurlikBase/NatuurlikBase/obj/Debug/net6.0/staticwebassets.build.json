@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "B7s5OhJYE8CAQGEn/gs/W/oTE8/sCKrKmq5vorVkYR8=",
+  "Hash": "Ng5Obgbr+M/PQRZH7XxsKeDAduAWbm2atMy7A4qH6LM=",
   "Source": "NatuurlikBase",
   "BasePath": "_content/NatuurlikBase",
   "Mode": "Default",
@@ -3230,6 +3230,23 @@
       "OriginalItemSpec": "wwwroot\\images\\products\\19af4d05-976f-421b-9ea9-c3b63bda5a1c.png"
     },
     {
+      "Identity": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\images\\products\\1a549298-6453-4d5f-952d-da37aac4bd85.png",
+      "SourceId": "NatuurlikBase",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\",
+      "BasePath": "_content/NatuurlikBase",
+      "RelativePath": "images/products/1a549298-6453-4d5f-952d-da37aac4bd85.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\products\\1a549298-6453-4d5f-952d-da37aac4bd85.png"
+    },
+    {
       "Identity": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\images\\products\\1b673c2d-73bf-4aad-8869-9bbfbc283cf1.png",
       "SourceId": "NatuurlikBase",
       "SourceType": "Discovered",
@@ -3568,6 +3585,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\products\\b7ebc323-d39b-4b3f-8f72-d95a806f142f.png"
+    },
+    {
+      "Identity": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\images\\products\\b8106c0a-6ac7-43f1-bed3-5110b3bad072.png",
+      "SourceId": "NatuurlikBase",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\",
+      "BasePath": "_content/NatuurlikBase",
+      "RelativePath": "images/products/b8106c0a-6ac7-43f1-bed3-5110b3bad072.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\products\\b8106c0a-6ac7-43f1-bed3-5110b3bad072.png"
     },
     {
       "Identity": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\images\\products\\bd291740-afa3-4d8b-8f08-287a9664a572.png",
@@ -4027,6 +4061,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\invoices\\1c9212d1-7eaf-4f85-be58-e071c824c8a6.pdf"
+    },
+    {
+      "Identity": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\invoices\\d4441448-6373-4f25-b8cb-64ac39071386.jpg",
+      "SourceId": "NatuurlikBase",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\",
+      "BasePath": "_content/NatuurlikBase",
+      "RelativePath": "invoices/d4441448-6373-4f25-b8cb-64ac39071386.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\invoices\\d4441448-6373-4f25-b8cb-64ac39071386.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\invoices\\dc104492-932c-4d43-a492-dd427603cb28.jpg",
+      "SourceId": "NatuurlikBase",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\",
+      "BasePath": "_content/NatuurlikBase",
+      "RelativePath": "invoices/dc104492-932c-4d43-a492-dd427603cb28.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\invoices\\dc104492-932c-4d43-a492-dd427603cb28.jpg"
     },
     {
       "Identity": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\js\\city.js",
@@ -5270,6 +5338,23 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\Book1d.xlsx"
     },
     {
+      "Identity": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\Uploads\\Cities.xlsx",
+      "SourceId": "NatuurlikBase",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\",
+      "BasePath": "_content/NatuurlikBase",
+      "RelativePath": "Uploads/Cities.xlsx",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\Cities.xlsx"
+    },
+    {
       "Identity": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\Uploads\\provinces.xlsx",
       "SourceId": "NatuurlikBase",
       "SourceType": "Discovered",
@@ -5285,6 +5370,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Uploads\\provinces.xlsx"
+    },
+    {
+      "Identity": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\Uploads\\Suburbs.xlsx",
+      "SourceId": "NatuurlikBase",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\User\\Documents\\GitHub\\NatuurlikRepo\\NatuurlikBase\\NatuurlikBase\\wwwroot\\",
+      "BasePath": "_content/NatuurlikBase",
+      "RelativePath": "Uploads/Suburbs.xlsx",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\Suburbs.xlsx"
     }
   ]
 }

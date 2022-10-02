@@ -409,6 +409,11 @@ namespace NatuurlikBase.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
+                    b.Property<string>("img")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Image");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");

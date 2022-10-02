@@ -42,26 +42,32 @@ namespace NatuurlikBase.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.Email);
-
-                if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+                if (await _userManager.IsInRoleAsync(user, "Admin"))
                 {
-                    try
+                    if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
                     {
-                        var principal = await _claimsPrincipalFactory.CreateAsync(user);
-                        await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal);
+                        try
+                        {
+                            var principal = await _claimsPrincipalFactory.CreateAsync(user);
+                            await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal);
 
-                       
+
+                        }
+                        catch (Exception)
+                        {
+                            return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+                        }
                     }
-                    catch (Exception)
+                    else
                     {
-                        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+                        return StatusCode(StatusCodes.Status404NotFound, "Invalid user credentials.");
                     }
                 }
                 else
                 {
-                    return StatusCode(StatusCodes.Status404NotFound, "Invalid user credentials.");
+                    return StatusCode(StatusCodes.Status403Forbidden, "Access Denied.");
                 }
-            }
+                }
 
            
 
@@ -101,6 +107,7 @@ namespace NatuurlikBase.Controllers
                     Suburb = o.Suburb.SuburbName,
                     date = o.CreatedDate,
                     phoneNumber = o.PhoneNumber
+                    
                 });
 
                 deliverylist.Add(orders);
@@ -135,6 +142,7 @@ namespace NatuurlikBase.Controllers
                         OrderId = item.id,
                         Order = db.Order.Find(item.id),
                         Date = DateTime.Now,
+                        img=item.img,
 
 
                     };
