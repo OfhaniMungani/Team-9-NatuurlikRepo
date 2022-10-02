@@ -95,7 +95,7 @@ namespace NatuurlikBase.Controllers
 
 
 
-                dynamic orders = db.Order.Where(o=>o.Suburb.SuburbName== "Garsfontein").Where(d=>d.OrderStatus==SR.OrderDispatched).Select(o => new
+                dynamic orders = db.Order.Where(o=>o.Suburb.SuburbName== "Garsfontein").Where(d=>d.OrderStatus==SR.OrderDispatched).Where(c=>c.Courier.CourierName== "Natuurlik Free Delivery").Select(o => new
                 {
                     id = o.Id,
                     FirstName = o.FirstName,
