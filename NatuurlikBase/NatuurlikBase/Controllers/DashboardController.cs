@@ -9,6 +9,7 @@ namespace NatuurlikBase.Controllers
 {
     public class DashboardController : Controller
     {
+        string userInfo = "en-ZA";
         private DatabaseContext db;
         public DashboardController(DatabaseContext _db)
         {
@@ -18,7 +19,7 @@ namespace NatuurlikBase.Controllers
         public IActionResult Index()
         {
             var sales = db.Order.Sum(p => p.OrderTotal - p.DeliveryFee);
-            ViewBag.sales = sales;
+            ViewBag.sales = sales.ToString("C", CultureInfo.CreateSpecificCulture(userInfo)); 
 
             IEnumerable<ApplicationUser> users = (from user in db.Users
                                                   join userRole in db.UserRoles on user.Id equals userRole.UserId
