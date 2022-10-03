@@ -521,7 +521,7 @@
                                 }
                                 if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched)
                                 {
-                                    if (Model.Order.OrderPaymentStatus == SR.ResellerDelayedPayment)
+                                    if (Model.Order.OrderPaymentStatus == SR.ResellerDelayedPayment || Model.Order.OrderPaymentStatus == SR.PaymentOverdue )
                                     {
                                         <input type="button" data-toggle="modal" data-target="#exampleModal4" onclick="return validateInput()" asp-action="CaptureResellerPayment" class="btn btn-success" value="Capture Payment" style="width:150px" />
                                         <div class="modal fade" id="exampleModal4">

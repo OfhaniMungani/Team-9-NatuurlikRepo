@@ -78,6 +78,14 @@ namespace NatuurlikBase.Data.DbInitilizer
                 });
                 _unitOfWork.Save();
 
+                _unitOfWork.Courier.Add(new Courier
+                {
+                    CourierName = "Natuurlik Free Delivery",
+                    CourierFee = 0.00M,
+                    EstimatedDeliveryTime = "1-3 Days"
+                });
+                _unitOfWork.Save();
+
                 _userManager.CreateAsync(new ApplicationUser
                 {
                     UserName = "bytexpress5@gmail.com",
