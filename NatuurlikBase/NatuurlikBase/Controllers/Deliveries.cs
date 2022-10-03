@@ -42,7 +42,7 @@ namespace NatuurlikBase.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.Email);
-                if (await _userManager.IsInRoleAsync(user, "Admin"))
+                if (await _userManager.IsInRoleAsync(user, "Admin")|| await _userManager.IsInRoleAsync(user, "Driver"))
                 {
                     if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
                     {
