@@ -9,7 +9,7 @@ using NatuurlikBase.Repository.IRepository;
 using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
-//[Authorize(Roles = SR.Role_Admin + "," + SR.Role_IM)]
+[Authorize(Roles = SR.Role_Admin + "," + SR.Role_IM)]
 public class ProductWriteOffController : Controller
 {
     private readonly DatabaseContext _context;

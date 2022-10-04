@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
@@ -6,175 +7,175 @@ using NatuurlikBase.Repository.IRepository;
 using NatuurlikBase.ViewModels;
 using System.Security.Claims;
 
-namespace NatuurlikBase.Controllers
-{   
-    public class UserController : Controller
+namespace NatuurlikBase.Controllers;
+[Authorize(Roles = SR.Role_Admin)]
+
+public class UserController : Controller
+{
+
+
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly DatabaseContext _db;
+
+    public UserController(IUnitOfWork unitOfWork, DatabaseContext db)
     {
+        _unitOfWork = unitOfWork;
+        _db = db;
+    }
+    public IActionResult Index()
+    {
+        IEnumerable<Country> countryList = _unitOfWork.Country.GetAll();
+        return View(countryList);
 
-
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly DatabaseContext _db;
-
-        public UserController(IUnitOfWork unitOfWork, DatabaseContext db)
+    }
+    public ActionResult GetProvince(int countryId)
+    {
+        return Json(_db.Province.Where(x => x.CountryId == countryId).Select(x => new
         {
-            _unitOfWork = unitOfWork;
-            _db = db;
-        }
-        public IActionResult Index()
+            Text = x.ProvinceName,
+            Value = x.Id
+        }).OrderBy(x => x.Text).ToList());
+    }
+
+
+    [HttpGet]
+    public ActionResult GetCity(int provinceId)
+    {
+        return Json(_db.City.Where(x => x.ProvinceId == provinceId).Select(x => new
         {
-            IEnumerable<Country> countryList = _unitOfWork.Country.GetAll();
-            return View(countryList);
+            Text = x.CityName,
+            Value = x.Id
+        }).OrderBy(x => x.Text).ToList());
+    }
 
-        }
-        public ActionResult GetProvince(int countryId)
+    [HttpGet]
+    public ActionResult GetSuburb(int cityId)
+    {
+        return Json(_db.Suburb.Where(x => x.CityId == cityId).Select(x => new
         {
-            return Json(_db.Province.Where(x => x.CountryId == countryId).Select(x => new
-            {
-                Text = x.ProvinceName,
-                Value = x.Id
-            }).OrderBy(x => x.Text).ToList());
-        }
-
-
-        [HttpGet]
-        public ActionResult GetCity(int provinceId)
+            Text = x.SuburbName,
+            Value = x.Id
+        }).OrderBy(x => x.Text).ToList());
+    }
+    //GET
+    public IActionResult Upsert(string? id)
+    {
+        UserVM userVM = new()
         {
-            return Json(_db.City.Where(x => x.ProvinceId == provinceId).Select(x => new
+            User = new(),
+            CountryList = _unitOfWork.Country.GetAll().Select(i => new SelectListItem
             {
-                Text = x.CityName,
-                Value = x.Id
-            }).OrderBy(x => x.Text).ToList());
-        }
+                Text = i.CountryName,
+                Value = i.Id.ToString()
+            })
+            ,
+            ProvinceForCountryList = _unitOfWork.Province.GetAll().Select(i => new SelectListItem
+            {
+                Text = i.ProvinceName,
+                Value = i.Id.ToString()
+            }),
+            CityForProvinceList = _unitOfWork.City.GetAll().Select(i => new SelectListItem
+            {
+                Text = i.CityName,
+                Value = i.Id.ToString()
+            }),
+            SuburbForCityList = _unitOfWork.Suburb.GetAll().Select(i => new SelectListItem
+            {
+                Text = i.SuburbName,
+                Value = i.Id.ToString()
+            }),
+        };
 
-        [HttpGet]
-        public ActionResult GetSuburb(int cityId)
+        if (id == null)
         {
-            return Json(_db.Suburb.Where(x => x.CityId == cityId).Select(x => new
-            {
-                Text = x.SuburbName,
-                Value = x.Id
-            }).OrderBy(x => x.Text).ToList());
+            return View(userVM);
         }
-        //GET
-        public IActionResult Upsert(string? id)
+        else
         {
-            UserVM userVM = new()
-            {
-                User = new(),
-                CountryList = _unitOfWork.Country.GetAll().Select(i => new SelectListItem
-                {
-                    Text = i.CountryName,
-                    Value = i.Id.ToString()
-                })
-                ,
-                ProvinceForCountryList = _unitOfWork.Province.GetAll().Select(i => new SelectListItem
-                {
-                    Text = i.ProvinceName,
-                    Value = i.Id.ToString()
-                }),
-                CityForProvinceList = _unitOfWork.City.GetAll().Select(i => new SelectListItem
-                {
-                    Text = i.CityName,
-                    Value = i.Id.ToString()
-                }),
-                SuburbForCityList = _unitOfWork.Suburb.GetAll().Select(i => new SelectListItem
-                {
-                    Text = i.SuburbName,
-                    Value = i.Id.ToString()
-                }),
-            };
-
-            if (id == null)
-            {
-                return View(userVM);
-            }
-            else
-            {
-                userVM.User = _unitOfWork.User.GetFirstOrDefault(u => u.Id == id);
-                return View(userVM);
-            }
-
+            userVM.User = _unitOfWork.User.GetFirstOrDefault(u => u.Id == id);
+            return View(userVM);
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        //protect against anti forgery token attacks.
-        public async Task<IActionResult> Upsert(UserVM obj)
-        {
-            
-            if(ModelState.IsValid)
-            {
-
-              
-                if(obj.User.Id == null)
-                {
-                    _unitOfWork.User.Add(obj.User);
-                    var claimsId = (ClaimsIdentity)User.Identity;
-                    var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
-                    var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
-                    var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
-                    var userName = fullName.ToString();
-                    await _db.SaveChangesAsync(userName);
-                }
-                else
-                {
-                    _unitOfWork.User.Update(obj.User);
-                    var claimsId = (ClaimsIdentity)User.Identity;
-                    var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
-                    var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
-                    var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
-                    var userName = fullName.ToString();
-                    await _db.SaveChangesAsync(userName);
-                }
-                
-                _unitOfWork.Save();
-                TempData["success"] = "User Updated Successfully!";
-                return RedirectToAction("Index");
-            }
-            return View(obj);
-       
-        }
-
-
-        
-
-        #region API CALLS
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var objList = _unitOfWork.User.GetAll(includeProperties: "");
-            return Json(new {data = objList });
-        }
-        [HttpDelete]
-        
-        public IActionResult Delete(string? id)
-        {
-
-            //Has order associated?
-            var hasFk = _unitOfWork.Order.GetAll().Any(x => x.ApplicationUserId == id);
-
-            if(hasFk)
-            {
-                TempData["Delete"] = "User accounts associated with an order cannot be deleted";
-                return Json(new { success = false, message = "User cannot be deleted since their profile is associate with an Order" });
-            }
-            else
-            {
-                var obj = _unitOfWork.User.GetFirstOrDefault(u => u.Id == id);
-                if (obj == null)
-                {
-                    return Json(new { success = false, message = "An error occured while deleting" });
-                }
-                _unitOfWork.User.Remove(obj);
-                TempData["successDelete"] = "User deleted successfully";
-                _unitOfWork.Save();
-                return Json(new { success = true, message = "User Deleted Successfully" });
-            }
-
-        }
-        #endregion
 
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    //protect against anti forgery token attacks.
+    public async Task<IActionResult> Upsert(UserVM obj)
+    {
+        
+        if(ModelState.IsValid)
+        {
+
+          
+            if(obj.User.Id == null)
+            {
+                _unitOfWork.User.Add(obj.User);
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await _db.SaveChangesAsync(userName);
+            }
+            else
+            {
+                _unitOfWork.User.Update(obj.User);
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await _db.SaveChangesAsync(userName);
+            }
+            
+            _unitOfWork.Save();
+            TempData["success"] = "User Updated Successfully!";
+            return RedirectToAction("Index");
+        }
+        return View(obj);
+   
+    }
+
+
+    
+
+    #region API CALLS
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        var objList = _unitOfWork.User.GetAll(includeProperties: "");
+        return Json(new {data = objList });
+    }
+    [HttpDelete]
+    
+    public IActionResult Delete(string? id)
+    {
+
+        //Has order associated?
+        var hasFk = _unitOfWork.Order.GetAll().Any(x => x.ApplicationUserId == id);
+
+        if(hasFk)
+        {
+            TempData["Delete"] = "User accounts associated with an order cannot be deleted";
+            return Json(new { success = false, message = "User cannot be deleted since their profile is associate with an Order" });
+        }
+        else
+        {
+            var obj = _unitOfWork.User.GetFirstOrDefault(u => u.Id == id);
+            if (obj == null)
+            {
+                return Json(new { success = false, message = "An error occured while deleting" });
+            }
+            _unitOfWork.User.Remove(obj);
+            TempData["successDelete"] = "User deleted successfully";
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "User Deleted Successfully" });
+        }
+
+    }
+    #endregion
+
 }
+
 

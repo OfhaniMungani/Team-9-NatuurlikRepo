@@ -8,7 +8,7 @@ using NatuurlikBase.Repository.IRepository;
 using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
-//[Authorize(Roles = SR.Role_Admin + "," + SR.Role_SA)]
+[Authorize(Roles = SR.Role_Admin + "," + SR.Role_SA)]
 public class ReturnedProductController : Controller
 {
     private readonly DatabaseContext db;

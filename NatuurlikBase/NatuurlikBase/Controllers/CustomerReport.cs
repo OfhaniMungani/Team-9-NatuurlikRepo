@@ -5,7 +5,7 @@ using NatuurlikBase.Models;
 using System.Security.Claims;
 
 namespace NatuurlikBase.Controllers;
-//[Authorize(Roles = SR.Role_Admin)]
+[Authorize(Roles = SR.Role_Admin)]
 public class CustomerReport : Controller
 {
 

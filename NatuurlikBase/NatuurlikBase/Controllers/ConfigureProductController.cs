@@ -4,7 +4,7 @@ using NatuurlikBase.Data;
 using NatuurlikBase.Models;
 
 namespace NatuurlikBase.Controllers;
-//[Authorize(Roles = SR.Role_Admin + "," + SR.Role_IM)]
+[Authorize(Roles = SR.Role_Admin + "," + SR.Role_IM)]
 public class ConfigureProductController : Controller
 {
     private readonly DatabaseContext _db;

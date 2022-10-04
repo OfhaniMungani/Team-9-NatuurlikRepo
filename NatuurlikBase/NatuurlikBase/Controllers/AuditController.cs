@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace NatuurlikBase.Controllers;
 
-//[Authorize(Roles = SR.Role_Admin)]
+[Authorize(Roles = SR.Role_Admin)]
 
 public class AuditController : Controller
 {
