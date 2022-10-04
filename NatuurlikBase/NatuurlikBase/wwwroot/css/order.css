@@ -12,33 +12,33 @@
 .dark {
     background-color: black;
     font-size: medium;
-    padding:0;
+    padding: 0;
 }
 
-.carttable{
+.carttable {
     margin-bottom: 100px;
 }
 
-#gone, #bin{
-    color:black;
+#gone, #bin {
+    color: black;
 }
 
-     #bin :hover {
+    #bin :hover {
         color: #DA3F48;
     }
 
-#bin{
-    padding-left:25px;
-    padding-right:25px;
-    font-size:20px;
+#bin {
+    padding-left: 25px;
+    padding-right: 25px;
+    font-size: 20px;
 }
 
 
-#pic{
+#pic {
     margin-top: 10px;
-    margin-bottom:10px;
+    margin-bottom: 10px;
     height: 100px;
-    padding-left:10px
+    padding-left: 10px
 }
 
 #mpic {
@@ -53,8 +53,8 @@
     border-left: 1px solid #E6E6E7;
 }
 
-#move{
-    margin-left:20px;
+#move {
+    margin-left: 20px;
 }
 
 .plus {
@@ -62,8 +62,18 @@
     border-radius: 5px;
     width: fit-content;
     padding-top: 6px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 30px;
+}
+
+
+.rightTotal {
+    text-align: right;
+}
+
+.tot {
+    text-align: center;
 }
 
 .mobplus {
@@ -76,8 +86,8 @@
     font-size: small;
 }
 
-#green{
-    color:green;
+#green {
+    color: green;
 }
 
 #go {
@@ -85,7 +95,7 @@
 }
 
 #come {
-    padding-right: 20px;
+    padding-right: 10px;
 }
 
 #total {
@@ -112,26 +122,26 @@
     background-color: #FDFDFD;
 }
 
-#delprice{
-    margin-bottom:8px;
+#delprice {
+    margin-bottom: 8px;
 }
 
-.back{
-    text-align:center;
-    margin-top:10px;
+.back {
+    text-align: center;
+    margin-top: 10px;
 }
 
-.color{
+.color {
     color: black;
     font-size: 14px;
 }
 
 .back :hover {
-    text-decoration:none;
+    text-decoration: none;
 }
 
-#corner, #new{
-    border-radius:0px;
+#corner, #new {
+    border-radius: 0px;
 }
 
 #paybtn {

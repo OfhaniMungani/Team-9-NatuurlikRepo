@@ -394,16 +394,28 @@ namespace NatuurlikBase.Controllers
             string accountId = _configuration["AccountId"];
             string authToken = _configuration["AuthToken"];
             TwilioClient.Init(accountId, authToken);
+            var couriers = _uow.Courier.GetFirstOrDefault(z => z.Id == orderRetrieved.CourierId).CourierName;
             var name = orderRetrieved.FirstName;
             var order = orderRetrieved.Id;
             var track = orderRetrieved.ParcelTrackingNumber;
             var to = "+27" + orderRetrieved.PhoneNumber;
             var companyNr = "+18305216564";
 
-            var message = MessageResource.Create(
-                to,
-                from: companyNr,
-                body: $"Hi " + name + " your Natuurlik order #" + order + " has been dispatched, your tracking number is " + track);
+
+            if (couriers == "Natuurlik Free Delivery")
+            {
+                var message = MessageResource.Create(
+                    to,
+                    from: companyNr,
+                    body: $"Hi " + name + " your Natuurlik order #" + order + " has been dispatched, you will receieve a call once it is out for delivery");
+            }
+            else
+            {
+                var message = MessageResource.Create(
+                    to,
+                    from: companyNr,
+                    body: $"Hi " + name + " your Natuurlik order #" + order + " has been dispatched, your tracking number is " + track);
+            }
 
             TempData["Success"] = "Order status updated successfully.";
             return RedirectToAction("Detail", "Order", new { orderId = OrderVM.Order.Id });

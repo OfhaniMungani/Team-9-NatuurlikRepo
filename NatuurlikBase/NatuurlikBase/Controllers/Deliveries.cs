@@ -10,6 +10,8 @@ using NatuurlikBase.ViewModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace NatuurlikBase.Controllers
 {
@@ -149,6 +151,18 @@ namespace NatuurlikBase.Controllers
                     _uow.Order.UpdateOrderStatus(orderVM.Order.Id, SR.OrderDelivered);
                     db.Delivery.Add(deliveryCreate);
 
+                    string accountId = _configuration["AccountId"];
+                    string authToken = _configuration["AuthToken"];
+                    TwilioClient.Init(accountId, authToken);
+                    var name = item.firstName;
+                    var order = item.id;
+                    var to = "+27" + item.phoneNumber;
+                    var companyNr = "+18305216564";
+
+                    var message = MessageResource.Create(
+                        to,
+                        from: companyNr,
+                        body: $"Hi " + name + " your Natuurlik order #" + order + " has been delivered");
 
                 }
 

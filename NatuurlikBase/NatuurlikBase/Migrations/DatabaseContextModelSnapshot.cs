@@ -574,7 +574,8 @@ namespace NatuurlikBase.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("InclusiveVAT")
                         .HasColumnType("decimal(18,2)");
@@ -605,7 +606,8 @@ namespace NatuurlikBase.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
 
                     b.Property<DateTime>("ProcessedDate")
                         .HasColumnType("datetime2");
@@ -627,7 +629,8 @@ namespace NatuurlikBase.Migrations
 
                     b.Property<string>("Surname")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("VATId")
                         .HasColumnType("int");

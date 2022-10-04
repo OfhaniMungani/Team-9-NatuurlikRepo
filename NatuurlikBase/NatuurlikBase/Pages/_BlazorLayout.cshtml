@@ -18,16 +18,19 @@
     <base href="~/" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
-    <link rel="stylesheet" href="~/css/crud.css" asp-append-version="true" />
+     <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+   @* <link rel="stylesheet" href="~/css/crud.css" asp-append-version="true" />*@
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/fonts.css" asp-append-version="true" />
     @RenderSection("fonts", false)
-    @RenderSection("crud", false)
+   @* @RenderSection("crud", false)*@
     @RenderSection("admin", false)
+    @RenderSection("account", false)
+
 </head>
 
 <body>
-        <div class="d-none d-lg-block" id="full">
+@*        <div class="d-none d-lg-block" id="full">
             <nav class="navbar">
                 <h5>
                     <div class="one">N a t u u r l i k</div>
@@ -40,13 +43,13 @@
                     </li>
                 </ul>
             </nav>
-        </div>
+        </div>*@
 
    
    <main class="pl-4" role="main" style="width:60%; height:100%;">
-        <div id="page-content-wrapper">
+     
          @RenderBody()
-         </div>
+       
     </main>
     
 

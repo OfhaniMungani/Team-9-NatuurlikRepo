@@ -54,11 +54,18 @@
                                                                 <img src="@product.PictureUrl" class="card-img-top"  alt="Product Image">
                                                             }                                                                          
                                                               <p class="natitems"><a>@product.Name</a></p>
+
+                                                            <div class="d-flex justify-content-between" id="cartitems">
+
+                                                            <p class="catprice">R<a>@product.ResellerPrice.ToString("0.00")</a></p>
+
                                                             @if(product.QuantityOnHand <= 50 && product.QuantityOnHand != 0)
                                                             {
-                                                                <p class="natitems" style="color:red;"><a>Only @product.QuantityOnHand left!</a></p>
+                                                                <p class="" style="color:red;"><strong>Only @product.QuantityOnHand left!</strong></p>
                                                             }
-                                                                <p class="catprice">R<a>@product.ResellerPrice.ToString("0.00")</a></p>
+                                                                
+                                                            </div>
+
                                                             @if(@product.QuantityOnHand == 0)
                                                             {
                                                                 <a asp-area="" asp-controller="ProductCatalogue" asp-action="Item" asp-route-productId="@product.Id" class="btn btn-primary btn-block" id="prodbtn"><i class="bi bi-info-circle-fill"></i>&nbsp; OUT OF STOCK</a>

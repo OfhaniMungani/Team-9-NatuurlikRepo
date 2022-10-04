@@ -23,21 +23,28 @@
           <div class="col-lg-6">
         @if(User.IsInRole(SR.Role_Reseller))
         {
-             <h2 class="itemTitle">@Model.Product.Name</h2>
-            
-             <h3><strong>R @Model.Product.ResellerPrice.ToString("0.00")</strong> </h3> 
+            <h2 class="itemTitle">@Model.Product.Name</h2>            
+            <h3><strong>R @Model.Product.ResellerPrice.ToString("0.00")</strong> </h3> 
             <p id="itemdesc">
                @Model.Product.Description
-                </p>
-            }
-            else
-            {
+            </p>
+		    @if(Model.Product.QuantityOnHand <= 50 && Model.Product.QuantityOnHand != 0)
+		    {
+			    <p style="color:red;"><strong>Only @Model.Product.QuantityOnHand left!</strong></p>
+		    }
+        }
+        else
+        {
             <h2 class="itemTitle">@Model.Product.Name</h2>
             <h3><strong>R @Model.Product.CustomerPrice.ToString("0.00")</strong> </h3> 
             <p id="itemdesc">
                @Model.Product.Description
             </p>
-            }           
+		    @if(Model.Product.QuantityOnHand <= 10 && Model.Product.QuantityOnHand != 0)
+		    {
+			    <p style="color:red;"><strong>Only @Model.Product.QuantityOnHand left!</strong></p>
+		    }
+        }           
 
              <div class="row">
                  <div class="col-3">
@@ -45,6 +52,7 @@
                      <input asp-for="Count" min=1 class="form-control" />
                  </div>
                  <div class="col-5">
+                 @if(User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller)){
                     @if(@Model.Product.QuantityOnHand == 0)
                     {
                         <a href="" class="btn btn-primary btn-block" id="itembtn" disabled >OUT OF STOCK</a> 
@@ -52,7 +60,13 @@
                     else
                     {
                         <button href="#" class="btn btn-primary btn-block" id="itembtn">Add to Cart</button> 
-                    } 
+                    }
+                  }
+                  else
+                  {
+                       <button href="#" class="btn btn-primary btn-block" id="itembtn" disabled>Add to Cart</button>     
+                  }
+
                  </div>
                 <div class="col-4 backbtn">
                     <a asp-area="" asp-controller="ProductCatalogue" asp-action="Index" class="underline">Back</a>
@@ -67,46 +81,5 @@
     </div>
 
 </form>
-
-
-
-    <h4>Related Products</h4>
-        <div class="container" >
-            <div class="row justify-content-center" id="products">
-                <div class="col-lg-3 col" >
-                    <div class="rela card" id="prod">
-                        <img class="card-img-top" src="~/images/chili.png" alt="Card image cap">               
-                          <p class="item">Chili Sauce</p>
-                          <p class="price">R 34.99</p>
-                          <button asp-area="" asp-controller="ProductCatalogue" asp-action="Item" class="btn btn-primary btn-block" id="prodbtn"><i class="bi bi-cart2"></i>&nbsp;Add to cart</button>
-                      </div>
-                </div>
-                <div class="col-lg-3 col">
-                    <div class="rela card" id="prod">
-                        <img class="card-img-top" src="~/images/olive.png" alt="Card image cap">
-                        <p class="item">Cold Pressed Pure Olive Oil</p>
-                        <p class="price">R 79.99</p>
-                        <button asp-area="" asp-controller="ProductCatalogue" asp-action="Item" class="btn btn-primary btn-block" id="prodbtn"><i class="bi bi-cart2"></i>&nbsp;Add to cart</button>
-                    </div>
-                </div>
-                <div class="col-lg-3 col">
-                    <div class="rela card" id="prod">
-                        <img class="card-img-top" src="~/images/honey.png" alt="Card image cap">
-                        <p class="item">Pure Farm Honey</p>
-                        <p class="price">R 74.99</p>
-                        <button asp-area="" asp-controller="ProductCatalogue" asp-action="Item" class="btn btn-primary btn-block" id="prodbtn"><i class="bi bi-cart2"></i>&nbsp;Add to cart</button>
-                    </div>
-                </div>
-                <div class="col-lg-3 col"> 
-                    <div class="rela card" id="prod">
-                      <img class="card-img-top" src="~/images/soap.png" alt="Card image cap">
-                      <p class="item">Handmade Pure Glycerin Soap</p>
-                      <p class="price">R 25.00</p>
-                      <button asp-area="" asp-controller="ProductCatalogue" asp-action="Item" class="btn btn-primary btn-block" id="prodbtn"><i class="bi bi-cart2"></i>&nbsp;Add to cart</button>
-                  </div>
-              </div>
-            </div>
-        </div>
-</div>
 
 </div>

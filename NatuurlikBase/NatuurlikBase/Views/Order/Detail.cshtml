@@ -623,7 +623,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    @if (@Model.Order.OrderStatus == SR.OrderDispatched || @Model.Order.OrderStatus == SR.OrderCancelled || @Model.Order.OrderStatus == SR.OrderRejected)
+                                    @if (@Model.Order.OrderStatus == SR.OrderDispatched || @Model.Order.OrderStatus == SR.OrderCancelled || @Model.Order.OrderStatus == SR.OrderRejected || @Model.Order.OrderStatus == SR.OrderPending || @Model.Order.OrderStatus == SR.Delivered)
                                     {
                                         <h5 class="spaceing"><strong>Order Summary</strong></h5>
                                     }
@@ -641,7 +641,7 @@
                                                 </div>
                                                 <small class="text-muted" id="money">Price : R @line.Price.ToString("0.00")</small> <br />
                                                 <small class="text-muted">Quantity: @line.Count</small>
-                                                @if (@Model.Order.OrderStatus == SR.OrderDispatched || @Model.Order.OrderStatus == SR.OrderRejected || @Model.Order.OrderStatus == SR.OrderCancelled)
+                                                @if (@Model.Order.OrderStatus == SR.OrderDispatched || @Model.Order.OrderStatus == SR.OrderRejected || @Model.Order.OrderStatus == SR.OrderCancelled || @Model.Order.OrderStatus == SR.OrderPending || @Model.Order.OrderStatus == SR.Delivered)
                                                 {
                                                      <div class="d-flex justify-content-between">
                                                         <small class="text-muted">Package Order Status:</small>

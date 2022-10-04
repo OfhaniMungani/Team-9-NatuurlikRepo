@@ -40,16 +40,16 @@
 							<th class="text-light col-1" id="go">
 								Product
 							</th>
-							<th class="col-5" id="gone">
+							<th class="col-4" id="gone">
 								Description
 							</th>
-							 <th class="text-light col-2">
+							 <th class="text-light col-2 goRight">
 								Price
 							</th>
-							 <th class="text-light col-2">
+							 <th class="text-light col-3 tot">
 								Quantity
 							</th>
-							<th class="text-light col-2">
+							<th class="text-light col-2 tot">
 								Total
 							</th>
 							<th class="text-light col-1" id="come">
@@ -71,22 +71,22 @@
 									</td>
 									<td>
 										<h6><strong>@cartItem.Product.Name</strong></h6>
-										<p><small>@cartItem.Product.Description</small></p>
+										<small>@cartItem.Product.Description</small>
 										@if(cartItem.Product.QuantityOnHand <= cartItem.Count)
 										{
-											<p style="color:red;"><small>Only @cartItem.Product.QuantityOnHand left!</small></p>
+											<p style="color:red;"><small><strong>Only @cartItem.Product.QuantityOnHand left!</strong></small></p>
 										}
 										
 									</td>
 									<td>
 										@if (User.IsInRole(SR.Role_Reseller))
 										{
-											<h6><strong>R @cartItem.Product.ResellerPrice.ToString("0.00")</strong></h6>
+											<h6 class="goRight" ><strong>R @cartItem.Product.ResellerPrice.ToString("0.00")</strong></h6>
 										}
 
 										else
 										{
-											<h6><strong>R @cartItem.Product.CustomerPrice.ToString("0.00") </strong></h6>
+											<h6 class="goRight"><strong>R @cartItem.Product.CustomerPrice.ToString("0.00") </strong></h6>
 										}
 									</td>
 									<td>
@@ -107,11 +107,11 @@
 									<td> 
 										@if(User.IsInRole(SR.Role_Reseller))
 										{
-											<h6><strong>R @(@cartItem.Product.ResellerPrice * @cartItem.Count)</strong></h6>
+											<h6 class="rightTotal"><strong>R @(@cartItem.Product.ResellerPrice * @cartItem.Count)</strong></h6>
 										}
 										else
 										{
-											<h6><strong>R @(@cartItem.Product.CustomerPrice * @cartItem.Count)</strong></h6>
+											<h6 class="rightTotal"><strong>R @(@cartItem.Product.CustomerPrice * @cartItem.Count)</strong></h6>
 										}
 
 									</td>

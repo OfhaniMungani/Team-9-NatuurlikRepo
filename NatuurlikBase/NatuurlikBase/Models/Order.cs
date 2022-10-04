@@ -57,11 +57,19 @@ namespace NatuurlikBase.Models
 
 
         [Required]
+        [MaxLength(50)]
+        [RegularExpression(@"^[ a-zA-Z ]+$", ErrorMessage = "No digits or special characters are allowed.")]
         public string FirstName { get; set; }
 
         [Required]
+        [MaxLength(50)]
+        [RegularExpression(@"^[ a-zA-Z ]+$", ErrorMessage = "No digits or special characters are allowed.")]
         public string Surname { get; set; }
 
+        [Required]
+        [RegularExpression(@"^(\d{9})$", ErrorMessage = "Please enter a valid Phone Number.")]
+        [MaxLength(9)]
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
         [Required]

@@ -55,7 +55,7 @@ public class InventoryProcuredController : Controller
                 var uploads = Path.Combine(wwwRootPath, @"invoices\");
                 var extension = Path.GetExtension(file.FileName);
 
-                if (extension != ".pdf" && extension != ".png" && extension != ".jpeg" && extension != ".jpg")
+                if (extension != ".pdf" && extension != ".png" && extension != ".jpeg" && extension != ".jpg") //CHECK IMAGE EXTENSION CODE
                 {
                     TempData["wrong"] = "Please upload a pdf, jpeg, jpg or png";
                 }
