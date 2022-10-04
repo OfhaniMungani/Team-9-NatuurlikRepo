@@ -16,8 +16,8 @@
 </svg>
 
 <style>
-    .rightside{
-        text-align:right;
+    .rightside {
+        text-align: right;
     }
 </style>
 
@@ -45,523 +45,687 @@
     }
 
 
-     @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!CUSTOMER SIDE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*@
-   @if (User.IsInRole(SR.Role_Reseller) || User.IsInRole(SR.Role_Customer))
-   {
+    @* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!CUSTOMER SIDE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*@
+    @if (User.IsInRole(SR.Role_Reseller) || User.IsInRole(SR.Role_Customer))
+    {
+        <img src="~/images/proff.png" id="cartimg" />
         <div class="container-fluid" id="under">
             <h2 class="acc">My Account</h2>
-                <div class="row justify-content-center"> @*CLIENT SIDE NAV CODE*@
-                    <div class="col-md-3">
-                            <div> 
-                                <div class="card sideside">
-                                    <ul class="nav flex-column" >
-                                        <li class="nav-item"><a class="nav-link man @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="bi bi-person">&nbsp;</i> Profile</a></li>
-                                        <li class="nav-item"><a class="nav-link man @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword" ><i class="bi bi-lock">&nbsp;</i> Reset Password</a></li>
-                                        <li class="nav-item"><a class="nav-link man @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-area="Identity" asp-page="/Account/Manage/Email"><i class="bi bi-envelope">&nbsp;</i> Email</a></li>
-                                        @if(User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
-                                        {
-                                        <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="Index"><i class="bi bi-bag">&nbsp;</i> Orders</a></li>
-                                        <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="ViewQueries"><i class="bi bi-question-circle">&nbsp;</i> Queries</a></li>
-                                       
-                                        }
-                                    </ul> 
-                                </div>
-                            </div>                
-                    </div>
+            <div class="row justify-content-center">
+                @*CLIENT SIDE NAV CODE*@
+                <div class="col-md-3">
+                    <div>
+                        <div class="card sideside">
+                            <ul class="nav flex-column">
+                                <li class="nav-item"><a class="nav-link man @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="bi bi-person">&nbsp;</i> Profile</a></li>
+                                <li class="nav-item"><a class="nav-link man @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword"><i class="bi bi-lock">&nbsp;</i> Reset Password</a></li>
+                                <li class="nav-item"><a class="nav-link man @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-area="Identity" asp-page="/Account/Manage/Email"><i class="bi bi-envelope">&nbsp;</i> Email</a></li>
+                                @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
+                                {
+                                    <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="Index"><i class="bi bi-bag">&nbsp;</i> Orders</a></li>
+                                    <li class="nav-item"><a class="nav-link man" asp-controller="Order" asp-action="ViewQueries"><i class="bi bi-question-circle">&nbsp;</i> Queries</a></li>
 
-                    <div class="col-md-9">
-                        <form method="post">               
-                                <div class="card">
-                                    <div class="card-header" id="ordetails">
-                                        <div class="d-flex justify-content-between">
-                                            <medium id="strong">My Order Details</medium> 
-                                            <small>Order Date: @Model.Order.CreatedDate.ToString("d")</small> 
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <small>Order #@Model.Order.Id</small> 
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <form method="post">
+                        <div class="card">
+                            <div class="card-header" id="ordetails">
+                                <div class="d-flex justify-content-between">
+                                    <medium id="strong">My Order Details</medium>
+                                    <small>Order Date: @Model.Order.CreatedDate.ToString("d")</small>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <small>Order #@Model.Order.Id</small>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-5 smaller">
+                                        <h2 id="light">Order Status: <strong>@Model.Order.OrderStatus</strong></h2>
+                                        <div id="paydue">
+                                            @*OUTSTANDING*@
+                                            @if (Model.Order.OrderPaymentStatus == SR.ResellerDelayedPayment)
+                                            {
+                                                if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
+                                                {
+                                                    <medium><strong>@Model.Order.OrderPaymentStatus</strong></medium> <br>
+                                                    <small>Due Date: @TempData["Due"]</small> <br />
+                                                    <small>Days Remaining: @TempData["Remaining"]</small>
+                                                }
+                                            }
+
+                                            @*OVERDUE*@
+                                            @if (Model.Order.OrderPaymentStatus == SR.PaymentOverdue)
+                                            {
+                                                if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
+                                                {
+                                                    <medium><strong>@Model.Order.OrderPaymentStatus</strong></medium> <br>
+                                                    <small>Due Date: @TempData["Due"]</small> <br />
+                                                    <small>Days Overdue: @TempData["OverDue"]</small>
+                                                }
+                                            }
+                                            @if (Model.Order.OrderPaymentStatus == SR.OrderPaymentApproved)
+                                            {
+                                                <medium><strong>@Model.Order.OrderPaymentStatus</strong></medium> <br>
+                                            }
+
                                         </div>
                                     </div>
-                                    <div class="card-body">        
-                                        <div class="row">
-                                            <div class="col-md-5 smaller">
-                                                <h2 id="light">Order Status: <strong>@Model.Order.OrderStatus</strong></h2>
-                                                <p id="paydue"><strong>@Model.Order.OrderPaymentStatus</strong></p>
-                                            </div>
-                                            <div class="col-md-7 rights">
-                                                 @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
-                                                 {
-                                                    <a asp-controller="Order" asp-action="LogQuery" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Query Order">Query Order</a>
-                                                    <a asp-controller="Order" asp-action="LogReview" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Review Order">Review Order</a>
-
-                                                     if (Model.Order.OrderStatus == SR.OrderPending && Model.Order.OrderPaymentStatus== SR.OrderPaymentApproved)
-                                                     {
-                                                     <input type="button" data-toggle="modal" data-target="#exampl12"  onclick="return validateInput()" class="btn btn-danger" style="width:150px" value="Cancel Order" />
-                                                      <div class="modal fade" id="exampl12">
-                                                   <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header border-0">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-
-                        </div>
-                        <div class="modal-body">
-                            <h6 class="col-md-10"> 
-                           Are You Sure You Want To Cancel This Order
-                        </h6>
-                        </div>
-
-                        <div class="modal-footer border-0">
-                            <div class="form-actions no-color">
-                                <input type="submit" value="Confirm"  asp-action="CancelOrder" class="btn btn-success"style="width:150px;"/> 
-                                <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-                                                     }
-                                                 }
-                                                 @if(User.IsInRole(SR.Role_Reseller) && Model.Order.OrderStatus == SR.OrderPending)
-                                                 {
-                                                    <input type="button" onclick="return validateInput()"  data-toggle="modal" data-target="#exampleModal33"  class="btn btn-danger" style="width:150px" value="Cancel Order" />
-                                                     <div class="modal fade" id="exampleModal33">
-                                                   <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header border-0">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-
-                        </div>
-                        <div class="modal-body">
-                            <h6 class="col-md-10"> 
-                           Are You Sure You Want To Cancel This Order
-                        </h6>
-                        </div>
-
-                        <div class="modal-footer border-0">
-                            <div class="form-actions no-color">
-                                <input type="submit" value="Confirm"  asp-action="CancelOrder" class="btn btn-success" style="width:150px;"/> 
-                                <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-                                                 }
-                                                  @if (User.IsInRole(SR.Role_Reseller) && Model.Order.OrderStatus == SR.OrderDelayed)
+                                    <div class="col-md-7 rights">
+                                        @if (User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
                                         {
-                                                 <input type="button" data-toggle="modal" data-target="#exampleModal8" class="btn btn-success" value="Accept" style="width:150px"/>
-                                                 <input type="button" data-toggle="modal" data-target="#exampleModal7" class="btn btn-danger" value="Reject" style="width:150px"/>
-                                        }
+                                            <a asp-controller="Order" asp-action="LogQuery" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Query Order">Query Order</a>
+                                            <a asp-controller="Order" asp-action="LogReview" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Review Order">Review Order</a>
 
-                                        <div class="modal fade" id="exampleModal8">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
+                                            @*if (Model.Order.OrderStatus == SR.OrderPending && Model.Order.OrderPaymentStatus == SR.OrderPaymentApproved)
+                                    {
+                                    <input type="button" data-toggle="modal" data-target="#exampl12" onclick="return validateInput()" class="btn btn-danger" style="width:150px" value="Cancel Order" />
+                                    <div class="modal fade" id="exampl12">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
                                     <div class="modal-header border-0">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
 
                                     </div>
                                     <div class="modal-body">
-                                        <h6 class="col-md-10"> 
-                                       Do you wish to accept this delayed order?
+                                    <h6 class="col-md-10">
+                                    Are You Sure You Want To Cancel This Order
                                     </h6>
                                     </div>
 
                                     <div class="modal-footer border-0">
-                                        <div class="form-actions no-color">
-                                            <input type="submit" value="Confirm"  onclick="return validateInput()" asp-action="ConfirmOrder" class="btn btn-success" style="width:150px;"/> 
-                                            <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
-                                        </div>
+                                    <div class="form-actions no-color">
+                                    <input type="submit" value="Confirm" asp-action="CancelOrder" class="btn btn-success" style="width:150px;" />
+                                    <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
+                                    </div>
                                     </div>
 
-                                </div>
-                            </div>
-                            </div>
-
-                             <div class="modal fade" id="exampleModal7">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header border-0">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-
                                     </div>
-                                    <div class="modal-body">
-                                        <h6 class="col-md-10"> 
-                                       Proceed to reject this delayed order?
-                                    </h6>
                                     </div>
-
-                                    <div class="modal-footer border-0">
-                                        <div class="form-actions no-color">
-                                            <input type="submit" value="Confirm"  onclick="return validateInput()" asp-action="RejectOrder" class="btn btn-success" style="width:150px;"/> 
-                                            <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
-                                        </div>
                                     </div>
+                                    }*@
+                                        }
+                                        @if (User.IsInRole(SR.Role_Reseller) && Model.Order.OrderStatus == SR.OrderPending)
+                                        {
+                                            <input type="button" onclick="return validateInput()" data-toggle="modal" data-target="#exampleModal33" class="btn btn-danger" style="width:150px" value="Cancel Order" />
+                                            <div class="modal fade" id="exampleModal33">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header border-0">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
 
-                                </div>
-                            </div>
-                            </div>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h6 class="col-md-10">
+                                                                Proceed To Cancel This Order?
+                                                            </h6>
+                                                        </div>
 
-                                            </div>
-                                        </div>                                                    
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="row">
-                                                            <div class="col-md-3 strongdetails">
-                                                                <br>
-                                                                <p id="strong">Contact Person</p>
-                                                                <label>@Model.Order.FirstName @Model.Order.Surname</label> <br />
-                                                                <label>@Model.Order.PhoneNumber</label> <br />
-                                                                <label>@Model.Order.ApplicationUser.Email</label> 
-                                                                <br />
-                                                                <p id="strongone">Delivery Address</p>
-                                                                <label>@Model.Order.StreetAddress</label> <br />
-                                                                <label>@Model.Order.Suburb.SuburbName</label> <br />
-                                                                <label>@Model.Order.City.CityName</label> <br />
-                                                                <label>@Model.Order.Province.ProvinceName</label> <br />
-                                                                <label>@Model.Order.Country.CountryName</label> <br />
-                                                                <label>@Model.Order.Suburb.PostalCode</label>
+                                                        <div class="modal-footer border-0">
+                                                            <div class="form-actions no-color">
+                                                                <input type="submit" value="Confirm" asp-action="CancelOrder" class="btn btn-success" style="width:150px;" />
+                                                                <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
                                                             </div>
-                                                                <br />
-                                                            <div class="col-md-4">
-                                                                <p id="strong">Delivery Details</p>
-                                                                <label>Courier: @Model.Order.Courier.CourierName</label> <br />
-                                                                <label>Tracking Number: @Model.Order.ParcelTrackingNumber</label> <br />
-                                                                <label>Dispatched Date: @Model.Order.DispatchedDate.ToString("d")</label>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <p id="strong">Order Summary</p>
-                                                                    <div class="card">
-                                                                        <div class="card-body">
-                                                                            @foreach (var line in Model.OrderLine)
-                                                                        {
-                                                                            <div class="d-flex justify-content-between" id="cartitems">
-                                                                                <small>@line.Product.Name</small>
-                                                                                <small><strong>@((line.Count * line.Price).ToString("0.00"))</strong></small>
-                                                                            </div>
-                                                                            <small class="text-muted">Price : @line.Price.ToString("0.00")</small> <br />
-                                                                            <small class="text-muted">Quantity: @line.Count</small>
-                                                                            <hr />
-                                                                        }
-                                                                            <div class="d-flex justify-content-between" id="summarytotal">
-                                                                                <p>Total (ZAR)</p>
-                                                                                <p id="">ZAR @Model.Order.OrderTotal.ToString("0.00")</p>
-                                                                            </div>
-                                                                        </div>
-                                                                   </div>            
-                                                            </div>
-                                                        </div>                              
-                                                        <a asp-action="Index" class="btn btn-primary btn-block" id="update-profile-button" style="width:150px">
-                                                            Back
-                                                        </a>
+                                                        </div>
+
                                                     </div>
-                                                </div>                               
+                                                </div>
+                                            </div>
+                                        }
+
                                     </div>
                                 </div>
-                            <input asp-for="Order.Id" hidden />
-                        </form>
-                    </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-md-3 strongdetails">
+
+                                                <p id="strong">Contact Person</p>
+                                                <label>@Model.Order.FirstName @Model.Order.Surname</label> <br />
+                                                <label>+27 @Model.Order.PhoneNumber</label> <br />
+                                                <label>@Model.Order.ApplicationUser.Email</label>
+                                                <br />
+                                                <p id="strongone">Delivery Address</p>
+                                                <label>@Model.Order.StreetAddress</label> <br />
+                                                <label>@Model.Order.Suburb.SuburbName</label> <br />
+                                                <label>@Model.Order.City.CityName</label> <br />
+                                                <label>@Model.Order.Province.ProvinceName</label> <br />
+                                                <label>@Model.Order.Country.CountryName</label> <br />
+                                                <label>@Model.Order.Suburb.PostalCode</label>
+                                            </div>
+                                            <br />
+                                            <div class="col-md-4">
+                                                <p id="strong">Delivery Details</p>
+                                                <label>Courier: @Model.Order.Courier.CourierName</label> <br />
+                                                @if (@Model.Order.ParcelTrackingNumber != null)
+                                                {
+                                                    <label>Tracking Number: @Model.Order.ParcelTrackingNumber</label> <br />
+                                                }
+
+                                                <label>Dispatched Date: @Model.Order.DispatchedDate.ToString("d")</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <p id="strong">Order Summary</p>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        @foreach (var line in Model.OrderLine)
+                                                        {
+                                                            <div class="d-flex justify-content-between" id="cartitems">
+                                                                <small>@line.Product.Name</small>
+                                                                <small id="money"><strong>R @((line.Count * line.Price).ToString("0.00"))</strong></small>
+                                                            </div>
+                                                            <small class="text-muted" id="money">Price : R @line.Price.ToString("0.00")</small> <br />
+                                                            <small class="text-muted">Quantity: @line.Count</small>
+                                                            <hr />
+                                                        }
+                                                        <div class="d-flex justify-content-between" id="summarytotal">
+                                                            <p>Total (ZAR)</p>
+                                                            <p id="">ZAR @Model.Order.OrderTotal.ToString("0.00")</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a asp-action="Index" class="btn btn-primary btn-block" id="update-profile-button" style="width:150px">
+                                            Back
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input asp-for="Order.Id" hidden />
+                    </form>
                 </div>
+            </div>
         </div>
     }
 
     else
-@*    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ADMIN SIDE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*@
+    @*    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ADMIN SIDE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*@
     {
-                    <form method="post">               
-                                <div class="card">
-                                    <div class="card-header" id="">
-                                        <div class="d-flex justify-content-between">
-                                            <medium id="strong">Order Details</medium> 
-                                            <small>Order Date: @Model.Order.CreatedDate.ToString("d")</small> 
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <small>Order #@Model.Order.Id</small> 
-                                        </div>
-                                    </div>
-                                    <div class="card-body"> 
-                                        <div class="row ordstatus">
-                                            <div class="col-md-4">
-                                                <h2 id="ordspace">Order Status: <strong>@Model.Order.OrderStatus</strong></h2>  
-                                                @if (User.IsInRole(SR.Role_Admin))
-                                                {
-                                                    <h5><strong>Account Holder</strong></h5>
-                                                    <medium>Full Name: @Model.Order.ApplicationUser.FirstName @Model.Order.ApplicationUser.Surname</medium> <br />
-                                                    <medium>Phone Number: @Model.Order.ApplicationUser.PhoneNumber</medium> <br />
-                                                }                                                        
-                                            </div>                                           
-                                            <div class="col-md-8 rightside">
-                                                <label id="paying"><strong>Payment Status: @Model.Order.OrderPaymentStatus</strong></label> <br />                                             
-                                                   @if (User.IsInRole(SR.Role_Admin))
-                                                   {
-                                                         if (Model.Order.OrderStatus == SR.ProcessingOrder)
-                                                         {
-                                                           <a asp-controller="PrepareOrder" asp-action="Index" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Package Order">Package Order</a>
-                                                            <input type="button"  data-toggle="modal" data-target="#exampleModal"  class="btn btn-secondary" value="Dispatch Order" style="width:150px"/>
-                                                                <div class="modal fade" id="exampleModal">
-                                                   <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header border-0">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-
-                        </div>
-                        <div class="modal-body">
-                            <h6 class="col-md-10"> 
-                           Are You Sure You Want To Dispatch This Order
-                        </h6>
-                        </div>
-
-                        <div class="modal-footer border-0">
-                            <div class="form-actions no-color">
-                                <input type="submit" value="Confirm"  asp-action="DispatchParcel" class="btn btn-success" style="width:150px;"/> 
-                                <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
-                            </div>
-                        </div>
-
+        <form method="post">
+            <div class="card">
+                <div class="card-header" id="">
+                    <div class="d-flex justify-content-between">
+                        <medium id="strong">Order Details</medium>
+                        <small>Order Date: @Model.Order.CreatedDate.ToString("d")</small>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <small>Order #@Model.Order.Id</small>
                     </div>
                 </div>
-            </div>
-                                                         }
-                                                         //Returned product button
-                                                         @if (Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered || Model.Order.OrderStatus == SR.ReturnedProduct)
-                                                         {
-                                                             <a asp-controller="ReturnedProduct" asp-action="Create" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:250px" value="Returned Product">Log Returned Product</a>
-                                                         }
+                <div class="card-body">
 
-                                                         //Reseller order which have to be approved first.
-                                                         if (Model.Order.OrderStatus == SR.OrderPending)
-                                                         {
-                                                                              <input type="button"  data-toggle="modal" data-target="#exampleModal"  class="btn btn-success" value="Approve" style="width:150px" />
-                                        <input type="button" data-toggle="modal" data-target="#exampleModal2" class="btn btn-danger" value="Reject" style="width:150px"/>
-                                        <input type="button" data-toggle="modal" data-target="#exampleModal9" class="btn btn-warning" value="Backlog Order" style="width:150px"/>
-                                        	     <div class="modal fade" id="exampleModal">
-                                                   <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header border-0">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                    <div class="row justify-content-center">
 
-                        </div>
-                        <div class="modal-body">
-                            <h6 class="col-md-10"> 
-                           Are You Sure You Want To Approve This Order
-                        </h6>
-                        </div>
+                        @*!!!!!!!!!!    RESELLER ORDER - NORMAL DELIVERY    !!!!!!!!!!!!*@
+                        @if (@Model.Order.IsResellerOrder == true && @Model.Order.Courier.CourierName != "Natuurlik Free Delivery")
+                        {
+                            @if (@Model.Order.OrderStatus == SR.OrderPending)
+                            {
+                                <img src="~/images/orderStatus/res1.png">
+                            }
+                            else if (@Model.Order.OrderStatus == SR.ProcessingOrder)
+                            {
+                                if (@Model.OrderLine.All(x => x.IsPackaged == true))
+                                {
+                                    <img src="~/images/orderStatus/res3.png">
+                                }
+                                else
+                                {
+                                    <img src="~/images/orderStatus/res2.png">
+                                }
+                            }
+                            else if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                            {
+                                <img src="~/images/orderStatus/res4.png">
+                            }
+                            else if (@Model.Order.OrderStatus == SR.OrderCancelled)
+                            {
+                                <img src="~/images/orderStatus/resC.png">
+                            }
 
-                        <div class="modal-footer border-0">
-                            <div class="form-actions no-color">
-                                <input type="submit" value="Confirm" onclick="return validateInput()" asp-action="ApproveResellerOrder" class="btn btn-success" style="width:150px;"/> 
-                                <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
-                            </div>
-                        </div>
+                        }
 
-                    </div>
-                </div>
-            </div>
-                <div class="modal fade" id="exampleModal2">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header border-0">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                        @*!!!!!!!!!!    RESELLER ORDER - FREE DELIVERY    !!!!!!!!!!!!*@
+                        @if (@Model.Order.IsResellerOrder == true && @Model.Order.Courier.CourierName == "Natuurlik Free Delivery")
+                        {
+                            @if (@Model.Order.OrderStatus == SR.OrderPending)
+                            {
+                                <img src="~/images/orderStatus/resD1.png">
+                            }
+                            else if (@Model.Order.OrderStatus == SR.ProcessingOrder)
+                            {
+                                if (@Model.OrderLine.All(x => x.IsPackaged == true))
+                                {
+                                    <img src="~/images/orderStatus/resD3.png">
+                                }
+                                else
+                                {
+                                    <img src="~/images/orderStatus/resD2.png">
+                                }
+                            }
+                            else if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                            {
+                                <img src="~/images/orderStatus/resD4.png">
+                            }
+                            else if (@Model.Order.OrderStatus == SR.Delivered)
+                            {
+                                <img src="~/images/orderStatus/resD5.png">
+                            }
+                            else if (@Model.Order.OrderStatus == SR.OrderCancelled)
+                            {
+                                <img src="~/images/orderStatus/resDC.png">
+                            }
+                            else if (@Model.Order.OrderStatus == SR.OrderRejected)
+                            {
+                                <img src="~/images/orderStatus/resDR.png">
+                            }
+                        }
 
-                        </div>
-                        <div class="modal-body">
-                            <h6 class="col-md-10"> 
-                           Are You Sure You Want To Reject This Order
-                        </h6>
-                        </div>
+                        @*!!!!!!!!!!    CUSTOMER ORDER - NORMAL DELIVERY    !!!!!!!!!!!!*@
+                        @if (@Model.Order.IsResellerOrder == false && @Model.Order.Courier.CourierName != "Natuurlik Free Delivery")
+                        {
+                            @if (@Model.Order.OrderStatus == SR.ProcessingOrder)
+                            {
+                                if (@Model.OrderLine.All(x => x.IsPackaged == true))
+                                {
+                                    <img src="~/images/orderStatus/cus2.png">
+                                }
+                                else
+                                {
+                                    <img src="~/images/orderStatus/cus1.png">
+                                }
+                            }
+                            else if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                            {
+                                <img src="~/images/orderStatus/cus3.png">
+                            }
+                        }
 
-                        <div class="modal-footer border-0">
-                            <div class="form-actions no-color">
-                                <input type="submit" value="Confirm"  onclick="return validateInput()" asp-action="RejectResellerOrder" class="btn btn-success" style="width:150px;"/> 
-                                <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
-                            </div>
-                        </div>
+                        @*!!!!!!!!!!    CUSTOMER ORDER - FREE DELIVERY    !!!!!!!!!!!!*@
+                        @if (@Model.Order.IsResellerOrder == false && @Model.Order.Courier.CourierName == "Natuurlik Free Delivery")
+                        {
+                            @if (@Model.Order.OrderStatus == SR.ProcessingOrder)
+                            {
+                                if (@Model.OrderLine.All(x => x.IsPackaged == true))
+                                {
+                                    <img src="~/images/orderStatus/cusD2.png">
+                                }
+                                else
+                                {
+                                    <img src="~/images/orderStatus/cusD1.png">
+                                }
+                            }
+                            else if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                            {
+                                <img src="~/images/orderStatus/cusD3.png">
+                            }
+                            else if (@Model.Order.OrderStatus == SR.Delivered)
+                            {
+                                <img src="~/images/orderStatus/cusD4.png">
+                            }
+                        }
 
-                    </div>
-                </div>
-            </div>
-
-             <div class="modal fade" id="exampleModal9">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header border-0">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-
-                                    </div>
-                                    <div class="modal-body">
-                                        <h6 class="col-md-10"> 
-                                       Are you sure you want to backlog this order?
-                                    </h6>
-                                    </div>
-
-                                    <div class="modal-footer border-0">
-                                        <div class="form-actions no-color">
-                                            <input type="submit" value="Confirm"  onclick="return validateInput()" asp-action="BacklogOrder" class="btn btn-success" style="width:150px;"/> 
-                                            <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                                                         }
-                                                         if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched)
-                                                         {                 
-                                                             if(Model.Order.OrderPaymentStatus == SR.ResellerDelayedPayment)
-                                                             {
-                                                                 <input type="button" data-toggle="modal" data-target="#exampleModal4" onclick="return validateInput()" asp-action="CaptureResellerPayment" class="btn btn-success" value="Capture Payment" style="width:150px"/>
-                                                                  <div class="modal fade" id="exampleModal4">
-                                                   <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header border-0">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-
-                        </div>
-                        <div class="modal-body">
-                            <h6 class="col-md-10"> 
-                        Confirm Capture Payment
-                        </h6>
-                        </div>
-
-                        <div class="modal-footer border-0">
-                            <div class="form-actions no-color">
-                                <input type="submit" value="Confirm" onclick="return validateInput()" asp-action="CaptureResellerPayment" class="btn btn-success" style="width:150px;"/> 
-                                <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
-                            </div>
-                        </div>
 
                     </div>
-                </div>
-            </div>
-                                                             }
-                                                         }
-                                                         if (Model.Order.OrderStatus == SR.ProcessingOrder)
-                                                         {
-                                                             <input type="button" data-toggle="modal" data-target="#exampleModal3" class="btn btn-danger"value="Cancel Order" style="width:150px"/>
-                                                                      <div class="modal fade" id="exampleModal3">
-                                                   <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header border-0">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
 
+                    <hr>
+                    <div class="row ordstatus">
+                        <div class="col-md-4">
+                            <h2 id="ordspace">Order Status: <strong>@Model.Order.OrderStatus</strong></h2>
+                            @if (User.IsInRole(SR.Role_Admin))
+                            {
+                                <h5><strong>Account Holder</strong></h5>
+                                <medium>Full Name: @Model.Order.ApplicationUser.FirstName @Model.Order.ApplicationUser.Surname</medium> <br />
+                                <medium>Phone Number: <label>+27</label>@Model.Order.ApplicationUser.PhoneNumber</medium> <br />
+                            }
                         </div>
-                        <div class="modal-body">
-                            <h6 class="col-md-10"> 
-                           Are Sure You Want To Cancel This Order
-                        </h6>
-                        </div>
+                        <div class="col-md-8 rightside">
+                            <div id="paying">
+                                @*OUTSTANDING*@
+                                @if (Model.Order.OrderPaymentStatus == SR.ResellerDelayedPayment)
+                                {
+                                    if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
+                                    {
+                                        <h5><strong>@Model.Order.OrderPaymentStatus</strong></h5>
+                                        <medium>Due Date: @TempData["Due"]</medium> <br />
+                                        <medium>Days Remaining: @TempData["Remaining"]</medium>
+                                    }
+                                }
 
-                        <div class="modal-footer border-0">
-                            <div class="form-actions no-color">
-                                <input type="submit" value="Confirm"  asp-action="CancelOrder" class="btn btn-success" style="width:150px;"/> 
-                                <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
+                                @*OVERDUE*@
+                                @if (Model.Order.OrderPaymentStatus == SR.PaymentOverdue)
+                                {
+                                    if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered)
+                                    {
+                                        <h5><strong>@Model.Order.OrderPaymentStatus</strong></h5>
+                                        <medium>Due Date: @TempData["Due"]</medium> <br />
+                                        <medium>Days Overdue: @TempData["OverDue"]</medium>
+                                    }
+                                }
+                                @if (Model.Order.OrderPaymentStatus == SR.OrderPaymentApproved)
+                                {
+                                    <h5><strong>@Model.Order.OrderPaymentStatus</strong></h5>
+                                }
+
                             </div>
-                        </div>
 
-                    </div>
-                </div>
-            </div>
-                                                         }
-                                                  }
+                            @if (User.IsInRole(SR.Role_Admin))
+                            {
+                                if (Model.Order.OrderStatus == SR.ProcessingOrder)
+                                {
+                                    @* <a asp-controller="PrepareOrder" asp-action="Index" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:150px" value="Package Order">Package Order</a>*@
+                                    @if (@Model.OrderLine.All(x => x.IsPackaged == true))
+                                    {
+                                        <input type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-secondary" value="Dispatch Order" style="width:150px" />
+                                    }
+
+                                    <div class="modal fade" id="exampleModal">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header border-0">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h6 class="col-md-10">
+                                                        Are You Sure You Want To Dispatch This Order?
+                                                    </h6>
+                                                </div>
+
+                                                <div class="modal-footer border-0">
+                                                    <div class="form-actions no-color">
+                                                        <input type="submit" value="Confirm" asp-action="DispatchParcel" class="btn btn-success" style="width:150px;" />
+                                                        <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="row">
-                                                            <div class="col-md-4 strongdetails">
-                                                                <h5 class="spaceing"><strong>Contact Person</strong></h5>
-                                                                <label>Full Name: @Model.Order.FirstName @Model.Order.Surname</label> <br />
-                                                                <label>Phone Number: @Model.Order.PhoneNumber</label> <br />
-                                                                <label>Email Address: @Model.Order.ApplicationUser.Email</label> 
-                                                                <br />
-                                                                <h5 id="stronger" class="spaceing"><strong>Delivery Address</strong></h5>
-                                                                <label>Street Address: @Model.Order.StreetAddress</label> <br />
-                                                                <label>Suburb: @Model.Order.Suburb.SuburbName</label> <br />
-                                                                <label>City: @Model.Order.City.CityName</label> <br />
-                                                                <label>Province: @Model.Order.Province.ProvinceName</label> <br />
-                                                                <label>Country: @Model.Order.Country.CountryName</label> <br />
-                                                                <label>Postal Code: @Model.Order.Suburb.PostalCode</label>
+                                    </div>
+                                }
+                                //Returned product button
+                                @if (Model.Order.OrderStatus == SR.OrderDispatched || Model.Order.OrderStatus == SR.Delivered || Model.Order.OrderStatus == SR.ReturnedProduct)
+                                {
+                                    <a asp-controller="ReturnedProduct" asp-action="Create" asp-route-orderId="@Model.Order.Id" class="btn btn-warning" style="width:250px" value="Returned Product">Log Returned Product</a>
+                                }
 
-                                                            </div>
-                                                                <br />
-                                                            <div class="col-md-4">
-                                                                <h5 class="spaceing"><strong>Delivery Details</strong></h5>
-                                                                <label>Courier: @Model.Order.Courier.CourierName</label> <br />  
-                                                                <label>Dispatched Date:</label>
-                                                                    @if (@Model.Order.OrderStatus == SR.OrderDispatched)
-                                                                    {
-                                                                        <label> @Model.Order.DispatchedDate.ToString("d")</label>
-                                                                    }
-                                                                    <div class="d-flex justify-content-between">
-                                                                        <label>Tracking Number: @Model.Order.ParcelTrackingNumber</label>
-                                                                            @*Only allow the tracking number to be editable for Admin or SA and when status is processing.*@
-                                                                            @if (@Model.Order.OrderStatus == SR.ProcessingOrder)
-                                                                            {
-                                                                                <input asp-for="Order.ParcelTrackingNumber" id="trackingNumber" type="text" class="form-control" />
-                                                                            }                                                            
-                                                                    </div> 
-                                                                </div>                                                                
-                                                            <div class="col-md-4">
-                                                               <h5 class="spaceing"><strong>Order Summary</strong></h5>
-                                                                    <div class="card">
-                                                                        <div class="card-body">
-                                                                            @foreach (var line in Model.OrderLine)
-                                                                        {
-                                                                            <div class="d-flex justify-content-between" id="cartitems">
-                                                                                <medium>@line.Product.Name</medium>
-                                                                                <medium><strong>@((line.Count * line.Price).ToString("0.00"))</strong></medium>
-                                                                            </div>
-                                                                            <small class="text-muted">Price : @line.Price.ToString("0.00")</small> <br />
-                                                                            <small class="text-muted">Quantity: @line.Count</small>
-                                                                            <hr />
-                                                                        }
-                                                                            <div class="d-flex justify-content-between" id="summarytotal">
-                                                                                <h5>Total (ZAR)</h5>
-                                                                                <h5 id="">ZAR @Model.Order.OrderTotal.ToString("0.00")</h5>
-                                                                            </div>
+                                //Reseller order which have to be approved first.
+                                if (Model.Order.OrderStatus == SR.OrderPending)
+                                {
+                                    <input type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-success" value="Approve" style="width:150px" />
+                                    <input type="button" data-toggle="modal" data-target="#exampleModal2" class="btn btn-danger" value="Reject" style="width:150px" />
+                                    <div class="modal fade" id="exampleModal">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header border-0">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
 
-                                                                        </div>
-                                                                   </div>            
-                                                            </div>
-                                                        </div>      
-                                                        <div>
-                                                        @*<button type="submit" formmethod="post" class="btn btn btn-success" asp-action="UpdateOrderStatus" style="width:150px;"> Update Order </button> *@           
-                                                        <a asp-action="Index" class="btn btn-outline-dark" style="width:150px">
-                                                            Back
-                                                        </a>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h6 class="col-md-10">
+                                                        Are You Sure You Want To Approve This Order
+                                                    </h6>
+                                                </div>
+
+                                                <div class="modal-footer border-0">
+                                                    <div class="form-actions no-color">
+                                                        <input type="submit" value="Confirm" onclick="return validateInput()" asp-action="ApproveResellerOrder" class="btn btn-success" style="width:150px;" />
+                                                        <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="exampleModal2">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header border-0">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h6 class="col-md-10">
+                                                        Are You Sure You Want To Reject This Order
+                                                    </h6>
+                                                </div>
+
+                                                <div class="modal-footer border-0">
+                                                    <div class="form-actions no-color">
+                                                        <input type="submit" value="Confirm" onclick="return validateInput()" asp-action="RejectResellerOrder" class="btn btn-success" style="width:150px;" />
+                                                        <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                                if (Model.Order.OrderStatus == SR.ProcessingOrder || Model.Order.OrderStatus == SR.OrderDispatched)
+                                {
+                                    if (Model.Order.OrderPaymentStatus == SR.ResellerDelayedPayment || Model.Order.OrderPaymentStatus == SR.PaymentOverdue )
+                                    {
+                                        <input type="button" data-toggle="modal" data-target="#exampleModal4" onclick="return validateInput()" asp-action="CaptureResellerPayment" class="btn btn-success" value="Capture Payment" style="width:150px" />
+                                        <div class="modal fade" id="exampleModal4">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header border-0">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <h6 class="col-md-10">
+                                                            Confirm Capture Payment
+                                                        </h6>
+                                                    </div>
+
+                                                    <div class="modal-footer border-0">
+                                                        <div class="form-actions no-color">
+                                                            <input type="submit" value="Confirm" onclick="return validateInput()" asp-action="CaptureResellerPayment" class="btn btn-success" style="width:150px;" />
+                                                            <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
                                                         </div>
                                                     </div>
-                                                </div>                               
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                if (Model.Order.OrderStatus == SR.ProcessingOrder)
+                                {
+                                    <input type="button" data-toggle="modal" data-target="#exampleModal3" class="btn btn-danger" value="Cancel Order" style="width:150px" />
+                                    <div class="modal fade" id="exampleModal3">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header border-0">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h6 class="col-md-10">
+                                                        Are Sure You Want To Cancel This Order
+                                                    </h6>
+                                                </div>
+
+                                                <div class="modal-footer border-0">
+                                                    <div class="form-actions no-color">
+                                                        <input type="submit" value="Confirm" asp-action="CancelOrder" class="btn btn-success" style="width:150px;" />
+                                                        <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-md-4 strongdetails">
+                                    <h5 class="spaceing"><strong>Contact Person</strong></h5>
+                                    <label>Full Name: @Model.Order.FirstName @Model.Order.Surname</label> <br />
+                                    <label>Phone Number: +27 @Model.Order.PhoneNumber</label> <br />
+                                    <label>Email Address: @Model.Order.ApplicationUser.Email</label>
+                                    <br />
+                                    <h5 id="stronger" class="spaceing"><strong>Delivery Address</strong></h5>
+                                    <label>Street Address: @Model.Order.StreetAddress</label> <br />
+                                    <label>Suburb: @Model.Order.Suburb.SuburbName</label> <br />
+                                    <label>City: @Model.Order.City.CityName</label> <br />
+                                    <label>Province: @Model.Order.Province.ProvinceName</label> <br />
+                                    <label>Country: @Model.Order.Country.CountryName</label> <br />
+                                    <label>Postal Code: @Model.Order.Suburb.PostalCode</label>
+
+                                </div>
+                                <br />
+                                <div class="col-md-4">
+                                    <h5 class="spaceing"><strong>Delivery Details</strong></h5>
+                                    <label>Courier: @Model.Order.Courier.CourierName</label> <br />
+                                    <label>Dispatched Date:</label>
+                                    @if (@Model.Order.OrderStatus == SR.OrderDispatched)
+                                    {
+                                        <label> @Model.Order.DispatchedDate.ToString("d")</label>
+                                    }
+                                    <div class="d-flex justify-content-between">
+
+                                        @if (@Model.Order.OrderStatus == SR.ProcessingOrder)
+                                        {
+                                            @if (@Model.Order.Courier.CourierName != "Natuurlik Free Delivery")
+                                            {
+                                                <label>Tracking Number: @Model.Order.ParcelTrackingNumber</label>
+                                                <input asp-for="Order.ParcelTrackingNumber" id="trackingNumber" type="text" class="form-control" />
+                                            }
+                                        }
                                     </div>
                                 </div>
-                            <input asp-for="Order.Id" hidden />
-                        </form>        
+                                <div class="col-md-4">
+                                    @if (@Model.Order.OrderStatus == SR.OrderDispatched || @Model.Order.OrderStatus == SR.OrderCancelled || @Model.Order.OrderStatus == SR.OrderRejected || @Model.Order.OrderStatus == SR.OrderPending || @Model.Order.OrderStatus == SR.Delivered)
+                                    {
+                                        <h5 class="spaceing"><strong>Order Summary</strong></h5>
+                                    }
+                                    else
+                                    {
+                                        <h5 class="spaceing"><strong>Package Order </strong></h5>
+                                    }
+                                    <div class="card">
+                                        <div class="card-body">
+                                            @foreach (var line in Model.OrderLine)
+                                            {
+                                                <div class="d-flex justify-content-between" id="cartitems">
+                                                    <medium>@line.Product.Name</medium>
+                                                    <medium id="money"><strong>R @((line.Count * line.Price).ToString("0.00"))</strong></medium>
+                                                </div>
+                                                <small class="text-muted" id="money">Price : R @line.Price.ToString("0.00")</small> <br />
+                                                <small class="text-muted">Quantity: @line.Count</small>
+                                                @if (@Model.Order.OrderStatus == SR.OrderDispatched || @Model.Order.OrderStatus == SR.OrderRejected || @Model.Order.OrderStatus == SR.OrderCancelled || @Model.Order.OrderStatus == SR.OrderPending || @Model.Order.OrderStatus == SR.Delivered)
+                                                {
+                                                     <div class="d-flex justify-content-between">
+                                                        <small class="text-muted">Package Order Status:</small>
+                                                        @if (@line.IsPackaged == true)
+                                                        {
+                                                            <small class="text-muted">Is Packaged</small>
+                                                        }
+                                                        else
+                                                        {
+                                                            <small class="text-muted">Not Packaged</small>
+                                                        }
+                                                        <medium><input asp-for="@line.IsPackaged" class="form-control" type="checkbox" id="@line.Id" onchange="autoSave(this)" disabled /></medium>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="d-flex justify-content-between">
+                                                        <small class="text-muted">Package Order Status:</small>
+                                                        @if (@line.IsPackaged == true)
+                                                        {
+                                                            <small class="text-muted">Is Packaged</small>
+                                                        }
+                                                        else
+                                                        {
+                                                            <small class="text-muted">Not Packaged</small>
+                                                        }
+                                                        <medium><input asp-for="@line.IsPackaged" class="form-control" type="checkbox" id="@line.Id" onchange="autoSave(this)" /></medium>
+                                                    </div>
+                                                }
+
+                                                <hr />
+                                            }
+                                            <div class="d-flex justify-content-between" id="summarytotal">
+                                                <h5>Total (ZAR)</h5>
+                                                <h5 id="">ZAR @Model.Order.OrderTotal.ToString("0.00")</h5>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                @*<button type="submit" formmethod="post" class="btn btn btn-success" asp-action="UpdateOrderStatus" style="width:150px;"> Update Order </button> *@
+                                <a asp-action="Index" class="btn btn-outline-dark" style="width:150px">
+                                    Back
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input asp-for="Order.Id" hidden />
+        </form>
     }
 
 
 </div>
 
+<script>
+    function autoSave(e) {
+        var value = $(e).is(':checked');
+        var orderLineID = e.id;
+        console.log(value);
+        console.log(orderLineID);
+        $.ajax({
+            type: "POST",
+            url: "/Order/AutoSavePackageOrder",
+            data: { OrderlineId: orderLineID, IsChecked: value },
+            datatype: "json",
+        });
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Package order details updated successfully!',
+            showConfirmButton: false,
+            timer: 2500
+        })
+        setTimeout(function() {
+            window.location.reload();
+        }, 2500);
+    }
+</script>
+
 @section Scripts {
     <script src="~/js/notifications.js"></script>
-    
+
 }

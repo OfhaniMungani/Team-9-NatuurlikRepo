@@ -14,26 +14,40 @@
     
      <div class="card-body">
         <div class="deldetails">
-            <div class="col">
-                <label> <strong>Company Name :</strong>  @Html.DisplayFor(model => model.Supplier.CompanyName)</label> 
-            </div> 
-            <div class="col">
-                <label> <strong>Invoice Number :</strong>  @Html.DisplayFor(model => model.InvoiceNo)</label> 
-            </div> 
-            <div class="col">
-                <label> <strong>Inventory Item :</strong>  @Html.DisplayFor(model => model.InventoryItem.InventoryItemName)</label> 
-            </div> 
-            <div class="col">
-                <label> <strong>Quantity Received  :</strong>  @Html.DisplayFor(model => model.QuantityReceived)</label> 
-            </div>  
-            <div class="col">
-                <label> <strong>Date Logged :</strong>  @Html.DisplayFor(model => model.DateLogged)</label> 
-            </div>   
-             @*<div class="col">
-                <label> <strong>Supplier Invoice :</strong>  <input type="button" id="btnPreview" value="Preview PDF Document" onclick="LoadPdfFromUrl("@Model.InvoiceFile") /></label> 
-            </div>   
+            <div class="row">
+
+                <div class="col-md-5">
+                    <iframe src="@Model.InvoiceFile" class="invoice"></iframe>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="col">
+                        <h4> <strong>Supplier Invoice</strong> </h4> 
+                    </div> 
+                    <div class="col">
+                        <label> <strong>Company Name :</strong>  @Html.DisplayFor(model => model.Supplier.CompanyName)</label> 
+                    </div> 
+                    <div class="col">
+                        <label> <strong>Invoice Number :</strong>  @Html.DisplayFor(model => model.InvoiceNo)</label> 
+                    </div> 
+                    <div class="col">
+                        <label> <strong>Inventory Item :</strong>  @Html.DisplayFor(model => model.InventoryItem.InventoryItemName)</label> 
+                    </div> 
+                    <div class="col">
+                        <label> <strong>Quantity Received  :</strong>  @Html.DisplayFor(model => model.QuantityReceived)</label> 
+                    </div>  
+                    <div class="col">
+                        <label> <strong>Date Logged :</strong>  @Html.DisplayFor(model => model.DateLogged)</label> 
+                    </div>   
+
+                </div>
+
+
+            </div>
+  
             <hr/>
-            <div id="pdf_container"></div>*@
+            
+
         </div>
             <div class="col">            
                <a asp-controller="InventoryProcured" asp-action="Index" class="btn btn-outline-dark" style="width:150px;"> Return </a>

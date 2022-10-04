@@ -2,159 +2,200 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NatuurlikBase.Data;
 using NatuurlikBase.Models;
+using NatuurlikBase.Repository.IRepository;
 
-namespace NatuurlikBase.Controllers
+namespace NatuurlikBase.Controllers;
+
+[Authorize(Roles = SR.Role_Admin)]
+
+public class WriteOffReasonController : Controller
 {
-    public class WriteOffReasonController : Controller
+    private readonly DatabaseContext _context;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public WriteOffReasonController(DatabaseContext context, IUnitOfWork unitOfWork)
     {
-        private readonly DatabaseContext _context;
+        _context = context;
+        _unitOfWork = unitOfWork;
+    }
 
-        public WriteOffReasonController(DatabaseContext context)
+
+    public async Task<IActionResult> Index()
+    {
+        return View(await _context.WriteOffReason.ToListAsync());
+    }
+
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-
-        public async Task<IActionResult> Index()
+        var writeOffReason = await _context.WriteOffReason
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (writeOffReason == null)
         {
-            return View(await _context.WriteOffReason.ToListAsync());
+            return NotFound();
         }
 
-        public async Task<IActionResult> Details(int? id)
+        return View(writeOffReason);
+    }
+
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create([Bind("Id,Name")] WriteOffReason writeOffReason)
+    {
+        if (ModelState.IsValid)
         {
-            if (id == null)
+            if (_context.WriteOffReason.Any(c => c.Name.Equals(writeOffReason.Name)))
             {
-                return NotFound();
+                ViewBag.ReturnError = "Write-Off Reason Already Exists!";
+            }
+            else
+            {
+                _context.Add(writeOffReason);
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await _context.SaveChangesAsync(userName);
+                TempData["success"] = "Write-Off Reason Added Successflly!";
+                return RedirectToAction("Index");
             }
 
-            var writeOffReason = await _context.WriteOffReason
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (writeOffReason == null)
-            {
-                return NotFound();
-            }
+        }
+        else if (!ModelState.IsValid)
 
-            return View(writeOffReason);
+        {
+            ViewBag.modal = "Error! Please Try Again.";
+
+        }
+        return View(writeOffReason);
+    }
+
+    // GET: WriteOffReason/Edit/5
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
         }
 
-        public IActionResult Create()
+        var writeOffReason = await _context.WriteOffReason.FindAsync(id);
+        if (writeOffReason == null)
         {
-            return View();
+            return NotFound();
+        }
+        return View(writeOffReason);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] WriteOffReason writeOffReason)
+    {
+        if (ModelState.IsValid)
+
+        {
+
+            if (_context.WriteOffReason.Any(c => c.Name.Equals(writeOffReason.Name)))
+            {
+                ViewBag.ReturnError = "Write-Off Reason Already Exists!";
+
+            }
+            else
+            {
+                //_context.Entry(writeOffReason).State = EntityState.Modified;
+                _unitOfWork.WriteOffReason.Update(writeOffReason);
+                TempData["success"] = "Write-Off Reason Updated Successfully";
+                ViewBag.WriteOffReasonConfirmation = "Please confirm your changes";
+                var claimsId = (ClaimsIdentity)User.Identity;
+                var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+                var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+                var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+                var userName = fullName.ToString();
+                await _context.SaveChangesAsync(userName);
+                return RedirectToAction("Index");
+            }
+        }
+        return View(writeOffReason);
+    }
+
+    // GET: WriteOffReason/Delete/5
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Name")] WriteOffReason writeOffReason)
+        var writeOffReason = await _context.WriteOffReason
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (writeOffReason == null)
         {
-            if (ModelState.IsValid)
-            {
-                if (_context.WriteOffReason.Any(c => c.Name.Equals(writeOffReason.Name)))
-                {
-                    ViewBag.ReturnError = "Write-Off Reason Already Exists!";
-                }
-                else
-                {
-                    _context.Add(writeOffReason);
-                    _context.SaveChanges();
-                    TempData["success"] = "Write-Off Reason Added Successflly!";
-                    return RedirectToAction("Index");
-                }
-
-            }
-            else if (!ModelState.IsValid)
-
-            {
-                ViewBag.modal = "Error! Please Try Again.";
-
-            }
-            return View(writeOffReason);
+            return NotFound();
         }
 
-        // GET: WriteOffReason/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        return View(writeOffReason);
+    }
+
+    // POST: WriteOffReason/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        WriteOffReason writeoff = _context.WriteOffReason.Find(id);
+        _context.WriteOffReason.Remove(writeoff);
+        ViewBag.WriteOffReasonConfirmation = "Are you sure you want to delete this write-off reason?";
+        //Check association with inventory write-off
+        var InvForeignKey = _context.InventoryWriteOff.Any(x => x.writeOffReasonId == id);
+        //Check association with product write-off
+        var ProdForeignKey = _context.ProductWriteOff.Any(x => x.writeOffReasonId == id);
+        if (InvForeignKey)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var writeOffReason = await _context.WriteOffReason.FindAsync(id);
-            if (writeOffReason == null)
-            {
-                return NotFound();
-            }
-            return View(writeOffReason);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name")] WriteOffReason writeOffReason)
-        {
-            if (ModelState.IsValid)
-
-            {
-
-                if (_context.WriteOffReason.Any(c => c.Name.Equals(writeOffReason.Name)))
-                {
-                    ViewBag.ReturnError = "Write-Off Reason Already Exists!";
-
-                }
-                else
-                {
-                    _context.Entry(writeOffReason).State = EntityState.Modified;
-                    TempData["success"] = "Write-Off Reason Updated Successfully";
-                    ViewBag.WriteOffReasonConfirmation = "Please confirm your changes";
-                    _context.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-            }
-            return View(writeOffReason);
-        }
-
-        // GET: WriteOffReason/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var writeOffReason = await _context.WriteOffReason
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (writeOffReason == null)
-            {
-                return NotFound();
-            }
-
-            return View(writeOffReason);
-        }
-
-        // POST: WriteOffReason/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            WriteOffReason writeoff = _context.WriteOffReason.Find(id);
-            _context.WriteOffReason.Remove(writeoff);
-            ViewBag.WriteOffReasonConfirmation = "Are you sure you want to delete this write-off reason?";
-            TempData["success"] = "Write-Off Reason Deleted Successfully";
-            _context.SaveChanges();
+            TempData["Delete"] = "Write-Off Reason Cannot be deleted since it has an association with written-off inventory";
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+        if (ProdForeignKey)
         {
-            if (disposing)
-            {
-                _context.Dispose();
-            }
-            base.Dispose(disposing);
+            TempData["Delete"] = "Write-Off Reason Cannot be deleted since it has an association with written-off product(s)";
+            return RedirectToAction("Index");
         }
+        else
+        {
+            TempData["success"] = "Write-Off Reason Deleted Successfully";
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            var userRetrieved = _unitOfWork.User.GetFirstOrDefault(x => x.Id == claim.Value);
+            var fullName = userRetrieved.FirstName + " " + userRetrieved.Surname;
+            var userName = fullName.ToString();
+            await _context.SaveChangesAsync(userName);
+            return RedirectToAction("Index");
+        }
+       
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _context.Dispose();
+        }
+        base.Dispose(disposing);
     }
 }

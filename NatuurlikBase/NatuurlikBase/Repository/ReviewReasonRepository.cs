@@ -15,7 +15,11 @@ namespace NatuurlikBase.Repository
 
         public void Update(ReviewReason obj)
         {
-            _db.ReviewReason.Update(obj);
+            var objFromDb = _db.ReviewReason.FirstOrDefault(u => u.Id == obj.Id);
+            if (objFromDb != null)
+            {
+                objFromDb.Name = obj.Name;
+            }
 
         }
 

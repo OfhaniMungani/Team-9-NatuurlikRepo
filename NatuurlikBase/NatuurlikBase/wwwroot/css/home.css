@@ -4,10 +4,18 @@
     margin-left: 5px;
 }
 
+.social {
+    color: white;
+}
+
+    .social:hover {
+        color: #3BDD74;
+    }
+
 #rand {
     color: white;
     font-family: Montserrat-Bold;
-    padding-bottom:20px;
+    padding-bottom: 20px;
 }
 
 
@@ -29,8 +37,8 @@
 
 #blog {
     border: none;
-    width:250px;
-    margin:auto;
+    width: 250px;
+    margin: auto;
     margin-bottom: 40px;
 }
 
@@ -41,7 +49,7 @@
 #products {
     margin-top: 15%;
     padding-bottom: 5%;
-} 
+}
 
 .price {
     font-family: Montserrat-Bold;
@@ -103,13 +111,14 @@
 }
 
 #prod {
-    width:250px;
+    width: 250px;
     border: none;
     margin: auto;
     margin-bottom: 40px;
 }
 
-@media (min-width: 1025px){
+
+@media (min-width: 1025px) {
 
     .coffee {
         background-image: url("../images/annie.png");
@@ -145,7 +154,7 @@
 
     #shop {
         margin-top: 20px;
-        margin-left:0;
+        margin-left: 0;
         width: 50%;
     }
 
@@ -168,7 +177,7 @@
     }
 
     #prod {
-        padding-left:10px;
+        padding-left: 10px;
     }
 }
 
@@ -188,26 +197,25 @@
         margin-right: 50%;
     }
 
-    #shop {        
+    #shop {
         margin-top: 20px;
         width: 70%;
-        margin-left:auto;
+        margin-left: auto;
         margin-right: auto;
     }
 
     #beans, #rand {
         padding-top: 20px;
-        text-align:center;
+        text-align: center;
     }
 
-    .posts{
+    .posts {
         padding-top: 80px;
     }
 
     #latest {
         padding-bottom: 40px;
     }
-
 }
 
 @media (max-width: 576px) {
@@ -216,9 +224,7 @@
         padding-top: 20px;
         height: 300px;
         margin-left: 70%;
-
     }
-
 }
 
 @media (max-width: 500px) {

@@ -14,6 +14,7 @@ function loadDataTable() {
             { data: "surname", "width": "10%" },
             { data: "email", "width": "10%" },
             { data: "phoneNumber", "width": "10%" },
+            { data: "userRole", "width": "10%" },
             //{ data: "country.countryName", "width": "10%" },
             //{ data: "province.provinceName", "width": "10%" },
             //{ data: "city.cityName", "width": "10%" },
@@ -38,13 +39,13 @@ function loadDataTable() {
 
 function Delete(url) {
     Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        title: 'Proceed to Remove User?',
+        text: "The selected user's account details will be removed permanently!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, proceed with delete '
+        confirmButtonText: 'Confirm'
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({

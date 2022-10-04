@@ -24,10 +24,13 @@ public class ApplicationUser : IdentityUser
     public string Surname { get; set; }
 
     [Required]
-    [RegularExpression(@"^(\d{10})$", ErrorMessage = "Please enter a valid Phone Number.")]
-    [MaxLength(10)]
+    [RegularExpression(@"^(\d{9})$", ErrorMessage = "Please enter a valid Phone Number.")]
+    [MaxLength(9)]
     [Display(Name ="Phone Number")]
     public string PhoneNumber { get; set; }
+
+    [Required]
+    public string UserRole { get; set; }
 
     [Required]
     [MaxLength(50)]

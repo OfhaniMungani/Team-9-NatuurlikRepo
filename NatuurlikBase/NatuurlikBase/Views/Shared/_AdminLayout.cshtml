@@ -40,6 +40,11 @@
                     <a asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-house-door">&nbsp;</i> Store</a>
                 </li>
                 <li>
+                    <a asp-area="" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-speedometer">&nbsp;</i> Dashboard</a>
+                </li>
+
+
+                <li>
                     <a href="#productSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-cart">&nbsp;</i> Products</a>
                     <ul class="collapse list-unstyled" id="productSubmenu">
                         <li>
@@ -51,7 +56,7 @@
                         <li>
                             <a asp-area="" asp-controller="ProductCategory" asp-action="Index">Product Categories</a>
                         </li>
-                         <li>
+                        <li>
                             <a asp-area="" asp-controller="ConfigureProduct" asp-action="Index">Product Configuration</a>
                         </li>
                         <li>
@@ -63,6 +68,10 @@
                         <li>
                             <a asp-area="" asp-controller="ReturnedProduct" asp-action="Index">Returned Products</a>
                         </li>
+                        <li>
+                            <a asp-area="" asp-controller="ImportProductCatalogue" asp-action="Index">Import Products</a>
+                        </li>
+
 
                     </ul>
                 </li>
@@ -73,28 +82,28 @@
                             <a asp-area="" asp-controller="Order" asp-action="Index">Manage Orders</a>
                         </li>
                         <li>
-                            <a asp-area="" asp-controller="ConfirmationReminder" asp-action="Index">Order Confirmation Reminders</a>
-                        </li> 
-                        <li>
                             <a asp-area="" asp-controller="PaymentReminder" asp-action="Index">Payment Reminders</a>
-                        </li>                     
+                        </li>
                         <li>
                             <a asp-area="" asp-controller="ReturnReason" asp-action="Index">Return Reasons</a>
                         </li>
                         <li>
                             <a asp-area="" asp-controller="QueryReason" asp-action="Index">Query Reasons</a>
                         </li>
-                         <li>
+                        <li>
                             <a asp-area="" asp-controller="ReviewReason" asp-action="Index">Review Reasons</a>
                         </li>
                         <li>
                             <a asp-area="" asp-controller="Courier" asp-action="Index">Couriers</a>
                         </li>
-                           <li>
+                        <li>
                             <a asp-area="" asp-controller="Order" asp-action="ViewQueries">View Order Queries</a>
                         </li>
                         <li>
                             <a asp-area="" asp-controller="Order" asp-action="ViewReviews">View Order Reviews</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="ViewDeliveries" asp-action="Index">In House Deliveries</a>
                         </li>
                     </ul>
                 </li>
@@ -119,27 +128,31 @@
                         <li>
                             <a asp-area="" asp-controller="InventoryProcured" asp-action="Index">Capture Procured Inventory</a>
                         </li>
-                         <li>
+                        <li>
                             <a asp-area="" asp-controller="InventoryWriteOffs" asp-action="Index"> Inventory Write-Off Log</a>
                         </li>
-                        
+
                     </ul>
                 </li>
 
                 <li>
                     <a href="#returnSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bi bi-geo-alt"> &nbsp;</i>Locations</a>
                     <ul class="collapse list-unstyled" id="returnSubmenu">
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Suburbs" asp-action="Index"> Suburbs</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Countries" asp-action="Index">Countries</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Province" asp-action="Index"> Provinces</a>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Cities" asp-action="Index"> Cities</a>
                         </li>
-                       <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Province" asp-action="Index"> Provinces</a>
-                        </li>
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Countries" asp-action="Index">Countries</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Suburbs" asp-action="Index"> Suburbs</a>
                         </li>
                     </ul>
                 </li>
@@ -162,10 +175,10 @@
                         <li>
                             <a asp-area="" asp-controller="Dashboard" asp-action="Index">Orders Report</a>
                         </li>
-                         <li>
+                        <li>
                             <a asp-area="" asp-controller="ProductionReport" asp-action="Index">Produced Products Report</a>
                         </li>
-                         <li>
+                        <li>
                             <a asp-area="" asp-controller="ProductReport" asp-action="Index">Product Report</a>
                         </li>
                         <li>
@@ -175,22 +188,29 @@
                             <a asp-area="" asp-controller="OrdersByRegion" asp-action="Index">Orders By Region Report</a>
                         </li>
                     </ul>
-                </li>               
+                </li>
                 <li>
                     <a asp-area="Admin" asp-controller="User" asp-action="Index"><i class="bi bi-person">&nbsp;</i> Users</a>
                 </li>
-                                <li>
+                <li>
                     <a asp-area="Admin" asp-controller="Video" asp-action="Index"><i class="bi bi-camera-reels">&nbsp;</i> Videos</a>
                 </li>
 
-                  <li>
+                <li>
                     <a asp-area="Admin" asp-controller="VAT" asp-action="Index"><i class="bi bi-tags">&nbsp;</i> Manage VAT </a>
                 </li>
 
                 <li>
+                    <a asp-area="" asp-controller="Audit" asp-action="Index"><i class="bi bi-search">&nbsp;</i> Audit Log</a>
+                </li>
+
+
+
+
+                <li>
                     <a asp-area="" asp-controller="Help" asp-action="Index"><i class="bi bi-question-circle">&nbsp;</i> Help</a>
                 </li>
-           </ul>
+            </ul>
         </nav>
 
         <div class="d-none d-lg-block" id="full">
@@ -257,7 +277,7 @@
                                 <a class="dropdown-item" asp-area="" asp-controller="WriteOffReason" asp-action="Index">Write-Off Reasons</a>
                                 <a class="dropdown-item" asp-area="" asp-controller="Dashboard" asp-action="Index">Inventory Levels</a>
                                 <a class="dropdown-item" asp-area="" asp-controller="SupplierOrder" asp-action="Index"> Send Supplier Order</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="InventoryProcured" asp-action="Index">Capture Procured Inventory</a>    
+                                <a class="dropdown-item" asp-area="" asp-controller="InventoryProcured" asp-action="Index">Capture Procured Inventory</a>
                             </div>
                         </li>
 
@@ -275,11 +295,11 @@
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" asp-area="" asp-controller="report" asp-action="Index">Sales Report</a>
                                 <a class="dropdown-item" asp-area="" asp-controller="CustomerReport" asp-action="Index">Customer Report</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="ResellerReport" asp-action="Index">Reseller Report</a>                    
-                                <a class="dropdown-item" asp-area="" asp-controller="InventoryReport" asp-action="Index">Inventory List Report</a>                      
-                                <a class="dropdown-item" asp-area="" asp-controller="Dashboard" asp-action="Index">Orders Report</a>                  
-                                <a class="dropdown-item" asp-area="" asp-controller="ProductionReport" asp-action="Index">Produced Products Report</a>                    
-                                <a class="dropdown-item" asp-area="" asp-controller="ProductReport" asp-action="Index">Product Report</a>                       
+                                <a class="dropdown-item" asp-area="" asp-controller="ResellerReport" asp-action="Index">Reseller Report</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="InventoryReport" asp-action="Index">Inventory List Report</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Dashboard" asp-action="Index">Orders Report</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="ProductionReport" asp-action="Index">Produced Products Report</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="ProductReport" asp-action="Index">Product Report</a>
                             </div>
                         </li>
                         <li class="nav-item">
@@ -296,7 +316,9 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" id="logout"> Log Out &nbsp;<i class="bi bi-box-arrow-right"></i></a>
+                            <form id="alogout" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button id="alogout" type="submit" class="nav-link btn btn-link">LOGOUT</button>
+                            </form>
                         </li>
                     </ul>
                 </div>

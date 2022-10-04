@@ -17,7 +17,7 @@
 
                 <div class="row">
                      <div class="form-floating col-md-6" id="formspace">
-                        <label asp-for="Input.Role">User Role</label>
+                        <label asp-for="Input.Role">User Role</label>&nbsp;<label style="color:red">*</label>
                         <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-control">
                             <option disabled selected>- Select Role -</option>
                         </select>
@@ -27,25 +27,28 @@
                 <br />
                 <div class="row">
                     <div class="form-floating col-md-6 " id="formspace">
-                        <label asp-for="Input.FirstName">First Name</label>
+                        <label asp-for="Input.FirstName">First Name</label>&nbsp;<label style="color:red">*</label>
                         <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" placeholder="John"/>
                         <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                     </div>
                     <div class="form-floating col-md-6 " id="formspace">
-                        <label asp-for="Input.Surname">Surname</label>
+                        <label asp-for="Input.Surname">Surname</label>&nbsp;<label style="color:red">*</label>
                         <input asp-for="Input.Surname" class="form-control" autocomplete="lastname" aria-required="true" placeholder="Doe"/>
                         <span asp-validation-for="Input.Surname" class="text-danger"></span>
                     </div>
                 </div>
                 <br />
                 <div class="row">
-                    <div class="form-floating col-md-6 " id="formspace">
-                        <label asp-for="Input.PhoneNumber">Phone Number</label>
-                        <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="0789654123"/>
+                    <div class="form-floating col-md-6" id="formspace">
+                        <label asp-for="Input.PhoneNumber" class="required">Phone Number</label>
+                          <div class="input-group">
+                            <span class="input-group-text">+27</span>
+                            <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="987654321"/>                            
+                          </div>
                         <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                     </div>
                     <div class="form-floating col-md-6" id="formspace">
-                        <label asp-for="Input.Email">Email</label>
+                        <label asp-for="Input.Email">Email</label>&nbsp;<label style="color:red">*</label>
                         <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="john@gmail.com"/>
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
@@ -53,7 +56,7 @@
                 <br />
                 <div class="row">
                     <div class="form-floating col-md-6 " id="formspace">
-                        <label asp-for="Input.StreetAddress">Street Address</label>
+                        <label asp-for="Input.StreetAddress">Street Address</label>&nbsp;<label style="color:red">*</label>
                         <input asp-for="Input.StreetAddress" class="form-control" autocomplete="lastname" aria-required="true" placeholder="20 Green Street"/>
                         <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
                     </div>
@@ -61,7 +64,7 @@
                 <br />
                  <div class="row">
                     <div class="form-floating col-md-3"  id="countryControl">
-                        <label asp-for="Input.Country">Country</label>
+                        <label asp-for="Input.Country">Country</label>&nbsp;<label style="color:red">*</label>
                         <select asp-for="Input.Country" asp-items="@Model.Input.CountryList" class="form-control" onchange="onCountryChange()">
                             <option disabled selected>- Select Country -</option>
                         </select>
@@ -69,7 +72,7 @@
                     </div>
                     <br />
                     <div class="form-floating col-md-3" id="provinceControl" hidden>
-                        <label asp-for="Input.Province">Province</label>
+                        <label asp-for="Input.Province">Province</label>&nbsp;<label style="color:red">*</label>
                         <select asp-for="Input.Province" asp-items="@Model.Input.ProvinceList" class="form-control" onchange="onProvinceChange()">
                             <option disabled selected>- Select Province -</option>
                         </select>
@@ -82,7 +85,7 @@
 
                 <div class="row">
                 <div class="form-floating col-md-3" id="cityControl" hidden>
-                    <label asp-for="Input.City">City</label>
+                    <label asp-for="Input.City">City</label>&nbsp;<label style="color:red">*</label>
                     <select asp-for="Input.City" asp-items="@Model.Input.CityList" class="form-control" onchange="onCityChange()">
                         <option disabled selected>- Select City -</option>
                     </select>
@@ -90,7 +93,7 @@
                 </div>
                 <br />
                 <div class="form-floating col-md-3" id="suburbControl" hidden>
-                    <label asp-for="Input.Suburb">Suburb</label>
+                    <label asp-for="Input.Suburb">Suburb</label>&nbsp;<label style="color:red">*</label>
                     <select asp-for="Input.Suburb" asp-items="@Model.Input.SuburbList" class="form-control">
                         <option disabled selected>- Select Suburb -</option>
                     </select>

@@ -6,10 +6,11 @@
 }
 
 <div id="page-content-wrapper">
+                @if (ViewBag.Error == null)
+            {
     <form method="post">	
         <div>
-            @if (ViewBag.Error == null)
-            {
+
                 <div class="card">
                     <div class="card-header" style="background-color: #F2F2F2">
                     <h5>Add Return Reason</h5>
@@ -17,7 +18,7 @@
                 <div class="card-body">
 		    @*<div asp-validation-summary="All"></div>*@
 		    <div class="col-md-10">
-			    <label asp-for="ReturnReasonName"></label>
+			    <label asp-for="ReturnReasonName" class="required"></label>
 			    <input asp-for="ReturnReasonName" class="form-control"placeholder ="Water damage" />
 			    <span asp-validation-for="ReturnReasonName" class="text-danger"></span>
             <br />
@@ -30,9 +31,12 @@
             </div>
 	    </div>
          </div>
-         }
+       
             </div>
-	         <div class="modal" id="exampleModal1" data-bs-backdrop="static" data-bs-keyboard="false" >
+	   
+    </form>
+      }
+            <div class="modal" id="exampleModal1" data-bs-backdrop="static" data-bs-keyboard="false" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header border-0">
@@ -53,7 +57,6 @@
                 </div>
             </div>
         </div>
-    </form>
 </div>
 @section Scripts{
 	

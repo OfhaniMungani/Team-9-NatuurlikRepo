@@ -93,6 +93,10 @@ namespace NatuurlikBase.Controllers
                 Order = new()
             };
 
+
+            var hasCart = _unitOfWork.UserCart.GetAll(x => x.ApplicationUserId == claim.Value).FirstOrDefault();
+            ViewData["has"] = hasCart;
+
             //Capture different prices for Resellers.
 
             if (User.IsInRole(SR.Role_Reseller))
@@ -120,11 +124,14 @@ namespace NatuurlikBase.Controllers
 
         public IActionResult CartSummary()
         {
-
-
             //get user claims.
             var claimsId = (ClaimsIdentity)User.Identity;
             var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                var hasCart = _unitOfWork.UserCart.GetAll(x => x.ApplicationUserId == claim.Value).FirstOrDefault();
+                ViewData["has"] = hasCart;
+            }
 
             UserCartVM = new UserCartVM()
             {
@@ -153,11 +160,11 @@ namespace NatuurlikBase.Controllers
                 Text = i.SuburbName,
                 Value = i.Id.ToString()
             });
-            UserCartVM.CourierList = _unitOfWork.Courier.GetAll().Select(i => new SelectListItem
+            UserCartVM.CourierList = _unitOfWork.Courier.GetAll(x => x.CourierName != "Natuurlik Free Delivery").Select(i => new SelectListItem
             {
                 Text = i.CourierName,
                 Value = i.Id.ToString()
-            });
+            }).Append(new SelectListItem { Text = "Free Delivery", Value = "0" }); 
 
             //var deliveryMethods = _db.Courier.ToList();
 
@@ -211,6 +218,12 @@ namespace NatuurlikBase.Controllers
             {
                 foreach (var userCartItem in UserCartVM.CartList)
                 {
+                    var prod = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCartItem.ProductId);
+                    if (prod.QuantityOnHand < userCartItem.Count)
+                    {
+                        TempData["success"] = "The requested quantity is unfortunately no longer available.";
+                        return RedirectToAction("Index");
+                    }
                     userCartItem.CartItemPrice = GetCartItemPrices(userCartItem.Count, userCartItem.Product.ResellerPrice);
 
                     UserCartVM.Order.OrderTotal += (userCartItem.CartItemPrice * userCartItem.Count);
@@ -220,11 +233,19 @@ namespace NatuurlikBase.Controllers
             {
                 foreach (var userCartItem in UserCartVM.CartList)
                 {
+                    var prod = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCartItem.ProductId);
+                    if (prod.QuantityOnHand < userCartItem.Count)
+                    {
+                        TempData["success"] = "The requested quantity is unfortunately no longer available.";
+                        return RedirectToAction("Index");
+                    }
                     userCartItem.CartItemPrice = GetCartItemPrices(userCartItem.Count, userCartItem.Product.CustomerPrice);
 
                     UserCartVM.Order.OrderTotal += (userCartItem.CartItemPrice * userCartItem.Count);
                 }
             }
+
+           
             return View(UserCartVM);
         }
 
@@ -246,7 +267,19 @@ namespace NatuurlikBase.Controllers
             UserCartVM.Order.CreatedDate = System.DateTime.Now;
             UserCartVM.Order.ApplicationUserId = claim.Value;
             //Add Courier fees
-            UserCartVM.Order.CourierId = UserCartVM.Order.CourierId;
+            if(UserCartVM.Order.CourierId != 0)
+            {
+                UserCartVM.Order.CourierId = UserCartVM.Order.CourierId;
+            }
+            else
+            {
+                var garsfonteinId = _unitOfWork.Courier.GetFirstOrDefault(x => x.CourierName == "Natuurlik Free Delivery");
+                UserCartVM.Order.CourierId = garsfonteinId.Id;
+            }
+            
+
+            //if Courier = Free Delivery option
+
             var deliveryFee = _db.Courier.FirstOrDefault(x => x.Id == UserCartVM.Order.CourierId);
             if (deliveryFee != null)
             {
@@ -259,11 +292,19 @@ namespace NatuurlikBase.Controllers
             if (User.IsInRole(SR.Role_Reseller))
             {
 
+
                 UserCartVM.Order.OrderPaymentStatus = SR.ResellerDelayedPayment;
                 UserCartVM.Order.OrderStatus = SR.OrderPending;
                 foreach (var userCartItem in UserCartVM.CartList)
                 {
-                        userCartItem.CartItemPrice = GetCartItemPrices(userCartItem.Count, userCartItem.Product.ResellerPrice);
+
+                    var prod = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCartItem.ProductId);
+                    if (prod.QuantityOnHand < userCartItem.Count)
+                    {
+                        TempData["success"] = "The requested quantity is unfortunately no longer available.";
+                        return RedirectToAction("Index");
+                    }
+                    userCartItem.CartItemPrice = GetCartItemPrices(userCartItem.Count, userCartItem.Product.ResellerPrice);
                         UserCartVM.Order.OrderTotal += (userCartItem.CartItemPrice * userCartItem.Count);
                         UserCartVM.Order.OrderTotal += UserCartVM.Order.DeliveryFee;
                         UserCartVM.Order.IsResellerOrder = true;
@@ -275,13 +316,13 @@ namespace NatuurlikBase.Controllers
                 foreach (var userCartItem in UserCartVM.CartList)
                 {
                     var prod = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCartItem.ProductId);
-                    if (prod.QuantityOnHand <= userCartItem.Count)
+                    if (prod.QuantityOnHand < userCartItem.Count)
                     {
                         TempData["success"] = "The requested quantity is unfortunately no longer available.";
                         return RedirectToAction("Index");
                     }
-                    UserCartVM.Order.OrderPaymentStatus = SR.OrderPaymentApproved;
-                    UserCartVM.Order.OrderStatus = SR.ProcessingOrder;
+                    UserCartVM.Order.OrderPaymentStatus = SR.CustomerPaymentPending;
+                    UserCartVM.Order.OrderStatus = SR.OrderPending;
                     userCartItem.CartItemPrice = GetCartItemPrices(userCartItem.Count, userCartItem.Product.CustomerPrice);
                     UserCartVM.Order.OrderTotal += (userCartItem.CartItemPrice * userCartItem.Count);
                     UserCartVM.Order.OrderTotal += UserCartVM.Order.DeliveryFee;
@@ -333,6 +374,62 @@ namespace NatuurlikBase.Controllers
 
             if (User.IsInRole(SR.Role_Reseller))
             {
+                foreach (var userCartItem in UserCartVM.CartList)
+                {
+                    OrderLine orderLine = new()
+                    {
+                        ProductId = userCartItem.ProductId,
+                        Count = userCartItem.Count
+                    };
+
+                    //Deduct Product Quantities as order is placed for Reseller users
+                    var prod = _db.Products.Where(c => c.Id == userCartItem.ProductId).FirstOrDefault();
+                    prod.QuantityOnHand -= userCartItem.Count;
+                    _unitOfWork.Save();
+
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+                    var template = System.IO.File.ReadAllText(Path.Combine(wwwRootPath, @"emailTemp\lowProdTemp.html"));
+
+                    var users = (from user in _db.Users
+                                 join userRole in _db.UserRoles on user.Id equals userRole.UserId
+                                 join role in _db.Roles on userRole.RoleId equals role.Id
+                                 where role.Name == "Admin" || role.Name == "Inventory Manager"
+                                 select user.Email)
+                                       .ToList();
+
+
+                    string quantity = prod.QuantityOnHand.ToString();
+                    template = template.Replace("[ITEM]", prod.Name).Replace("[QUANTITY]", quantity);
+
+
+                    if (prod.QuantityOnHand <= prod.ThresholdValue && prod.QuantityOnHand > 0)
+                    {
+                        template = template.Replace("[TEXT]", "LOW STOCK ALERT!");
+                        string message = template;
+
+                        foreach (var user in users)
+                        {
+                            _emailSender.SendEmailAsync(
+                               user,
+                               "LOW STOCK ALERT",
+                               message);
+                        }
+                    }
+                    else if (prod.QuantityOnHand == 0)
+                    {
+                        template = template.Replace("[TEXT]", "OUT OF STOCK ALERT!");
+                        string message = template;
+
+                        foreach (var user in users)
+                        {
+                            _emailSender.SendEmailAsync(
+                               user,
+                               "OUT OF STOCK ALERT",
+                               message);
+                        }
+                    }
+
+                }
                 //Redirect to the Confirmation page.
                 return RedirectToAction("ResellerOrderConfirmation", "UserCart", new { id = UserCartVM.Order.Id });
             }
@@ -351,7 +448,7 @@ namespace NatuurlikBase.Controllers
                     LineItems = new List<SessionLineItemOptions>(),
                     Mode = "payment",
                     SuccessUrl = domain + $"usercart/OrderConfirmation?id={UserCartVM.Order.Id}",
-                    CancelUrl = domain + $"usercart/index",
+                    CancelUrl = domain + $"usercart/OrderCancelled?id={UserCartVM.Order.Id}",
                 };
 
                 foreach (var item in UserCartVM.CartList)
@@ -433,7 +530,14 @@ namespace NatuurlikBase.Controllers
                     _unitOfWork.Order.UpdateOrderStatus(id, SR.ProcessingOrder, SR.OrderPaymentApproved);
                     _unitOfWork.Save();
                 }
+                else
+                {
+                    _unitOfWork.Order.Remove(order);
+                }
             }
+
+
+
 
             //Clear shopping cart details from DB.
             List<Cart> userCarts = _unitOfWork.UserCart.GetAll(uc => uc.ApplicationUserId == order.ApplicationUserId).ToList();
@@ -465,14 +569,41 @@ namespace NatuurlikBase.Controllers
 
         }
 
-        //Create Reseller Order and display Confirmation Page Details
-        public IActionResult ResellerOrderConfirmation(int id)
+
+        public IActionResult OrderCancelled(int id)
+        {
+            Order order = _unitOfWork.Order.GetFirstOrDefault(x => x.Id == id);
+            IList<OrderLine> orderLines = _unitOfWork.OrderLine.GetAll(x => x.OrderId == id).ToList();
+
+            //Need to validate payment.
+            if (order.OrderPaymentStatus != SR.ResellerDelayedPayment)
+            {
+                var service = new SessionService();
+                Session session = service.Get(order.SessionId);
+
+                //Perform check to see if payment was made successfully.
+
+                if (session.PaymentStatus.ToLower() == "paid")
+                {
+                    _unitOfWork.Order.UpdateOrderStatus(id, SR.ProcessingOrder, SR.OrderPaymentApproved);
+                    _unitOfWork.Save();
+                }
+                else
+                {
+                    _unitOfWork.Order.Remove(order);
+                    _unitOfWork.OrderLine.RemoveRange(orderLines);
+                    _unitOfWork.Save();
+                }
+            }
+            return View(id);
+        }
+
+            //Create Reseller Order and display Confirmation Page Details
+            public IActionResult ResellerOrderConfirmation(int id)
         {
             Order order = _unitOfWork.Order.GetFirstOrDefault(x => x.Id == id);
             var reminder = _db.PaymentReminder.First(x => x.Active == "True").Id;
             order.PaymentReminderId = reminder;
-            var orderConfirmation = _db.ConfirmationReminder.First(x => x.IsActive == "True").Id;
-            order.ConfirmationReminderId = orderConfirmation;
 
             List<Cart> userCarts = _unitOfWork.UserCart.GetAll(uc => uc.ApplicationUserId == order.ApplicationUserId).ToList();
             _unitOfWork.UserCart.RemoveRange(userCarts);

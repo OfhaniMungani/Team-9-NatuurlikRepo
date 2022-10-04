@@ -9,6 +9,8 @@ using NatuurlikBase.Repository.IRepository;
 using NatuurlikBase.Repository;
 using NatuurlikBase.Models;
 using Stripe;
+using NatuurlikBase.Factory;
+using NatuurlikBase.Data.DbInitilizer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +23,8 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).AddDefaultTokenProviders().AddDefaultUI()
-    .AddEntityFrameworkStores<DatabaseContext>();
+    .AddEntityFrameworkStores<DatabaseContext>()
+     .AddDefaultTokenProviders();
 
 builder.Services.AddControllersWithViews();
 
@@ -31,6 +34,7 @@ builder.Services.AddTransient<IInventoryItemRepository, InventoryItemRepository>
 builder.Services.AddTransient<IProductionTransactionRepository, ProductionTransactionRepository>();
 builder.Services.AddTransient<IInventoryItemTransactionRepository, InventoryItemTransactionRepository>();
 builder.Services.AddTransient<IViewProductsByName, ViewProductsByName>();
+builder.Services.AddTransient<IViewConfiguredProductsByName, ViewConfiguredProductsByName>();
 builder.Services.AddTransient<IViewInventoriesByName, ViewInventoriesByName>();
 builder.Services.AddTransient<IViewInventoryById, ViewInventoryById>();
 builder.Services.AddTransient<IViewProductById, ViewProductById>();
@@ -44,8 +48,12 @@ builder.Services.AddTransient<ISendSupplierOrderRepository, SendSupplierOrderRep
 builder.Services.AddTransient<IViewSupplierById, ViewSupplierById>();
 builder.Services.AddTransient<ISearchProductionTransactionsRepository, SearchProductionTransactionsRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IDbInitilizer, DbInitilizer>();
 builder.Services.AddTransient<IEmailSender, SendGridEmailSender>();
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppUserClaimsPrincipalFactory>();
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(3));
+
 //configure mobile application cors 
 builder.Services.AddCors(options => options.AddDefaultPolicy(
                builder =>
@@ -84,6 +92,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
+SeedDatabase();
 app.UseAuthentication();;
 
 app.UseAuthorization();
@@ -103,3 +112,11 @@ app.UseEndpoints(endpoints =>
 
 app.Run();
 
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitiliazer = scope.ServiceProvider.GetRequiredService<IDbInitilizer>();
+        dbInitiliazer.Initialize();
+    }
+}

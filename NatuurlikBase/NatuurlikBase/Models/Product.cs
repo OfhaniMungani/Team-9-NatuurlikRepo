@@ -8,9 +8,12 @@ namespace NatuurlikBase.Models
     {
         public int Id { get; set; }
         [Required]
+        [RegularExpression(@"^[0-9]*[a-zA-Z_]+[ ]?([a-zA-Z0-9_]+[ ]?)*$",
+         ErrorMessage = "Invalid Product Name: Two consecutive white spaces and only digits is not permitted.")]
         public string Name { get; set; }
         [Required]
         [MaxLength(255)]
+       
         public string Description { get; set; }
 
         [Display(Name = "Quantity On Hand")]
@@ -51,6 +54,7 @@ namespace NatuurlikBase.Models
         public List<ProductInventory>? ProductInventories { get; set; }
 
         [Display(Name = "Threshold Value")]
+        [Range(0, 10000)]
         public int ThresholdValue { get; set; }
     }
 }

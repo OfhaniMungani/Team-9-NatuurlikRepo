@@ -21,8 +21,8 @@ namespace NatuurlikBase.Models
 
         [Required]
         [Display(Name = "Phone Number")]
-        [MaxLength(10)]
-        [RegularExpression(@"^(\d{10})$", ErrorMessage = "Please enter a valid Phone Number.")]
+        [MaxLength(9)]
+        [RegularExpression(@"^(\d{9})$", ErrorMessage = "Please enter a valid Phone Number.")]
         public string PhoneNumber { get; set; }
 
         [Display(Name = "Street Address")]

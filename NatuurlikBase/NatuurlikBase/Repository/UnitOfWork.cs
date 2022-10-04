@@ -41,6 +41,8 @@ namespace NatuurlikBase.Repository
             InventoryItem = new InventoryItemRepository(_db);
             ReturnReason = new ReturnReasonRepository(_db);
             InventoryProcured = new InventoryProcuredRepository(_db);   
+            VATRepository = new VATRepository(_db);
+            WriteOffReason = new WriteOfReasonRepository(_db);
         }
         public ICountryRepository Country { get; private set; }
         public IProvinceRepository Province { get; private set; }
@@ -69,6 +71,9 @@ namespace NatuurlikBase.Repository
         public IInventoryItemRepository InventoryItem { get; private set; }
         public  IReturnReason   ReturnReason { get; private set; }
         public IInventoryProcured InventoryProcured { get; private set; }
+
+        public IVATRepository VATRepository { get; private set; }
+        public IWriteOffReasonRepository WriteOffReason { get; private set; }
         public void Save()
         {
             _db.SaveChanges();

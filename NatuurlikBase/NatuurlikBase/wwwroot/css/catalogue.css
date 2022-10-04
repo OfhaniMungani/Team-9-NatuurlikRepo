@@ -1,16 +1,23 @@
-﻿
+﻿#cartimg {
+    width: 100%;
+}
+
+
 #catTitle {
     margin-top: 5%;
     margin-bottom: 5%;
 }
 
-#catp {
-    margin: 0;
-}
 
 #cat {
-    margin-top: 30px;
+    margin-top: 10px;
 }
+
+#catText{
+    color:black;
+    text-decoration: none;
+}
+
 
 .space {
     padding-bottom: 100px;
@@ -20,6 +27,12 @@
     width: 240px;
     border: none;
 }
+
+/*    .catitem :hover {
+        box-shadow: 5px 10px 8px #888888;
+        background-color: #FBFBFB;
+    }
+*/
 
 .underline {
     text-decoration: underline;
@@ -68,7 +81,23 @@
 
 .stock {
     opacity: 30%;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    transition: box-shadow 0.3s ease-in-out;
 }
+
+    .stock:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+.card-img-top {
+    background-color: #EBEBEB;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+    .card-img-top:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
 
 /*ITEM STYLING*/
 
@@ -132,9 +161,6 @@ h4 {
     border: none;
 }
 
-.card-img-top {
-    background-color: #EBEBEB;
-}
 
 #products {
     margin-top: 5%;

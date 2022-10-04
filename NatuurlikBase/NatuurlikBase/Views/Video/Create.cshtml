@@ -16,13 +16,13 @@
             <div class="card-body">
 
 		<div class="mb-3">
-			<label asp-for="Title"></label>
+			<label asp-for="Title" class="required"></label>
 			<input asp-for="Title" class="form-control" placeholder = "Why Shop Sustainably?"/>
 			<span asp-validation-for="Title" class="text-danger"></span>
 		</div>
 
         <div class="mb-3">
-			<label asp-for="VideoUrl"></label>
+			<label asp-for="VideoUrl" class="required"></label>
 			<input asp-for="VideoUrl" class="form-control" placeholder = "https://www.youtube.com/embed/Je8tDr_qqSU"/>
 			<span asp-validation-for="VideoUrl" class="text-danger"></span>
 		</div>

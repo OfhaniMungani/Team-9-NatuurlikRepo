@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NatuurlikBase.Models;
+using NatuurlikBase.Models.ViewModels;
 using NatuurlikBase.Repository.IRepository;
 using NatuurlikBase.ViewModels;
 using System.Security.Claims;
@@ -17,11 +18,32 @@ namespace NatuurlikBase.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? categoryId)
         {
-            //Get all products and return to the view
-            IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category,Brand");
-            return View(productList);
+
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                var hasCart = _unitOfWork.UserCart.GetAll(x => x.ApplicationUserId == claim.Value).FirstOrDefault();
+                ViewData["has"] = hasCart;
+            }
+
+
+            ProductCategoryVM ProductVM = new ProductCategoryVM();
+            if (categoryId != null && categoryId > 0)
+            {
+                ProductVM.ProductsList = _unitOfWork.Product.GetAll(x => x.Category.Id == categoryId, includeProperties: "Category,Brand").ToList();
+            }
+            else
+            {
+                //Get all products and return to the view
+                ProductVM.ProductsList = _unitOfWork.Product.GetAll(includeProperties: "Category,Brand").ToList();
+
+            }
+            ProductVM.CategoryList = _unitOfWork.Category.GetAll().ToList();
+            return View(ProductVM);
+
         }
 
         public IActionResult Item(int productId)
@@ -47,32 +69,18 @@ namespace NatuurlikBase.Controllers
             var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
             userCart.ApplicationUserId = claim.Value;
 
-            Cart cart = _unitOfWork.UserCart.GetFirstOrDefault(u=> u.ProductId == userCart.ProductId && u.ApplicationUserId == claim.Value );
-            var prods = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCart.ProductId);
-
-            if(User.IsInRole(SR.Role_Customer))
+            if (claim != null)
             {
-                if (prods.QuantityOnHand >= userCart.Count)
-                {
-                    //check for existing cart
-                    if (cart == null)
-                    {
-                        _unitOfWork.UserCart.Add(userCart);
-                    }
-                    else
-                    {
-                        _unitOfWork.UserCart.increaseCount(cart, userCart.Count);
-                    }
-                }
-                else
-                {
-                    //DO Something
-                    TempData["success"] = "Requested quantity exceeds available stock on hand.";
-                }
+                var hasCart = _unitOfWork.UserCart.GetAll(x => x.ApplicationUserId == claim.Value).FirstOrDefault();
+                ViewData["has"] = hasCart;
             }
 
-            else
+            Cart cart = _unitOfWork.UserCart.GetFirstOrDefault(u => u.ProductId == userCart.ProductId && u.ApplicationUserId == claim.Value);
+            var prods = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == userCart.ProductId);
+
+            if (prods.QuantityOnHand >= userCart.Count)
             {
+                //check for existing cart
                 if (cart == null)
                 {
                     _unitOfWork.UserCart.Add(userCart);
@@ -82,6 +90,12 @@ namespace NatuurlikBase.Controllers
                     _unitOfWork.UserCart.increaseCount(cart, userCart.Count);
                 }
             }
+            else
+            {
+                //DO Something
+                TempData["success"] = "Requested quantity exceeds available stock on hand.";
+            }
+
             //Save cart changes to database
             _unitOfWork.Save();
             //Redirect to Product Catalogue Index page if saved successfully.

@@ -13,7 +13,7 @@
 <div class="card">
     <div class="card-header" style="background-color: #F2F2F2">
             <h5>Produce Finished Product
-                <a href="" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
+                <a href="~/helpDocs/Produce .pdf" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
             </h5>
      </div>
 <br/>
@@ -22,15 +22,16 @@
 {
     <EditForm Model="produceVM" OnValidSubmit="OnValidSubmit">
         <DataAnnotationsValidator></DataAnnotationsValidator>
-        <ValidationSummary></ValidationSummary>
+        <ValidationSummary style="color:darkred"></ValidationSummary>
 
 
         <div class="form-group">
             <label for="inv">Select Product:</label>
-            <ViewProductsComponent 
+            <ViewConfiguredProducts 
                 OnSelectProduct="OnSelectProduct"
-                DisplaySearchResult="true"></ViewProductsComponent> 
+                DisplaySearchResult="true"></ViewConfiguredProducts> 
                 <br/>
+             <label for="inv">Selected Product:</label>&nbsp;<label style="color:red">*</label>
             <InputText id="inv" class="form-control" style="width:625px" @bind-Value="produceVM.ProductName" disabled></InputText>            
             <input type="hidden" value="@produceVM.ProductId" />  
             @if (selectedProduct != null)
@@ -45,7 +46,7 @@
         <div class="row">
             <div class="col-md-3 col">
                 <div class="form-group">
-                    <label for="qty">Quantity to Produce:</label>
+                    <label for="qty">Quantity to Produce:</label>&nbsp;<label style="color:red">*</label>
                     <InputNumber id="qty" @bind-Value="produceVM.QuantityToProduce" class="form-control"></InputNumber>
                 </div>
             </div>
@@ -114,11 +115,11 @@
         
     }
 
-    public void OnSelectProduct(Product product)
+    public void OnSelectProduct(ProductInventory product)
     {
-        this.selectedProduct = product;
-        produceVM.ProductId = product.Id;
-        produceVM.ProductName = product.Name;
+        this.selectedProduct = product.Product;
+        produceVM.ProductId = product.Product.Id;
+        produceVM.ProductName = product.Product.Name;
     }
 
 }

@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Audit>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div id="page-content-wrapper">
+<div class="container-fluid">
+     <div class="row justify-content-start">
+            <div class="col-10 col-sm-10 col-md-10">
+            <h2 class="cheading">Audit Log
+                <a href="~/helpDocs/Audit.pdf" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
+            </h2>
+		</div>
+	</div>
+    <br /><br />
+
+<table class="table" id="tblData" style="background-color: #232323">
+    <thead>
+        <tr>
+            <th class="text-light" style="width:10%">
+                Id
+			</th>
+             <th class="text-light" style="width:15%">
+                Entity
+			</th>
+             <th class="text-light" style="width:10%">
+                Action
+			</th>
+            <th class="text-light" style="width:15%">
+                Old Values
+			</th>
+            <th class="text-light" style="width:15%">
+                New Values
+			</th>
+            <th class="text-light" style="width:10%">
+                Affected By
+			</th>
+            <th class="text-light" style="width:10%">
+                Created Date
+			</th>
+		</tr>
+	</thead>
+    <tbody>
+        @foreach(var obj in Model)
+        {
+            <tr>
+                <td>
+                    @obj.Id                                       
+				</td>
+                <td>
+                    @obj.EntityName
+                </td>
+                <td>
+                    @obj.ActionType
+                </td>
+                <td>
+                    @obj.OldValues
+                </td>
+                <td>
+                    @obj.NewValues
+                </td>
+                <td>
+                    @obj.ActorFullName
+                </td>
+                <td>
+                    @obj.DateTime
+                </td>
+			</tr>
+        }
+    </tbody>
+
+</table>
+</div>
+</div>
+@section Scripts {
+    <script src="~/js/notifications.js"></script>
+     <script>
+          var dataTable;
+        $(document).ready(function () {
+            dataTable = $("#tblData").DataTable({
+
+
+            });
+        })
+
+        </script>
+}

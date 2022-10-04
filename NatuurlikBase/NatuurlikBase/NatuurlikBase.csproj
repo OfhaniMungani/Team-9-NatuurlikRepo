@@ -22,13 +22,15 @@
     <PackageReference Include="Stripe.net" Version="39.122.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+    <PackageReference Include="System.Data.OleDb" Version="6.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="Twilio" Version="5.78.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Views\Admin\" />
-    <Folder Include="wwwroot\images\products\" />
+    <Folder Include="wwwroot\helpDocs\" />
     <Folder Include="wwwroot\lib\bootstrap\" />
     <Folder Include="wwwroot\lib\bootstrap\dist\js\" />
     <Folder Include="wwwroot\lib\jquery-validation-unobtrusive\" />
@@ -36,6 +38,15 @@
     <Folder Include="wwwroot\lib\jquery-validation\dist\" />
     <Folder Include="wwwroot\lib\jquery\" />
     <Folder Include="wwwroot\lib\jquery\dist\" />
+    <Folder Include="wwwroot\invoices\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Province\Create.cshtml" />
+    <None Include="Views\Province\Delete.cshtml" />
+    <None Include="Views\Province\Edit.cshtml" />
+    <None Include="Views\Province\Index.cshtml" />
+    <None Include="Views\Province\Upsert.cshtml" />
   </ItemGroup>
 
 </Project>

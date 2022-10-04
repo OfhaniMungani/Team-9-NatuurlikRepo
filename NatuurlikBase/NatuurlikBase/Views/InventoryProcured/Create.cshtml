@@ -4,9 +4,24 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+  </symbol>
+</svg>
+
 <div id="page-content-wrapper">
 
-<form method="post" asp-action="Create">
+@if (TempData["wrong"] != null)
+{
+    <div class="alert alert-warning  alert-dismissible fade show" role="alert" id="success-alert">
+         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+       &nbsp @TempData["wrong"]
+    </div>
+}
+
+
+<form method="post" asp-action="Create" enctype="multipart/form-data">
     <div>
     @if (ViewBag.Error == null)
     {
@@ -22,7 +37,7 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <label asp-for="SupplierId">Supplier</label>
+                                <label asp-for="SupplierId" class="required">Supplier</label>
                                <select asp-for="SupplierId" class ="form-control" asp-items="ViewBag.SupplierId">
                                         <option disabled selected>- Select Supplier -</option>
                                     </select>
@@ -33,26 +48,26 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <label asp-for="InvoiceNo">Invoice Number</label>
+                                <label asp-for="InvoiceNo" class="required">Invoice Number</label>
                                 <input asp-for="InvoiceNo" class="form-control" placeholder = "#TAK236100"/>
                                 <span asp-validation-for="InvoiceNo" class="text-danger"></span>
                             </div>
                         </div>
 
-                        @*<br />*@
+                        <br />
 
-@*                         <div class="row">
+                         <div class="row">
                             <div class="col-md-6">
-                                <label asp-for="InvoiceFile">Invoice File</label>
-                                <input type="file" name="file" class="form-control" />
+                                <label asp-for="InvoiceFile" class="required">Invoice File</label>
+                                <input type="file" id="file" name ="file" class="form-control" accept="application/pdf,image/gif,image/jpg,image/jpeg,image/png"/>
                             </div>
-                        </div>*@
+                        </div>
 
                         <br />
 
                         <div class="row">
                             <div class="col-md-6">
-                                <label asp-for="ItemID">Inventory Item</label>
+                                <label asp-for="ItemID" class="required">Inventory Item</label>
                                <select asp-for="ItemID" class ="form-control" asp-items="ViewBag.ItemID">
                                         <option disabled selected>- Select Inventory Item -</option>
                                     </select>
@@ -63,7 +78,7 @@
 
                           <div class="row">
                             <div class="col-md-6">
-                                <label asp-for="QuantityReceived"></label>
+                                <label asp-for="QuantityReceived" class="required"></label>
                                 <input asp-for="QuantityReceived" class="form-control" placeholder = "50"/>
                                 <span asp-validation-for="QuantityReceived" class="text-danger"></span>
                             </div>
@@ -213,6 +228,8 @@
 
 @section Scripts{
 	
+    <script src="~/js/notifications.js"></script>
+
 	 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
       @if (ViewBag.Error != null)
     {

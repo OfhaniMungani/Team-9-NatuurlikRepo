@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -61,9 +62,9 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account.Manage
             public string Surname { get; set; }
 
             [Required]
-            [RegularExpression(@"^(\d{10})$", ErrorMessage = "Please enter a valid phone number.")]
+            [RegularExpression(@"^(\d{9})$", ErrorMessage = "Please enter a valid phone number.")]
             [Display(Name = "Phone Number")]
-            [MaxLength(10)]
+            [MaxLength(9)]
             public string PhoneNumber { get; set; }
 
             
@@ -101,6 +102,15 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync(ApplicationUser user)
         {
+
+            var claimsId = (ClaimsIdentity)User.Identity;
+            var claim = claimsId.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                var hasCart = _unitOfWork.UserCart.GetAll(x => x.ApplicationUserId == claim.Value).FirstOrDefault();
+                ViewData["has"] = hasCart;
+            }
+
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
@@ -229,7 +239,7 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account.Manage
 
             await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated successfully";
+            TempData["success"] = "Your profile has been updated successfully";
             return RedirectToPage();
         }
     }

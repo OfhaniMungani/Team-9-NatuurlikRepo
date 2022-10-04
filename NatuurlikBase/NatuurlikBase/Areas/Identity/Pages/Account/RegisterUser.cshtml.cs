@@ -111,9 +111,9 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account
             public int City { get; set; }
 
             [Required]
-            [RegularExpression(@"^(\d{10})$", ErrorMessage = "Please enter a valid Phone Number.")]
+            [RegularExpression(@"^(\d{9})$", ErrorMessage = "Please enter a valid Phone Number.")]
             [Display(Name = "Phone Number")]
-            [MaxLength(10)]
+            [MaxLength(9)]
             public string PhoneNumber { get; set; }
             public string? Role { get; set; }
 
@@ -143,15 +143,15 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if (!_roleManager.RoleExistsAsync(SR.Role_Admin).GetAwaiter().GetResult())
-            {
-                _roleManager.CreateAsync(new IdentityRole(SR.Role_Admin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SR.Role_MD)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SR.Role_SA)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SR.Role_IM)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SR.Role_Customer)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SR.Role_Reseller)).GetAwaiter().GetResult();
-            }
+            //if (!_roleManager.RoleExistsAsync(SR.Role_Admin).GetAwaiter().GetResult())
+            //{
+            //    _roleManager.CreateAsync(new IdentityRole(SR.Role_Admin)).GetAwaiter().GetResult();
+            //    _roleManager.CreateAsync(new IdentityRole(SR.Role_MD)).GetAwaiter().GetResult();
+            //    _roleManager.CreateAsync(new IdentityRole(SR.Role_SA)).GetAwaiter().GetResult();
+            //    _roleManager.CreateAsync(new IdentityRole(SR.Role_IM)).GetAwaiter().GetResult();
+            //    _roleManager.CreateAsync(new IdentityRole(SR.Role_Customer)).GetAwaiter().GetResult();
+            //    _roleManager.CreateAsync(new IdentityRole(SR.Role_Reseller)).GetAwaiter().GetResult();
+            //}
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -298,7 +298,8 @@ namespace NatuurlikBase.Areas.Identity.Pages.Account
                 CountryId = Input.Country,
                 ProvinceId = Input.Province,
                 CityId = Input.City,
-                SuburbId = Input.Suburb
+                SuburbId = Input.Suburb,
+                UserRole = Input.Role
             };
             _userManager.CreateAsync(user);
             return user;

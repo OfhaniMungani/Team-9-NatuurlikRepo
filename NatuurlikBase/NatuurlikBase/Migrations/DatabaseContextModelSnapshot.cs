@@ -206,8 +206,8 @@ namespace NatuurlikBase.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
@@ -240,6 +240,10 @@ namespace NatuurlikBase.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("UserRole")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
@@ -259,6 +263,41 @@ namespace NatuurlikBase.Migrations
                     b.HasIndex("SuburbId");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("NatuurlikBase.Models.Audit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ActionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ActorFullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EntityName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewValues")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValues")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Audit");
                 });
 
             modelBuilder.Entity("NatuurlikBase.Models.Cart", b =>
@@ -309,30 +348,6 @@ namespace NatuurlikBase.Migrations
                     b.HasIndex("ProvinceId");
 
                     b.ToTable("City");
-                });
-
-            modelBuilder.Entity("NatuurlikBase.Models.ConfirmationReminder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Days")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IsActive")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ConfirmationReminder");
                 });
 
             modelBuilder.Entity("NatuurlikBase.Models.Country", b =>
@@ -393,6 +408,11 @@ namespace NatuurlikBase.Migrations
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("img")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Image");
 
                     b.HasKey("Id");
 
@@ -476,6 +496,7 @@ namespace NatuurlikBase.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("InvoiceFile")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InvoiceNo")
@@ -530,14 +551,8 @@ namespace NatuurlikBase.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("BackOrderDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int?>("CityId")
                         .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ConfirmationReminderId")
                         .HasColumnType("int");
 
                     b.Property<int?>("CountryId")
@@ -559,7 +574,8 @@ namespace NatuurlikBase.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("InclusiveVAT")
                         .HasColumnType("decimal(18,2)");
@@ -590,7 +606,11 @@ namespace NatuurlikBase.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
+
+                    b.Property<DateTime>("ProcessedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ProvinceId")
                         .IsRequired()
@@ -609,7 +629,8 @@ namespace NatuurlikBase.Migrations
 
                     b.Property<string>("Surname")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("VATId")
                         .HasColumnType("int");
@@ -619,8 +640,6 @@ namespace NatuurlikBase.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("CityId");
-
-                    b.HasIndex("ConfirmationReminderId");
 
                     b.HasIndex("CountryId");
 
@@ -647,6 +666,9 @@ namespace NatuurlikBase.Migrations
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsPackaged")
+                        .HasColumnType("bit");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -897,7 +919,7 @@ namespace NatuurlikBase.Migrations
 
                     b.HasIndex("InventoryItemId");
 
-                    b.ToTable("ProductInventory");
+                    b.ToTable("ProductConfiguration");
                 });
 
             modelBuilder.Entity("NatuurlikBase.Models.ProductionTransaction", b =>
@@ -1098,8 +1120,8 @@ namespace NatuurlikBase.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
 
                     b.Property<int>("ProvinceId")
                         .HasColumnType("int");
@@ -1454,10 +1476,6 @@ namespace NatuurlikBase.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NatuurlikBase.Models.ConfirmationReminder", "ConfirmationReminder")
-                        .WithMany()
-                        .HasForeignKey("ConfirmationReminderId");
-
                     b.HasOne("NatuurlikBase.Models.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
@@ -1493,8 +1511,6 @@ namespace NatuurlikBase.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("City");
-
-                    b.Navigation("ConfirmationReminder");
 
                     b.Navigation("Country");
 

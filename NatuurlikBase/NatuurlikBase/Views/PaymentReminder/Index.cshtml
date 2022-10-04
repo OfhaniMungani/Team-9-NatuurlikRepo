@@ -1,5 +1,5 @@
 ﻿@model NatuurlikBase.Models.PaymentReminder
-
+ @addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -15,6 +15,62 @@
 </svg>
 
 <div id="page-content-wrapper">
+            <form asp-controller="Import" asp-action="Index" method="post" enctype="multipart/form-data">
+                 @if (TempData["upload"] != null)
+        {
+             <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+               &nbsp @TempData["upload"]
+            </div>  }@if (TempData["x"] != null)
+        {
+             <div class="alert alert-warning alert-dismissible fade show" role="alert" id="success-alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+               &nbsp @TempData["x"]
+            </div>  }
+             <div class="card">
+                <div class="card-header" style="background-color: #F2F2F2">
+                    <h5>Import Payment Reminder
+                        <a href="" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="col-md-3">   
+                 
+                        <div class="form-group"><input type="file" name="postedFile" class="required"/></div>
+                                    
+                       <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal2" style="width:150px">Import</button>  
+                                                                
+                    </div>
+                </div>
+            </div>
+           
+       	 <div class="modal fade" id="exampleModal2">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                    </div>
+                    <div class="modal-body">
+                        <h6 class="col-md-10"> 
+                       Are you sure you want to Import this file?
+                    </h6>
+                    </div>
+
+                    <div class="modal-footer border-0">
+                        <div class="form-actions no-color">
+                            <input type="submit" value="Confirm" class="btn btn-success" style="width:150px;"/> 
+                            <button type="button" class="btn btn btn-outline-dark" data-dismiss="modal" style="width:150px;">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </form>
     <form asp-action="Update">
         @if (TempData["success"] != null)
         {
@@ -33,19 +89,20 @@
         <div>
         @if (ViewBag.Error == null)
         {
-            <div class="card">
+            <div class="card resTime">
                 <div class="card-header" style="background-color: #F2F2F2">
                     <h5>Update Reseller Credit Settlement Time
-                        <a href="" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
+                        <a href="~/helpDocs/ResellerTime.pdf" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
                     </h5>
                 </div>
                 <div class="card-body">
-                    <div class="col-md-3">                       
+                    <div class="col-md-3">   
+        
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <h5 class="control-label"><strong>Current Time: @Html.DisplayFor(model => model.Value) Days</strong></h5>
                             <br/>
                             <div class="form-group">
-                                <label asp-for="Id" class="control-label">Settlement Time Intervals</label>
+                                <label asp-for="Id" class="required">Settlement Time Intervals</label>
                                 <select asp-for="Id" class ="form-control" asp-items="ViewBag.Reminder"></select>
                             </div>
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" style="width:150px">Update</button>                                        

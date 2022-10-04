@@ -7,18 +7,23 @@
 
 <div class="container-fluid">
     <div class="row justify-content-center" id="reg">
-        <div class="card col-md-4">
+        <div class="card newreg">
+            <div class="regimg d-none d-lg-block">
+                <img src="~/images/register.png">
+            </div>
+
+        <div class="col-md-6">
             <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                 <h2 class="head">REGISTER</h2>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
                     <div class="form-floating col-md-6 " id="formspace">
-                        <label asp-for="Input.FirstName">First Name</label>
+                        <label asp-for="Input.FirstName" class="required">First Name</label>
                         <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" placeholder="John"/>
                         <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                     </div>
                     <div class="form-floating col-md-6 " id="formspace">
-                        <label asp-for="Input.Surname">Surname</label>
+                        <label asp-for="Input.Surname" class="required">Surname</label>
                         <input asp-for="Input.Surname" class="form-control" autocomplete="lastname" aria-required="true" placeholder="Doe"/>
                         <span asp-validation-for="Input.Surname" class="text-danger"></span>
                     </div>
@@ -26,28 +31,31 @@
 
                 <div class="row">
                     <div class="form-floating col-md-6" id="formspace">
-                        <label asp-for="Input.PhoneNumber">Phone Number</label>
-                        <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="0987654321"/>
-                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                        <label asp-for="Input.PhoneNumber" class="required">Phone Number</label>
+                          <div class="input-group">
+                            <span class="input-group-text">+27</span>
+                            <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="987654321"/>
+                            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                          </div>
                     </div>
                 </div>
 
 
                 <div class="form-floating" id="formspace">
-                    <label asp-for="Input.Email">Email</label>
+                    <label asp-for="Input.Email" class="required">Email</label>
                     <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="johndoe@gmail.com"/>
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
 
                 <div class="form-floating" id="formspace">
-                    <label asp-for="Input.StreetAddress">Street Address</label>
+                    <label asp-for="Input.StreetAddress" class="required">Street Address</label>
                     <input asp-for="Input.StreetAddress" class="form-control" autocomplete="lastname" aria-required="true" placeholder="120 Example Avenue"/>
                     <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
                 </div>
 
                 <div class="row">
                     <div class="form-floating col-md-6" id="countryControl">
-                        <label asp-for="Input.Country">Country</label>
+                        <label asp-for="Input.Country" class="required">Country</label>
 
                         <select asp-for="Input.Country" asp-items="@Model.Input.CountryList" class="form-control" onchange="onCountryChange()">
                             <option disabled selected>- Select Country -</option>
@@ -56,7 +64,7 @@
                     <br/>
                     </div>
                     <div class="form-floating col-md-6" id="provinceControl" hidden>
-                        <label asp-for="Input.Province">Province</label>
+                        <label asp-for="Input.Province" class="required">Province</label>
 
                         <select asp-for="Input.Province" asp-items="@Model.Input.ProvinceList" class="form-control" onchange="onProvinceChange()">
                             <option disabled selected>- Select Province -</option>
@@ -68,7 +76,7 @@
 
                 <div class="row">
                     <div class="form-floating col-md-6"  id="cityControl" hidden>
-                        <label asp-for="Input.City">City</label>
+                        <label asp-for="Input.City" class="required">City</label>
                         <select asp-for="Input.City" asp-items="@Model.Input.CityList" class="form-control" onchange="onCityChange()">
                             <option disabled selected>- Select City -</option>
                         </select>
@@ -76,7 +84,7 @@
                     <br/>
                     </div>
                     <div class="form-floating col-md-6" id="suburbControl" hidden>
-                        <label asp-for="Input.Suburb">Suburb</label>
+                        <label asp-for="Input.Suburb" class="required">Suburb</label>
                         <select asp-for="Input.Suburb" asp-items="@Model.Input.SuburbList" class="form-control">
                             <option disabled selected>- Select Suburb -</option>
                         </select>
@@ -86,12 +94,12 @@
                 </div>
 
                 <div class="form-floating" id="formspace">
-                    <label asp-for="Input.Password">Password</label>
+                    <label asp-for="Input.Password" class="required">Password</label>
                     <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="*********"/>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div class="form-floating" id="formspace">
-                    <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                    <label asp-for="Input.ConfirmPassword" class="required">Confirm Password</label>
                     <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="*********"/>
                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 </div>
@@ -109,6 +117,8 @@
         </div>
     </div>
 </div>
+</div>
+
 <script>
 
     function onCountryChange()

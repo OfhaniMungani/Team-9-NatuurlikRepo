@@ -53,7 +53,7 @@
      <div class="row justify-content-start">
             <div class="col-10 col-sm-10 col-md-10">
             <h2 class="cheading">Procured Inventory Items
-                <a href="~/helpDocs/ProcuredInventory.pdf" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
+                <a href="~/helpDocs/ProcuredInv.pdf" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
             </h2>
 		</div>
         <div class="col-md-9 col-lg-8">
@@ -69,9 +69,14 @@
         <tr>
             <th class="text-light">
                Supplier
-			</th><th class="text-light">
+			</th>
+              <th class="text-light">
+               Invoice No.
+			</th>
+            <th class="text-light">
                Inventory Item
-			</th><th class="text-light">
+			</th>
+            <th class="text-light">
                Quantity Received
 			</th>
             <th class="text-light">
@@ -86,6 +91,9 @@
             <tr>
                  <td width="25%">
                     @obj.Supplier.CompanyName
+                </td>
+                <td width="25%">
+                    @obj.InvoiceNo
                 </td>
                  <td width="25%">
                      @obj.InventoryItem.InventoryItemName

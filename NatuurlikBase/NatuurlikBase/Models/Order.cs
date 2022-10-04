@@ -49,7 +49,6 @@ namespace NatuurlikBase.Models
         public DateTime PaymentDueDate { get; set; }
         public DateTime DispatchedDate { get; set; }
 
-        public DateTime BackOrderDate { get; set; }
 
         //Transaction via payment processing gateway - Stripe as POC until deployed and can fully integrate with Payfast.
         public string? SessionId { get; set; }
@@ -58,12 +57,19 @@ namespace NatuurlikBase.Models
 
 
         [Required]
+        [MaxLength(50)]
+        [RegularExpression(@"^[ a-zA-Z ]+$", ErrorMessage = "No digits or special characters are allowed.")]
         public string FirstName { get; set; }
 
         [Required]
+        [MaxLength(50)]
+        [RegularExpression(@"^[ a-zA-Z ]+$", ErrorMessage = "No digits or special characters are allowed.")]
         public string Surname { get; set; }
 
         [Required]
+        [RegularExpression(@"^(\d{9})$", ErrorMessage = "Please enter a valid Phone Number.")]
+        [MaxLength(9)]
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
         [Required]
@@ -103,9 +109,8 @@ namespace NatuurlikBase.Models
         [ValidateNever]
         public PaymentReminder PaymentReminder { get; set; }
 
-        public int? ConfirmationReminderId { get; set; }
         [ValidateNever]
-        public ConfirmationReminder ConfirmationReminder { get; set; }
+        public DateTime ProcessedDate { get; set; }
 
     }
 }

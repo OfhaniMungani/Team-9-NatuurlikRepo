@@ -6,61 +6,69 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+  </symbol>
+  <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+  </symbol>
+  <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+  </symbol>
+</svg>
+
 <h3>@ViewData["Title"]</h3>
-<partial name="_StatusMessage" for="StatusMessage" />
+
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+       &nbsp       
+        @TempData["success"]
+    </div>
+}
+
 <div class="row">
     <div class="col-md-6">
         <form id="profile-form" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            @if(User.IsInRole(SR.Role_Reseller))
-            {
-                 <div class="form-floating" id="formspace" hidden>
-                <label asp-for="Input.FirstName"></label>
-                <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" />
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-floating" id="formspace" hidden>
-                <label asp-for="Input.Surname"></label>
-                <input asp-for="Input.Surname" class="form-control" autocomplete="lastname" aria-required="true" />
-                <span asp-validation-for="Input.Surname" class="text-danger"></span>
-                </div>
-            }
-            else
-            {
+        
                 <div class="form-floating" id="formspace">
-                <label asp-for="Input.FirstName"></label>
+                <label asp-for="Input.FirstName" class="required"></label>
                 <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" />
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
 
               <div class="form-floating" id="formspace">
-                <label asp-for="Input.Surname"></label>
+                <label asp-for="Input.Surname" class="required"></label>
                 <input asp-for="Input.Surname" class="form-control" autocomplete="lastname" aria-required="true" />
                 <span asp-validation-for="Input.Surname" class="text-danger"></span>
             </div>
-            }
-           
           
             <div class="form-floating" id="formspace">
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" autocomplete="lastname" disabled />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
+                    <div class="form-floating" id="formspace">
+                        <label asp-for="Input.PhoneNumber" class="required">Phone Number</label>
+                          <div class="input-group">
+                            <span class="input-group-text">+27</span>
+                            <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="987654321"/>                            
+                          </div>
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
             <div class="form-floating" id="formspace">
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <input asp-for="Input.PhoneNumber" class="form-control" />
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-floating" id="formspace">
-                <label asp-for="Input.StreetAddress"></label>
+                <label asp-for="Input.StreetAddress" class="required"></label>
                 <input asp-for="Input.StreetAddress" class="form-control" aria-required="true" />
                 <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
             </div>
 
             <div class="row">
                 <div class="form-floating col-md-6" id="formspace">
-			 <label asp-for="Input.Country">Country</label>
+			 <label asp-for="Input.Country" class="required">Country</label>
                         <select asp-for="Input.Country" asp-items="@Model.Input.CountryList" required class="form-control" onchange="onCountryChange()">
                             <option disabled selected>- Select Country -</option>
                         </select>
@@ -68,7 +76,7 @@
                 </div>
 
                 <div class="form-floating col-md-6" id="formspace">
-			 <label asp-for="Input.Province">Province</label>
+			 <label asp-for="Input.Province" class="required">Province</label>
                         <select asp-for="Input.Province" asp-items="@Model.Input.ProvinceList" required class="form-control" onchange="onProvinceChange()">
                             <option disabled selected>- Select Province -</option>
                         </select>
@@ -78,7 +86,7 @@
 
             <div class="row">
                 <div class="form-floating col-md-6" id="formspace">
-			 <label asp-for="Input.City">City</label>
+			 <label asp-for="Input.City" class="required">City</label>
                     <select asp-for="Input.City" asp-items="@Model.Input.CityList" required class="form-control" onchange="onCityChange()">
                         <option disabled selected>- Select City -</option>
                     </select>
@@ -86,7 +94,7 @@
                 </div>
 
                 <div class="form-floating col-md-6" id="formspace">
-			 <label asp-for="Input.Suburb">Suburb</label>
+			 <label asp-for="Input.Suburb" class="required">Suburb</label>
                     <select asp-for="Input.Suburb" asp-items="@Model.Input.SuburbList" required class="form-control">
                         <option disabled selected>- Select Suburb -</option>
                     </select>
@@ -202,5 +210,6 @@
     </script>
 
 @section Scripts {
+    <script src="~/js/notifications.js"></script>
 <partial name="_ValidationScriptsPartial" />
 }

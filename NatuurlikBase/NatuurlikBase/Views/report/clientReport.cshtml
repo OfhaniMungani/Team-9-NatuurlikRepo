@@ -7,8 +7,8 @@
     <div id ="reportPage">
           <div class="row justify-content-start">
             <div class="col-10 col-sm-10 col-md-10">
-            <h2 class="cheading">Top Five Sales Report
-                <a href="" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
+            <h2 class="cheading">Sale By TOP Five(5) Clients Report
+                <a href="~/helpDocs/ClientReport.pdf" target="_blank" data-toggle="tooltip" data-placement="top" title="View help document"> <i class="bi bi-question-circle-fill"></i></a>
             </h2>
 		</div>
      
@@ -35,7 +35,7 @@
                 <tr>
                     <th class="text-light">First Name</th>
                     <th class="text-light">Last Name</th>
-                    <th class="text-light">Sales Value (ZAR)</th> 
+                    <th class="text-light" id="money">Sales Value (ZAR)</th> 
                 </tr>
             </thead>
             <tbody id ="table-body1"></tbody>
@@ -70,7 +70,7 @@ $("#exportButton").click(function(){
 
         //TITLE
         doc.setFontSize(18);
-        doc.text(13, 60, "SALES BY CLIENT REPORT");
+        doc.text(13, 60, "SALES BY TOP 5 CLIENTS REPORT");
 
         //DATE, PRINTED BY
         doc.setFontSize(8);
@@ -124,13 +124,13 @@ $("#exportButton").click(function(){
 
                         if (inData.length > 0) {
                             $(inData).each((i, v) => {
-                                table.append(`<tr><td>${v.Fname}</td><td>${v.lName}</td><td>  ${v.tableAmount}</td>/tr>`);
+                                table.append(`<tr><td>${v.Fname}</td><td>${v.lName}</td><td Style="text-align: right;">  ${v.tableAmount}</td>/tr>`);
                               
                                salesTotal =v.sales;
                                 console.log("row inserted")
                                  
                             });
-                                foot.append(`<tr><td  Style="font-weight: bold;">Total</td><td>  </td><td  Style="font-weight: bold;">  ${salesTotal}</td>/tr>`); 
+                                foot.append(`<tr><td  Style="font-weight: bold;">Total</td><td>  </td><td  Style="font-weight: bold; text-align: right;">  ${salesTotal}</td>/tr>`); 
                         } 
                     let chartLabel = [];
                     let chartData = [];

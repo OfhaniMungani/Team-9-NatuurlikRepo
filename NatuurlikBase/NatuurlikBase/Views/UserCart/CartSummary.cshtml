@@ -5,6 +5,7 @@
     <link href="@Url.Content("~/css/order.css")" rel="stylesheet" type="text/css" />
 }
 
+<img src="~/images/carttt.png" id="cartimg"/>
     <form method="post">
         <div class="container" id="montserret">
             <h2 id="cartTitle">CHECKOUT</h2>
@@ -17,28 +18,31 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.FirstName">First Name</label>
+                                    <label class="small" asp-for="Order.FirstName">First Name</label>&nbsp;<label style="color:red">*</label>
                                     <input asp-for="Order.FirstName" class="form-control" />
                                     <span asp-validation-for="Order.FirstName" class="text-danger"></span>
                                 </div>
                                 <div class="col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.Surname">Surname</label>
+                                    <label class="small" asp-for="Order.Surname">Surname</label>&nbsp;<label style="color:red">*</label>
                                     <input asp-for="Order.Surname" class="form-control" />
                                     <span asp-validation-for="Order.Surname" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.PhoneNumber">Phone Number</label>
-                                    <input asp-for="Order.PhoneNumber" class="form-control" />
-                                    <span asp-validation-for="Order.PhoneNumber" class="text-danger"></span>
-                                </div>
+                            <div class="form-floating col-md-6" id="formspace">
+                                <label class="small" asp-for="Order.PhoneNumber" class="required">Phone Number</label>
+                                  <div class="input-group">
+                                    <span class="input-group-text">+27</span>
+                                    <input asp-for="Order.PhoneNumber" class="form-control" aria-required="true" placeholder="987654321"/>                            
+                                  </div>
+                                <span asp-validation-for="Order.PhoneNumber" class="text-danger"></span>
+                            </div>
                             </div>
 
                             <div class="row">
                                 <div class="col" id="formspace">
-                                    <label class="small" asp-for="Order.StreetAddress">Street Address</label>
+                                    <label class="small" asp-for="Order.StreetAddress">Street Address</label>&nbsp;<label style="color:red">*</label>
                                     <input asp-for="Order.StreetAddress" class="form-control" />
                                     <span asp-validation-for="Order.StreetAddress" class="text-danger"></span>
                                 </div>
@@ -46,14 +50,14 @@
 
                             <div class="row">
                                 <div class="form-floating col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.CountryId">Country</label>
+                                    <label class="small" asp-for="Order.CountryId">Country</label>&nbsp;<label style="color:red">*</label>
                                     <select asp-for="Order.CountryId" asp-items="@Model.CountryList" required class="form-control" onchange="onCountryChange()">
                                         <option disabled selected>- Select Country -</option>
                                     </select>
                                     <span asp-validation-for="Order.CountryId" class="text-danger"></span>
                                 </div>
                                 <div class="form-floating col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.ProvinceId">Province</label>
+                                    <label class="small" asp-for="Order.ProvinceId">Province</label>&nbsp;<label style="color:red">*</label>
                                     <select asp-for="Order.ProvinceId" asp-items="@Model.ProvinceList" required class="form-control" onchange="onProvinceChange()">
                                         <option disabled selected>- Select Province -</option>
                                     </select>
@@ -63,22 +67,22 @@
 
                             <div class="row">
                                 <div class="form-floating col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.CityId">City</label>
+                                    <label class="small" asp-for="Order.CityId">City</label>&nbsp;<label style="color:red">*</label>
                                     <select asp-for="Order.CityId" asp-items="@Model.CityList" required class="form-control" onchange="onCityChange()">
                                         <option disabled selected>- Select City -</option>
                                     </select>
                                     <span asp-validation-for="Order.CityId" class="text-danger"></span>
                                 </div>
                                 <div class="form-floating col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.SuburbId">Suburb</label>
-                                    <select asp-for="Order.SuburbId" asp-items="@Model.SuburbList" required class="form-control">
+                                    <label class="small" asp-for="Order.SuburbId">Suburb</label>&nbsp;<label style="color:red">*</label>
+                                    <select asp-for="Order.SuburbId" asp-items="@Model.SuburbList" required class="form-control" onchange="filterCouriers()" id="selectedSuburb">
                                         <option disabled selected>- Select Suburb -</option>
                                     </select>
                                     <span asp-validation-for="Order.SuburbId" class="text-danger"></span>
                                 </div>
 
                                   <div class="form-floating col-md-6" id="formspace">
-                                    <label class="small" asp-for="Order.CourierId">Courier</label>
+                                    <label class="small" asp-for="Order.CourierId">Courier</label>&nbsp;<label style="color:red">*</label>
                                     <select asp-for="Order.CourierId" asp-items="@Model.CourierList" required class="form-control" onchange="getCourierFee()">
                                         <option disabled selected>- Select Courier -</option>
                                     </select>
@@ -117,6 +121,7 @@
                                 <small>@orderItem.Product.Name</small>
                                 <small>R @((orderItem.CartItemPrice * orderItem.Count).ToString("0.00")) </small>
                             </div>
+                            <small class="text-muted">Price: R @orderItem.CartItemPrice</small> <br />
                             <small class="text-muted">Quantity: @orderItem.Count</small>
                             <hr />
                         }
@@ -185,6 +190,24 @@
 
 <script>
 
+    //Do not display Free Delivery Option on page load if suburb not equal to 'Garsfontein'
+     window.onload = function(){
+       //console.log('Page loaded successfully!')
+         var selectedSuburb = $("#selectedSuburb option:selected").text();
+         //console.log(selectedSuburb);
+       
+        if (selectedSuburb == "Garsfontein")
+        
+        {
+            //console.log("Qualifies for free delivery");
+            $("#Order_CourierId option[value = 0]").show();
+        }
+        else {
+         $("#Order_CourierId option[value = 0]").hide();  
+         //console.log("Does not qualify for free delivery");
+        }
+ };
+
     function onCountryChange() {
         if (!$('#Order_CountryId').val()) {
             $('#suburbControl').attr('hidden', true);
@@ -203,7 +226,7 @@
                     options += '<option value="0" disabled >--Select Province--</option>';
 
                     for (var i = 0; i < data.length; i++) {
-                        console.log(data[i]);
+                        //console.log(data[i]);
                         options += '<option value=' + data[i].value + '>' + data[i].text + '</option>';
                     }
                     $('#Order_ProvinceId').append(options);
@@ -232,7 +255,7 @@
                     options += '<option value="0" disabled >--Select City--</option>';
 
                     for (var i = 0; i < data.length; i++) {
-                        console.log(data[i]);
+                        //console.log(data[i]);
                         options += '<option value=' + data[i].value + '>' + data[i].text + '</option>';
                     }
                     $('#Order_CityId').append(options);
@@ -261,7 +284,7 @@
                     options += '<option value="0" disabled >--Select Suburb--</option>';
 
                     for (var i = 0; i < data.length; i++) {
-                        console.log(data[i]);
+                        //console.log(data[i]);
                         options += '<option value=' + data[i].value + '>' + data[i].text + '</option>';
                     }
                     $('#Order_SuburbId').append(options);
@@ -284,16 +307,16 @@
 
                var decimal = parseFloat(data).toFixed(2);
                $("#orderTotal").html('');
-                console.log(data);
+                //console.log(data);
                $("#courierFee").html('R ' + decimal);
-                console.log(data);
+                //console.log(data);
                 //Get int value
                 var parseSubTotal = parseInt($("#orderSubTotal").html());
                 $("#orderTotal").val(parseSubTotal + data);
-                console.log(data);
-                console.log(parseSubTotal);
+                //console.log(data);
+                //console.log(parseSubTotal);
                 var orderTotal = parseFloat($("#orderTotal").val()).toFixed(2);;
-                console.log('Order TOt:' + orderTotal);
+                //console.log('Order TOt:' + orderTotal);
                 $("#orderTotal").html('R '+orderTotal);
                 //$("#orderTotal").val(currentOrderTotal + data);
                 //var orderTotalValue = $("#orderTotal").val();
@@ -310,6 +333,23 @@
             }
         });
      }
+
+      function filterCouriers() {
+         $('#courierDDL').val('- Select Courier -');
+         var selectedSuburb = $("#selectedSuburb option:selected").text();
+         //Set value equal to qualifying suburb ID
+         //console.log($('#Order_SuburbId').val())
+        if (selectedSuburb == "Garsfontein")
+        
+        {
+            //console.log("string test 1");
+            $("#Order_CourierId option[value = 0]").show();
+        }
+        else {
+         $("#Order_CourierId option[value = 0]").hide();  
+         //console.log("string test 2");
+        }
+    }
 
 </script>
 

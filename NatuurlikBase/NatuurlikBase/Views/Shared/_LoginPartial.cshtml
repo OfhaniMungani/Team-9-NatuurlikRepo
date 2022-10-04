@@ -13,9 +13,23 @@
 </style>
 
 <ul class="navbar-nav">
-    <li class="nav-item" id="borad"> 
-        <a class="nav-link text-dark" asp-area="" asp-controller="UserCart" asp-action="Index"><i class="bi bi-cart4"></i></a>
-    </li>
+
+    @if(User.IsInRole(SR.Role_Customer) || User.IsInRole(SR.Role_Reseller))
+    {
+         @if(ViewData["has"] != null)
+        {
+        <li class="nav-item" id="borad"> 
+            <a class="nav-link text-dark" asp-area="" asp-controller="UserCart" asp-action="Index"><img src="~/images/carticon.png"></a>
+        </li>        
+        }
+        else
+        {
+        <li class="nav-item" id="borad"> 
+            <a class="nav-link text-dark" asp-area="" asp-controller="UserCart" asp-action="Index"><img src="~/images/emptycart.png"></a>
+        </li>
+        }       
+    }
+
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">

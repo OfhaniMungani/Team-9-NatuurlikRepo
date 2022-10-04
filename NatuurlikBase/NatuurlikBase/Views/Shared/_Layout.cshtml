@@ -36,8 +36,8 @@
                 <div class="p-2 bd-highlight"><i class="bi bi-telephone"></i> 072 596 3150</div>
                 <div class="p-2 bd-highlight"><i class="bi bi-envelope"></i> natuurlikwild@gmail.com</div>
                 <div class="ml-auto p-2 bd-highlight">Follow Us</div>
-                <div class="p-2 bd-highlight"><i class="bi bi-facebook"></i></div>
-                <div class="p-2 bd-highlight"><i class="bi bi-instagram"></i></div>
+                <div class="p-2 bd-highlight"><a href="https://www.facebook.com/NatuurlikSA" class="social"> <i class="bi bi-facebook"></i></a></div>
+                <div class="p-2 bd-highlight"><a href="https://www.instagram.com/natuurlik_sa/?hl=en" class="social"><i class="bi bi-instagram"></i></a></div>  
             </div> 
         </div>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom">
@@ -57,20 +57,16 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="ProductCatalogue" asp-action="Index">PRODUCTS</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">CONTACT US</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ContactUs" asp-action="Index">CONTACT US</a>
                         </li>
 
                        
-                      @if(User.IsInRole(SR.Role_Admin))
+                      @if(User.IsInRole(SR.Role_Admin) || User.IsInRole(SR.Role_IM) || User.IsInRole(SR.Role_SA))
                     {
                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">MANAGE STORE</a>
                         </li> 
                     }
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">MANAGE STORE</a>
-                        </li> 
 
                                                                                           
                     </ul>
@@ -89,34 +85,24 @@
              <div class="row justify-content-around">                     
                 <div class="col-sm-2 col-md-2 col-lg-2">
                     <p><strong> ACCOUNTS  </strong></p>
-                        <p><a id ="footerlink" href=""> Sign In</a></p>
+                        <p><a id ="footerlink" href=""> Login</a></p>
                         <p><a id ="footerlink" href=""> Register</a></p>
-                        <p><a id ="footerlink" href=""> Orders</a></p> 
                </div>
                <div class="col-sm-2 col-md-2 col-lg-2">
                     <p><strong> QUICK LINKS   </strong></p>
                         <p><a id ="footerlink" href=""> Products </a></p>
-                        <p><a id ="footerlink" href=""> Blog </a></p>
                         <p><a id ="footerlink" href=""> About Us </a></p>
                         <p><a id ="footerlink" href=""> Contact us </a></p>
                </div>
-               <div class="col-sm-2 col-md-2 col-lg-2">
-                    <p><strong> CUSTOMER SERVICE  </strong></p>
-                        <p><a id ="footerlink" href=""> FAQ</a></p>
-                        <p><a id ="footerlink" href=""> About Us</a></p>
-                        <p><a id ="footerlink" href=""> Contact Us</a></p>
-                        <p><a id ="footerlink" href=""> Delivery Information</a></p>
-                        <p><a id ="footerlink" href=""> Returns</a></p>
-                        <p><a id ="footerlink" href=""> Terms and Conditions</a></p>
-               </div>
                <div class="col-sm-2 col-md-2 col-lg-3">
-                    <p><strong> FOLLOW US  </strong></p>                   
-                        <p><a id ="footerlink" href=""><i class="bi bi-facebook"></i>&nbsp; Facebook</a></p>
-                        <p><a id ="footerlink" href=""><i class="bi bi-instagram"></i>&nbsp; Instagram</a></p>
-                        <br>
                     <p><strong> CONTACT US  </strong></p> 
                         <p><i class="bi bi-envelope"></i>&nbsp; natuurlikwild@gmail.com</p>
                         <p><i class="bi bi-telephone"></i>&nbsp; Customer Care: 072 596 3150</p>
+               </div>
+               <div class="col-sm-2 col-md-2 col-lg-2">
+                    <p><strong> FOLLOW US  </strong></p>                   
+                        <p><a id ="footerlink" href="https://www.facebook.com/NatuurlikSA"><i class="bi bi-facebook"></i>&nbsp; Facebook</a></p>
+                        <p><a id ="footerlink" href="https://www.instagram.com/natuurlik_sa/?hl=en"><i class="bi bi-instagram"></i>&nbsp; Instagram</a></p>                       
                 </div>
               </div>
         </div>

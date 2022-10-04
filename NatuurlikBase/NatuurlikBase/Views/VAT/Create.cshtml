@@ -16,14 +16,14 @@
             <div class="card-body">
 		@*<div asp-validation-summary="All"></div>*@
 		<div class=" col-md-10">
-			<label asp-for="VATPercentage">VAT Percentage :</label>
+			<label asp-for="VATPercentage" class="required" >VAT Percentage :</label>
 			<input asp-for="VATPercentage" min="1" class="form-control" />
 			<span asp-validation-for="VATPercentage" class="text-danger"></span>
 		</div>
 
         <br />
         <div class="col-md-10">
-			<label asp-for="VATStatus"> Status: </label>
+			<label asp-for="VATStatus" class="required" > Status: </label>
 			<select asp-for="VATStatus" class="form-control">
 				<option disabled selected>--Select a Status--</option>
 				<option> Active </option>

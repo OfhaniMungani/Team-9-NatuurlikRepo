@@ -14,6 +14,7 @@ function loadDataTable() {
         "columns": [
             { "data": "name", "width": "15%" },
             { "data": "description", "width": "15%" },
+            { "data": "quantityOnHand", "width": "15%" },
             { "data": "customerPrice", "width": "15%" },
             { "data": "resellerPrice", "width": "15%" },
             { "data": "category.name", "width": "15%" },
